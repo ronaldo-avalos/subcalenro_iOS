@@ -8,10 +8,39 @@
 
 /* Begin PBXBuildFile section */
 		14D730B4F063CDC67E989B72 /* Pods_subcalenro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */; };
+		D387D1522CAFA0BF00F0BCD6 /* CalendarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */; };
+		D387D1542CAFA0CC00F0BCD6 /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */; };
+		D387D1562CAFA10F00F0BCD6 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */; };
+		D387D16E2CAFA1C900F0BCD6 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1592CAFA1C900F0BCD6 /* ThemeManager.swift */; };
+		D387D16F2CAFA1C900F0BCD6 /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D15F2CAFA1C900F0BCD6 /* SF-Pro-Display-Regular.otf */; };
+		D387D1702CAFA1C900F0BCD6 /* SF-Pro-Rounded-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D15C2CAFA1C900F0BCD6 /* SF-Pro-Rounded-Bold.otf */; };
+		D387D1712CAFA1C900F0BCD6 /* SF-Pro-Rounded-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1662CAFA1C900F0BCD6 /* SF-Pro-Rounded-Medium.otf */; };
+		D387D1722CAFA1C900F0BCD6 /* SF-Pro-Rounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1652CAFA1C900F0BCD6 /* SF-Pro-Rounded-Light.otf */; };
+		D387D1732CAFA1C900F0BCD6 /* SF-Pro-Rounded-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1682CAFA1C900F0BCD6 /* SF-Pro-Rounded-Semibold.otf */; };
+		D387D1742CAFA1C900F0BCD6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D387D16C2CAFA1C900F0BCD6 /* Colors.xcassets */; };
+		D387D1752CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D387D15B2CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBoldItalic.ttf */; };
+		D387D1762CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1692CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBold.ttf */; };
+		D387D1772CAFA1C900F0BCD6 /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D15E2CAFA1C900F0BCD6 /* SF-Pro-Display-Medium.otf */; };
+		D387D1782CAFA1C900F0BCD6 /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1612CAFA1C900F0BCD6 /* SF-Pro-Text-Bold.otf */; };
+		D387D1792CAFA1C900F0BCD6 /* SF-Pro-Rounded-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1672CAFA1C900F0BCD6 /* SF-Pro-Rounded-Regular.otf */; };
+		D387D17A2CAFA1C900F0BCD6 /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1602CAFA1C900F0BCD6 /* SF-Pro-Display-Semibold.otf */; };
+		D387D17B2CAFA1C900F0BCD6 /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D15D2CAFA1C900F0BCD6 /* SF-Pro-Display-Bold.otf */; };
+		D387D17C2CAFA1C900F0BCD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D387D16B2CAFA1C900F0BCD6 /* Assets.xcassets */; };
+		D387D17D2CAFA1C900F0BCD6 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1642CAFA1C900F0BCD6 /* SF-Pro-Text-Semibold.otf */; };
+		D387D17E2CAFA1C900F0BCD6 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1632CAFA1C900F0BCD6 /* SF-Pro-Text-Regular.otf */; };
+		D387D17F2CAFA1C900F0BCD6 /* SF-Pro-Text-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D387D1622CAFA1C900F0BCD6 /* SF-Pro-Text-Medium.otf */; };
+		D387D1832CAFA1D200F0BCD6 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1812CAFA1D200F0BCD6 /* Utility.swift */; };
+		D387D1842CAFA1D200F0BCD6 /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1802CAFA1D200F0BCD6 /* PreferencesManager.swift */; };
+		D387D1862CAFA37200F0BCD6 /* BottomEventContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1852CAFA37200F0BCD6 /* BottomEventContainer.swift */; };
+		D387D1882CAFA37700F0BCD6 /* OptionsFloatingBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1872CAFA37700F0BCD6 /* OptionsFloatingBarView.swift */; };
+		D387D18F2CAFA50700F0BCD6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D18B2CAFA50700F0BCD6 /* SettingsViewController.swift */; };
+		D387D1902CAFA50700F0BCD6 /* SettingsCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D18D2CAFA50700F0BCD6 /* SettingsCellModel.swift */; };
+		D387D1912CAFA50700F0BCD6 /* SettingsUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D18C2CAFA50700F0BCD6 /* SettingsUITableViewCell.swift */; };
+		D387D1922CAFA50700F0BCD6 /* AppearanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1892CAFA50700F0BCD6 /* AppearanceViewController.swift */; };
 		D3B649732CAE3B1000ADD119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B649672CAE3B1000ADD119 /* AppDelegate.swift */; };
 		D3B649742CAE3B1000ADD119 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B6496E2CAE3B1000ADD119 /* SceneDelegate.swift */; };
 		D3B649752CAE3B1000ADD119 /* subcalenro.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D3B6496F2CAE3B1000ADD119 /* subcalenro.xcdatamodeld */; };
-		D3B649762CAE3B1000ADD119 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B649702CAE3B1000ADD119 /* ViewController.swift */; };
+		D3B649762CAE3B1000ADD119 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B649702CAE3B1000ADD119 /* CalendarViewController.swift */; };
 		D3B649772CAE3B1000ADD119 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3B649682CAE3B1000ADD119 /* Assets.xcassets */; };
 		D3B649792CAE3B1000ADD119 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B6496B2CAE3B1000ADD119 /* LaunchScreen.storyboard */; };
 		D3B6497A2CAE3B1000ADD119 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B6496D2CAE3B1000ADD119 /* Main.storyboard */; };
@@ -21,6 +50,35 @@
 		2CBD348774C22723D806D30E /* Pods-subcalenro.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-subcalenro.release.xcconfig"; path = "Target Support Files/Pods-subcalenro/Pods-subcalenro.release.xcconfig"; sourceTree = "<group>"; };
 		B5A14581D6C13DFA917E4532 /* Pods-subcalenro.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-subcalenro.debug.xcconfig"; path = "Target Support Files/Pods-subcalenro/Pods-subcalenro.debug.xcconfig"; sourceTree = "<group>"; };
 		BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_subcalenro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDelegate.swift; sourceTree = "<group>"; };
+		D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
+		D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
+		D387D1592CAFA1C900F0BCD6 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		D387D15B2CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		D387D15C2CAFA1C900F0BCD6 /* SF-Pro-Rounded-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Bold.otf"; sourceTree = "<group>"; };
+		D387D15D2CAFA1C900F0BCD6 /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
+		D387D15E2CAFA1C900F0BCD6 /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
+		D387D15F2CAFA1C900F0BCD6 /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
+		D387D1602CAFA1C900F0BCD6 /* SF-Pro-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.otf"; sourceTree = "<group>"; };
+		D387D1612CAFA1C900F0BCD6 /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
+		D387D1622CAFA1C900F0BCD6 /* SF-Pro-Text-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Medium.otf"; sourceTree = "<group>"; };
+		D387D1632CAFA1C900F0BCD6 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
+		D387D1642CAFA1C900F0BCD6 /* SF-Pro-Text-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Semibold.otf"; sourceTree = "<group>"; };
+		D387D1652CAFA1C900F0BCD6 /* SF-Pro-Rounded-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Light.otf"; sourceTree = "<group>"; };
+		D387D1662CAFA1C900F0BCD6 /* SF-Pro-Rounded-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Medium.otf"; sourceTree = "<group>"; };
+		D387D1672CAFA1C900F0BCD6 /* SF-Pro-Rounded-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Regular.otf"; sourceTree = "<group>"; };
+		D387D1682CAFA1C900F0BCD6 /* SF-Pro-Rounded-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Semibold.otf"; sourceTree = "<group>"; };
+		D387D1692CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-ExtraBold.ttf"; sourceTree = "<group>"; };
+		D387D16B2CAFA1C900F0BCD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D387D16C2CAFA1C900F0BCD6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		D387D1802CAFA1D200F0BCD6 /* PreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
+		D387D1812CAFA1D200F0BCD6 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		D387D1852CAFA37200F0BCD6 /* BottomEventContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomEventContainer.swift; sourceTree = "<group>"; };
+		D387D1872CAFA37700F0BCD6 /* OptionsFloatingBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsFloatingBarView.swift; sourceTree = "<group>"; };
+		D387D1892CAFA50700F0BCD6 /* AppearanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceViewController.swift; sourceTree = "<group>"; };
+		D387D18B2CAFA50700F0BCD6 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		D387D18C2CAFA50700F0BCD6 /* SettingsUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUITableViewCell.swift; sourceTree = "<group>"; };
+		D387D18D2CAFA50700F0BCD6 /* SettingsCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellModel.swift; sourceTree = "<group>"; };
 		D3B6494C2CAE2E4700ADD119 /* subcalenro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = subcalenro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B649672CAE3B1000ADD119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3B649682CAE3B1000ADD119 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -28,7 +86,7 @@
 		D3B6496A2CAE3B1000ADD119 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D3B6496C2CAE3B1000ADD119 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D3B6496E2CAE3B1000ADD119 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D3B649702CAE3B1000ADD119 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D3B649702CAE3B1000ADD119 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		D3B649722CAE3B1000ADD119 /* subcalenro.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = subcalenro.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,6 +119,75 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D387D15A2CAFA1C900F0BCD6 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D387D1592CAFA1C900F0BCD6 /* ThemeManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		D387D16A2CAFA1C900F0BCD6 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				D387D15B2CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBoldItalic.ttf */,
+				D387D15C2CAFA1C900F0BCD6 /* SF-Pro-Rounded-Bold.otf */,
+				D387D15D2CAFA1C900F0BCD6 /* SF-Pro-Display-Bold.otf */,
+				D387D15E2CAFA1C900F0BCD6 /* SF-Pro-Display-Medium.otf */,
+				D387D15F2CAFA1C900F0BCD6 /* SF-Pro-Display-Regular.otf */,
+				D387D1602CAFA1C900F0BCD6 /* SF-Pro-Display-Semibold.otf */,
+				D387D1612CAFA1C900F0BCD6 /* SF-Pro-Text-Bold.otf */,
+				D387D1622CAFA1C900F0BCD6 /* SF-Pro-Text-Medium.otf */,
+				D387D1632CAFA1C900F0BCD6 /* SF-Pro-Text-Regular.otf */,
+				D387D1642CAFA1C900F0BCD6 /* SF-Pro-Text-Semibold.otf */,
+				D387D1652CAFA1C900F0BCD6 /* SF-Pro-Rounded-Light.otf */,
+				D387D1662CAFA1C900F0BCD6 /* SF-Pro-Rounded-Medium.otf */,
+				D387D1672CAFA1C900F0BCD6 /* SF-Pro-Rounded-Regular.otf */,
+				D387D1682CAFA1C900F0BCD6 /* SF-Pro-Rounded-Semibold.otf */,
+				D387D1692CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		D387D16D2CAFA1C900F0BCD6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D387D15A2CAFA1C900F0BCD6 /* Managers */,
+				D387D16A2CAFA1C900F0BCD6 /* Fonts */,
+				D387D16B2CAFA1C900F0BCD6 /* Assets.xcassets */,
+				D387D16C2CAFA1C900F0BCD6 /* Colors.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D387D1822CAFA1D200F0BCD6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				D387D1802CAFA1D200F0BCD6 /* PreferencesManager.swift */,
+				D387D1812CAFA1D200F0BCD6 /* Utility.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		D387D18A2CAFA50700F0BCD6 /* Appearance */ = {
+			isa = PBXGroup;
+			children = (
+				D387D1892CAFA50700F0BCD6 /* AppearanceViewController.swift */,
+			);
+			path = Appearance;
+			sourceTree = "<group>";
+		};
+		D387D18E2CAFA50700F0BCD6 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D387D18A2CAFA50700F0BCD6 /* Appearance */,
+				D387D18B2CAFA50700F0BCD6 /* SettingsViewController.swift */,
+				D387D18C2CAFA50700F0BCD6 /* SettingsUITableViewCell.swift */,
+				D387D18D2CAFA50700F0BCD6 /* SettingsCellModel.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		D3B649432CAE2E4700ADD119 = {
 			isa = PBXGroup;
 			children = (
@@ -82,6 +209,11 @@
 		D3B649712CAE3B1000ADD119 /* subcalenro */ = {
 			isa = PBXGroup;
 			children = (
+				D387D1872CAFA37700F0BCD6 /* OptionsFloatingBarView.swift */,
+				D387D1852CAFA37200F0BCD6 /* BottomEventContainer.swift */,
+				D387D18E2CAFA50700F0BCD6 /* Settings */,
+				D387D1822CAFA1D200F0BCD6 /* Utils */,
+				D387D16D2CAFA1C900F0BCD6 /* Resources */,
 				D3B649672CAE3B1000ADD119 /* AppDelegate.swift */,
 				D3B649682CAE3B1000ADD119 /* Assets.xcassets */,
 				D3B649692CAE3B1000ADD119 /* Info.plist */,
@@ -89,7 +221,10 @@
 				D3B6496D2CAE3B1000ADD119 /* Main.storyboard */,
 				D3B6496E2CAE3B1000ADD119 /* SceneDelegate.swift */,
 				D3B6496F2CAE3B1000ADD119 /* subcalenro.xcdatamodeld */,
-				D3B649702CAE3B1000ADD119 /* ViewController.swift */,
+				D3B649702CAE3B1000ADD119 /* CalendarViewController.swift */,
+				D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */,
+				D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */,
+				D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */,
 			);
 			path = subcalenro;
 			sourceTree = "<group>";
@@ -156,6 +291,23 @@
 			files = (
 				D3B649772CAE3B1000ADD119 /* Assets.xcassets in Resources */,
 				D3B649792CAE3B1000ADD119 /* LaunchScreen.storyboard in Resources */,
+				D387D16F2CAFA1C900F0BCD6 /* SF-Pro-Display-Regular.otf in Resources */,
+				D387D1702CAFA1C900F0BCD6 /* SF-Pro-Rounded-Bold.otf in Resources */,
+				D387D1712CAFA1C900F0BCD6 /* SF-Pro-Rounded-Medium.otf in Resources */,
+				D387D1722CAFA1C900F0BCD6 /* SF-Pro-Rounded-Light.otf in Resources */,
+				D387D1732CAFA1C900F0BCD6 /* SF-Pro-Rounded-Semibold.otf in Resources */,
+				D387D1742CAFA1C900F0BCD6 /* Colors.xcassets in Resources */,
+				D387D1752CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBoldItalic.ttf in Resources */,
+				D387D1762CAFA1C900F0BCD6 /* PlayfairDisplay-ExtraBold.ttf in Resources */,
+				D387D1772CAFA1C900F0BCD6 /* SF-Pro-Display-Medium.otf in Resources */,
+				D387D1782CAFA1C900F0BCD6 /* SF-Pro-Text-Bold.otf in Resources */,
+				D387D1792CAFA1C900F0BCD6 /* SF-Pro-Rounded-Regular.otf in Resources */,
+				D387D17A2CAFA1C900F0BCD6 /* SF-Pro-Display-Semibold.otf in Resources */,
+				D387D17B2CAFA1C900F0BCD6 /* SF-Pro-Display-Bold.otf in Resources */,
+				D387D17C2CAFA1C900F0BCD6 /* Assets.xcassets in Resources */,
+				D387D17D2CAFA1C900F0BCD6 /* SF-Pro-Text-Semibold.otf in Resources */,
+				D387D17E2CAFA1C900F0BCD6 /* SF-Pro-Text-Regular.otf in Resources */,
+				D387D17F2CAFA1C900F0BCD6 /* SF-Pro-Text-Medium.otf in Resources */,
 				D3B6497A2CAE3B1000ADD119 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,10 +361,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D387D1522CAFA0BF00F0BCD6 /* CalendarDelegate.swift in Sources */,
+				D387D1862CAFA37200F0BCD6 /* BottomEventContainer.swift in Sources */,
+				D387D1562CAFA10F00F0BCD6 /* CalendarViewCell.swift in Sources */,
 				D3B649732CAE3B1000ADD119 /* AppDelegate.swift in Sources */,
+				D387D1832CAFA1D200F0BCD6 /* Utility.swift in Sources */,
+				D387D1842CAFA1D200F0BCD6 /* PreferencesManager.swift in Sources */,
+				D387D16E2CAFA1C900F0BCD6 /* ThemeManager.swift in Sources */,
 				D3B649742CAE3B1000ADD119 /* SceneDelegate.swift in Sources */,
+				D387D1542CAFA0CC00F0BCD6 /* CalendarDataSource.swift in Sources */,
+				D387D18F2CAFA50700F0BCD6 /* SettingsViewController.swift in Sources */,
+				D387D1902CAFA50700F0BCD6 /* SettingsCellModel.swift in Sources */,
+				D387D1912CAFA50700F0BCD6 /* SettingsUITableViewCell.swift in Sources */,
+				D387D1922CAFA50700F0BCD6 /* AppearanceViewController.swift in Sources */,
 				D3B649752CAE3B1000ADD119 /* subcalenro.xcdatamodeld in Sources */,
-				D3B649762CAE3B1000ADD119 /* ViewController.swift in Sources */,
+				D3B649762CAE3B1000ADD119 /* CalendarViewController.swift in Sources */,
+				D387D1882CAFA37700F0BCD6 /* OptionsFloatingBarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
