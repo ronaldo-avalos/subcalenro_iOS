@@ -1,0 +1,6 @@
+framework module Pods_subcalenro {
+  umbrella header "Pods-subcalenro-umbrella.h"
+
+  export *
+  module * { export * }
+}
