@@ -5,6 +5,10 @@
 ## User settings
 xcuserdata/
 
+subcalenro.xcworkspace/xcuserdata/
+*.xccheckout
+*.xcscmblueprint
+
 ## Obj-C/Swift specific
 *.hmap
 
