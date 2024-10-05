@@ -58,7 +58,6 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        Utility.PrintFamiliesFont()
         calendarDataSource?.didCellFor = { (date: Date, cell: CalendarViewCell) in
             self.setupCell(cell: cell, date: date)
         }
@@ -97,7 +96,7 @@ class CalendarViewController: UIViewController {
     // MARK: - Calendar Selection Handling
     private func handleDateSelection(date: Date, cell: CalendarViewCell) {
         if date == self.dateTapped {
-//OPEN NEW EVENT
+  //OPEN NEW EVENT
         } else {
             self.dateTapped = date
         }
@@ -246,7 +245,9 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func newEventButtonTapped() {
-     
+        let vc = SubscriptionViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        self.present(nc, animated: true)
     }
     
     func settingsButtonTapped() {
