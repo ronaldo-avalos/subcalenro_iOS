@@ -80,7 +80,7 @@ class Utility {
 
     
     // MARK: - Show Alerts
-    static func showSimpleAlert(on viewController: UIViewController, title: String, message: String, completion: @escaping () -> Void) {
+    static func showSimpleAlert(on viewController: UIViewController, title: String?, message: String, completion: @escaping () -> Void?) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler:  { _ in
             completion()

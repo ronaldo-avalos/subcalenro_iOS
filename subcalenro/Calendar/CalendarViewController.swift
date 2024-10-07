@@ -18,6 +18,7 @@ class CalendarViewController: UIViewController {
     var calendarHeight: CGFloat = 0
     var lastCalendarHeight: CGFloat = 500
     var bottomContainer = BottomContainer()
+    private var subscriptions: [(Date, Subscription)] = []
 
     let buttonToday: UIButton = {
         let button = UIButton(type: .system)
@@ -52,13 +53,11 @@ class CalendarViewController: UIViewController {
         return image
     }()
     
-
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
         setupViews()
-        Utility.PrintFamiliesFont()
         calendarDataSource?.didCellFor = { (date: Date, cell: CalendarViewCell) in
             self.setupCell(cell: cell, date: date)
         }
@@ -79,25 +78,25 @@ class CalendarViewController: UIViewController {
         calendarDelegate?.test = { (bounds : CGRect, calendar : FSCalendar) in
             self.calendarView.frame = CGRect(origin: calendar.frame.origin, size: bounds.size)
             self.bottomContainer.frame = CGRect(x: 0, y: calendar.frame.maxY, width: self.view.frame.width, height: 200)
-            
         }
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)
-        
-        
+        calendarDataSource?.set(subs: subscriptions)
+        print(subscriptions)
         applyTheme()
+        
     }
+    
     // MARK: - Apply Theme
     @objc func applyTheme() {
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
     }
     
-   
     
     // MARK: - Calendar Selection Handling
     private func handleDateSelection(date: Date, cell: CalendarViewCell) {
         if date == self.dateTapped {
-//OPEN NEW EVENT
+  //OPEN NEW EVENT
         } else {
             self.dateTapped = date
         }
@@ -106,7 +105,7 @@ class CalendarViewController: UIViewController {
     
     private func setupCell(cell: CalendarViewCell, date: Date) {
         DispatchQueue.main.async {
-            cell.configure(with: date)
+            cell.configure(with: date,subs: self.subscriptions)
             if cell.isSelected {
                 cell.configureBackgroud(date: date)
             }
@@ -126,18 +125,18 @@ class CalendarViewController: UIViewController {
         if let currentPageDate = Calendar.current.date(from: currentPageComponents),
            let todayDate = Calendar.current.date(from: todayComponents) {
             if currentPageDate > todayDate {
-//                self.mainView.showTodayButton(false, .up)
+                showTodayButton(false, .up)
             } else if currentPageDate == todayDate {
-//                self.mainView.showTodayButton(true, .up)
+               showTodayButton(true, .up)
             } else {
-//                self.mainView.showTodayButton(false, .down)
+                showTodayButton(false, .down)
             }
         }
     }
     
     // MARK: - Setup Views
     private func setupViews() {
-        let calendarHeight : CGFloat = Utility.isIphoneWithSmallScreen() ? 450 : Utility.isIpad ? 800 : 600
+        let calendarHeight : CGFloat = Utility.isIphoneWithSmallScreen() ? 450 : Utility.isIpad ? 700 : 500
         calendarView.frame = CGRect(x: 0, y:44, width: view.frame.width, height: calendarHeight)
         calendarView.register(CalendarViewCell.self, forCellReuseIdentifier: "cell")
         calendarView.scrollDirection = .vertical
@@ -182,7 +181,9 @@ class CalendarViewController: UIViewController {
         toggleEvents.menu = menu
         toggleEvents.showsMenuAsPrimaryAction = true
         buttonToday.isHidden = true
-
+        buttonToday.addAction(UIAction(handler: { [weak self] _ in
+            self?.calendarView.setCurrentPage(Date(), animated: true)
+        }), for: .touchUpInside)
         
         bottomContainer.frame =  CGRect(x: 0, y: calendarView.frame.maxY, width: view.frame.width, height: 200)
 
@@ -206,15 +207,17 @@ class CalendarViewController: UIViewController {
             toggleEvents.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor),
             toggleEvents.trailingAnchor.constraint(equalTo: profileImage.leadingAnchor,constant: -16),
             
-            buttonToday.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -74),
-            buttonToday.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonToday.widthAnchor.constraint(equalToConstant: 78),
-            buttonToday.heightAnchor.constraint(equalToConstant: 34),
+         
             
             floatingBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             floatingBar.widthAnchor.constraint(equalToConstant: floatingBarWidth),
             floatingBar.heightAnchor.constraint(equalToConstant: floatingBarHeight),
+            
+            buttonToday.bottomAnchor.constraint(equalTo: floatingBar.topAnchor, constant: -6),
+            buttonToday.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonToday.widthAnchor.constraint(equalToConstant: 78),
+            buttonToday.heightAnchor.constraint(equalToConstant: 34),
         ])
     }
     
@@ -246,7 +249,9 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func newEventButtonTapped() {
-     
+        let vc = SubscriptionViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        self.present(nc, animated: true)
     }
     
     func settingsButtonTapped() {
