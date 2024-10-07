@@ -181,7 +181,9 @@ class CalendarViewController: UIViewController {
         toggleEvents.menu = menu
         toggleEvents.showsMenuAsPrimaryAction = true
         buttonToday.isHidden = true
-
+        buttonToday.addAction(UIAction(handler: { [weak self] _ in
+            self?.calendarView.setCurrentPage(Date(), animated: true)
+        }), for: .touchUpInside)
         
         bottomContainer.frame =  CGRect(x: 0, y: calendarView.frame.maxY, width: view.frame.width, height: 200)
 
@@ -212,7 +214,7 @@ class CalendarViewController: UIViewController {
             floatingBar.widthAnchor.constraint(equalToConstant: floatingBarWidth),
             floatingBar.heightAnchor.constraint(equalToConstant: floatingBarHeight),
             
-            buttonToday.bottomAnchor.constraint(equalTo: floatingBar.topAnchor, constant: -14),
+            buttonToday.bottomAnchor.constraint(equalTo: floatingBar.topAnchor, constant: -6),
             buttonToday.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonToday.widthAnchor.constraint(equalToConstant: 78),
             buttonToday.heightAnchor.constraint(equalToConstant: 34),
