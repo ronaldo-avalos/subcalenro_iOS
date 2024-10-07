@@ -16,7 +16,7 @@ class CalendarViewCell: FSCalendarCell {
     private let dayLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont(name: "SFProRounded-Medium", size: Utility.isIpad ? 18 : 16)
+        label.font = UIFont(name: "SFProRounded-Semibold", size: Utility.isIpad ? 18 : 16)
         return label
     }()
     
@@ -64,7 +64,7 @@ class CalendarViewCell: FSCalendarCell {
         dayLabel.frame = contentCell.bounds
     }
         
-    func configure(with date: Date) {
+    func configure(with date: Date, subs: [(Date, Subscription)]) {
         self.dayLabel.text = String(Calendar.current.component(.day, from: date))
         self.contentCell.backgroundColor = .clear
         self.dayLabel.textColor = ThemeManager.color(for: .primaryText)
@@ -78,20 +78,19 @@ class CalendarViewCell: FSCalendarCell {
             }
         }
         self.dayLabel.text = String(Calendar.current.component(.day, from: date))
-//        let eventDays = events.filter { $0.0 == date }
-//        if !eventDays.isEmpty {
-//            let eventStack = EventViewBuilder.build(for: events, on: date)
-//            if let stack = eventStack {
-//                contentCell.addSubview(stack)
-//                stack.translatesAutoresizingMaskIntoConstraints = false
-//                NSLayoutConstraint.activate([
-//                    stack.centerXAnchor.constraint(equalTo: contentCell.centerXAnchor),
-//                    stack.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: 1),
-//                    stack.leadingAnchor.constraint(equalTo: contentCell.leadingAnchor,constant: 2),
-//                    stack.trailingAnchor.constraint(equalTo: contentCell.trailingAnchor, constant: -2)
-//                ])
-//            }
-//        }
+        let eventDays = subs.filter { Calendar.current.isDate($0.0, inSameDayAs: date) }
+        if !eventDays.isEmpty {
+            let eventStack =  SubViewBuilder.build(for: subs, on: date)
+            if let stack = eventStack {
+                contentCell.addSubview(stack)
+                contentCell.backgroundColor = .systemGray5.withAlphaComponent(0.4)
+                stack.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    stack.centerXAnchor.constraint(equalTo: contentCell.centerXAnchor),
+                    stack.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: 3)
+                ])
+            }
+        }
         
        
         //MARK: FINES DE SEMANA
@@ -99,15 +98,14 @@ class CalendarViewCell: FSCalendarCell {
             if components.weekday == 1 || components.weekday == 7 {
                 self.dayLabel.textColor = .label
                 let previousDay = components.weekday == 1 ? NSCalendar.current.date(byAdding: .day, value: -1, to: date) : NSCalendar.current.date(byAdding: .day, value: 1, to: date)
-//                let days = events.filter { $0.0 == date || $0.0 == previousDay }
-//                if days.isEmpty {
-//                    self.contentCell.backgroundColor = .systemBlue
-//                    self.dayLabel.textColor = .systemPink
-//                }
+                let days = subs.filter { $0.0 == date || $0.0 == previousDay }
+                if days.isEmpty {
+                    self.dayLabel.textColor = .systemRed
+                }
             }
         
         if NSCalendar.current.isDate(date, inSameDayAs: Date()) {
-            self.contentCell.backgroundColor = .systemBlue
+            self.contentCell.backgroundColor = .systemRed.withAlphaComponent(0.7)
             self.dayLabel.textColor = .white
         }
     }

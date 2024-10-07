@@ -25,16 +25,19 @@ class SubscriptionsLoader {
                     switch sub.period {
                     case .monthly:
                         intervalo = .month
+                        days = 1
                     case .yearly:
                         intervalo = .year
+                        days = 1
                     case .weekly:
-                        intervalo = .weekday
+                        intervalo = .weekOfYear
+                        days = 1
                     case .biweekly:
                         intervalo = .day
-                        days = 15
+                        days = 14
                     case .custom:
-                        intervalo = .day
-                        days = 15
+                        intervalo = .day  // Custom también es en días
+                        // Asume que ya tienes el valor correcto para "days" en otro lugar
                     }
                     if let newDate = calendar.date(byAdding: intervalo, value: days, to: currentDate) {
                         currentDate = newDate

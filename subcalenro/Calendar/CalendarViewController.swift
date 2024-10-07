@@ -53,7 +53,6 @@ class CalendarViewController: UIViewController {
         return image
     }()
     
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,16 +81,17 @@ class CalendarViewController: UIViewController {
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)
-        
+        calendarDataSource?.set(subs: subscriptions)
+        print(subscriptions)
         applyTheme()
         
     }
+    
     // MARK: - Apply Theme
     @objc func applyTheme() {
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
     }
     
-   
     
     // MARK: - Calendar Selection Handling
     private func handleDateSelection(date: Date, cell: CalendarViewCell) {
@@ -105,7 +105,7 @@ class CalendarViewController: UIViewController {
     
     private func setupCell(cell: CalendarViewCell, date: Date) {
         DispatchQueue.main.async {
-            cell.configure(with: date)
+            cell.configure(with: date,subs: self.subscriptions)
             if cell.isSelected {
                 cell.configureBackgroud(date: date)
             }
@@ -125,18 +125,18 @@ class CalendarViewController: UIViewController {
         if let currentPageDate = Calendar.current.date(from: currentPageComponents),
            let todayDate = Calendar.current.date(from: todayComponents) {
             if currentPageDate > todayDate {
-//                self.mainView.showTodayButton(false, .up)
+                showTodayButton(false, .up)
             } else if currentPageDate == todayDate {
-//                self.mainView.showTodayButton(true, .up)
+               showTodayButton(true, .up)
             } else {
-//                self.mainView.showTodayButton(false, .down)
+                showTodayButton(false, .down)
             }
         }
     }
     
     // MARK: - Setup Views
     private func setupViews() {
-        let calendarHeight : CGFloat = Utility.isIphoneWithSmallScreen() ? 450 : Utility.isIpad ? 800 : 600
+        let calendarHeight : CGFloat = Utility.isIphoneWithSmallScreen() ? 450 : Utility.isIpad ? 700 : 500
         calendarView.frame = CGRect(x: 0, y:44, width: view.frame.width, height: calendarHeight)
         calendarView.register(CalendarViewCell.self, forCellReuseIdentifier: "cell")
         calendarView.scrollDirection = .vertical
@@ -205,15 +205,17 @@ class CalendarViewController: UIViewController {
             toggleEvents.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor),
             toggleEvents.trailingAnchor.constraint(equalTo: profileImage.leadingAnchor,constant: -16),
             
-            buttonToday.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -74),
-            buttonToday.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonToday.widthAnchor.constraint(equalToConstant: 78),
-            buttonToday.heightAnchor.constraint(equalToConstant: 34),
+         
             
             floatingBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             floatingBar.widthAnchor.constraint(equalToConstant: floatingBarWidth),
             floatingBar.heightAnchor.constraint(equalToConstant: floatingBarHeight),
+            
+            buttonToday.bottomAnchor.constraint(equalTo: floatingBar.topAnchor, constant: -14),
+            buttonToday.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonToday.widthAnchor.constraint(equalToConstant: 78),
+            buttonToday.heightAnchor.constraint(equalToConstant: 34),
         ])
     }
     

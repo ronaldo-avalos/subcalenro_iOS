@@ -14,7 +14,7 @@ final class CalendarDataSource: NSObject, FSCalendarDataSource {
     private var eventColorsDict: [Date: UIColor] = [:]
     var didCellFor: ((Date, CalendarViewCell) -> Void)?
 
-    private(set) var subscriptions: [Subscription] = [] {
+    private(set) var subscriptions: [(Date,Subscription)] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.calendar.reloadData()
@@ -22,7 +22,7 @@ final class CalendarDataSource: NSObject, FSCalendarDataSource {
         }
     }
     
-    func set(subs: [Subscription]) {
+    func set(subs: [(Date,Subscription)]) {
         self.subscriptions = subs
     }
     
