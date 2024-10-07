@@ -14,18 +14,18 @@ final class CalendarDataSource: NSObject, FSCalendarDataSource {
     private var eventColorsDict: [Date: UIColor] = [:]
     var didCellFor: ((Date, CalendarViewCell) -> Void)?
 
-//    private(set) var eventDates: [Date: [EKEvent]] = [:] {
-//        didSet {
-//            DispatchQueue.main.async {
-//                self.calendar.reloadData()
-//            }
-//        }
-//    }
-//    
-//    func set(events: [Date: [EKEvent]]) {
-//        self.eventDates = events
-//    }
-//    
+    private(set) var subscriptions: [Subscription] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.calendar.reloadData()
+            }
+        }
+    }
+    
+    func set(subs: [Subscription]) {
+        self.subscriptions = subs
+    }
+    
     init(calendar: FSCalendar) {
         self.calendar = calendar
     }

@@ -18,6 +18,7 @@ class CalendarViewController: UIViewController {
     var calendarHeight: CGFloat = 0
     var lastCalendarHeight: CGFloat = 500
     var bottomContainer = BottomContainer()
+    private var subscriptions: [(Date, Subscription)] = []
 
     let buttonToday: UIButton = {
         let button = UIButton(type: .system)
@@ -52,10 +53,11 @@ class CalendarViewController: UIViewController {
         return image
     }()
     
-
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
         setupViews()
         calendarDataSource?.didCellFor = { (date: Date, cell: CalendarViewCell) in
             self.setupCell(cell: cell, date: date)
@@ -77,13 +79,12 @@ class CalendarViewController: UIViewController {
         calendarDelegate?.test = { (bounds : CGRect, calendar : FSCalendar) in
             self.calendarView.frame = CGRect(origin: calendar.frame.origin, size: bounds.size)
             self.bottomContainer.frame = CGRect(x: 0, y: calendar.frame.maxY, width: self.view.frame.width, height: 200)
-            
         }
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)
         
-        
         applyTheme()
+        
     }
     // MARK: - Apply Theme
     @objc func applyTheme() {

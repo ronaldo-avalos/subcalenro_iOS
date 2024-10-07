@@ -11,23 +11,6 @@ import UIKit
 import Foundation
 import UIKit
 
-// Enum para los periodos de suscripción
-enum SubscriptionPeriod: String, CaseIterable {
-    case monthly = "Monthly"
-    case yearly = "Yearly"
-    case weekly = "Weekly"
-    case biweekly = "Biweekly"
-    case custom = "Custom"
-}
-
-// Modelo de suscripción
-struct Subscription {
-    let id: UUID
-    var name: String
-    var price: Double
-    var nextPaymentDate: Date
-    var period: SubscriptionPeriod
-}
 
 class SubscriptionViewController: UIViewController {
     
@@ -181,14 +164,13 @@ class SubscriptionViewController: UIViewController {
         guard let name = name, !name.isEmpty,
               let price = price, let date = selectedDate else {
             // Mostrar alerta si los datos no son válidos
-            showErrorAlert(message: "Please fill in all details.")
+            Utility.showSimpleAlert(on: self, title: nil, message: "Please fill in all details.", completion: {})
             return
         }
         
         let subscription = Subscription(id: UUID(), name: name, price: price, nextPaymentDate: date, period: selectedPeriod)
         
-        // Guardar suscripción o pasarla a ViewModel
-        print("Subscription saved: \(subscription)")
+        SubscriptionManager.shared.save(subscription)
     }
     
     // Método para mostrar alertas de error
