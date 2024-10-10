@@ -194,6 +194,15 @@ class CalendarViewController: UIViewController {
         let floatingBarWidth: CGFloat = Utility.isIpad ? 320 : 220
         let floatingBarHeight: CGFloat = Utility.isIpad ? 65 : 55
         
+        let exampleSubscriptions = [
+            Subscription(id: UUID(), logoName: "Spotify", name: "Spotify", price: 199.00, nextPaymentDate: Date(), period: .monthly),
+            Subscription(id: UUID(), logoName: "Chatgpt", name: "Chatgpt", price: 999.00, nextPaymentDate: Date(), period: .yearly)
+        ]
+
+        bottomContainer.loadSubscriptions(exampleSubscriptions)
+        bottomContainer.tableView.separatorStyle = .none
+        bottomContainer.tableView.backgroundColor = ThemeManager.color(for: .primaryBackground)
+    
         let views = [calendarView,toggleEvents,profileImage,bottomContainer,buttonToday]
         views.forEach(view.addSubview(_:))
         view.addSubview(floatingBar)
@@ -207,7 +216,6 @@ class CalendarViewController: UIViewController {
             toggleEvents.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor),
             toggleEvents.trailingAnchor.constraint(equalTo: profileImage.leadingAnchor,constant: -16),
             
-         
             
             floatingBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
@@ -240,11 +248,11 @@ class CalendarViewController: UIViewController {
 // MARK: - OptionsFloatingBarViewDelegate
 extension CalendarViewController: OptionsFloatingBarViewDelegate {
     
-    func searchButtonTapped() {
+    func analyticsButtonTapped() {
         //TODO:
     }
     
-    func calendarButtonTapped() {
+    func  subListButtonTapped() {
       
     }
     

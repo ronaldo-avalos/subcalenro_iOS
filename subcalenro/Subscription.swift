@@ -9,10 +9,12 @@ import Foundation
 
 struct Subscription: Codable {
     let id: UUID
+    let logoName: String
     var name: String
     var price: Double
     var nextPaymentDate: Date
     var period: SubscriptionPeriod
+
 }
 
 enum SubscriptionPeriod: String, CaseIterable, Codable {

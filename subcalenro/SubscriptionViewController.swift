@@ -168,7 +168,7 @@ class SubscriptionViewController: UIViewController {
             return
         }
         
-        let subscription = Subscription(id: UUID(), name: name, price: price, nextPaymentDate: date, period: selectedPeriod)
+        let subscription = Subscription(id: UUID(),logoName:name, name: name, price: price, nextPaymentDate: date, period: selectedPeriod)
         
         SubscriptionManager.shared.save(subscription)
     }

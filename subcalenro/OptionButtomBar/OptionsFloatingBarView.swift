@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 protocol OptionsFloatingBarViewDelegate: AnyObject {
-    func searchButtonTapped()
-    func calendarButtonTapped()
+    func analyticsButtonTapped()
+    func subListButtonTapped()
     func newEventButtonTapped()
     func settingsButtonTapped()
 }
@@ -18,12 +18,13 @@ protocol OptionsFloatingBarViewDelegate: AnyObject {
 class OptionsFloatingBarView : UIView {
   
     weak var delegate: OptionsFloatingBarViewDelegate?
-    let searchButton: UIButton = {
+    
+    let analyticsButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
         button.configuration = configuration
-        button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        button.setImage(UIImage(systemName: "chart.xyaxis.line"), for: .normal)
         button.tintColor = ThemeManager.color(for: .primaryBackground)
         return button
     }()
@@ -38,7 +39,7 @@ class OptionsFloatingBarView : UIView {
         return button
     }()
 
-    let calendarsButton: UIButton = {
+    let subListButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
@@ -76,7 +77,7 @@ class OptionsFloatingBarView : UIView {
         self.layer.shadowRadius = 10
         self.backgroundColor = ThemeManager.color(for: .secondaryBackground)
 
-        let stackView = UIStackView(arrangedSubviews: [searchButton, settingsButton, calendarsButton, addButton])
+        let stackView = UIStackView(arrangedSubviews: [settingsButton,analyticsButton, subListButton, addButton])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
@@ -90,16 +91,16 @@ class OptionsFloatingBarView : UIView {
         stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
 
-        searchButton.addAction(UIAction(handler: { _ in
-            self.delegate?.searchButtonTapped()
+        analyticsButton.addAction(UIAction(handler: { _ in
+            self.delegate?.analyticsButtonTapped()
         }), for: .touchUpInside)
         
         settingsButton.addAction(UIAction(handler: { _ in
             self.delegate?.settingsButtonTapped()
         }), for: .touchUpInside)
         
-        calendarsButton.addAction(UIAction(handler: { _ in
-            self.delegate?.calendarButtonTapped()
+        subListButton.addAction(UIAction(handler: { _ in
+            self.delegate?.subListButtonTapped()
         }), for: .touchUpInside)
         
         addButton.addAction(UIAction(handler: { _ in
