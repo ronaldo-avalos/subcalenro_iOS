@@ -70,7 +70,7 @@ class CalendarViewController: UIViewController {
             self.calendarView.frame = CGRect(origin: calendar.frame.origin, size: bounds.size)
             self.bottomContainer.frame = CGRect(x: 0, y: calendar.frame.maxY, width: self.view.frame.width, height: 200)
         }
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)
         applyTheme()
         
@@ -119,11 +119,11 @@ class CalendarViewController: UIViewController {
         if let currentPageDate = Calendar.current.date(from: currentPageComponents),
            let todayDate = Calendar.current.date(from: todayComponents) {
             if currentPageDate > todayDate {
-//                showTodayButton(false, .up)
+                //                showTodayButton(false, .up)
             } else if currentPageDate == todayDate {
-//               showTodayButton(true, .up)
+                //               showTodayButton(true, .up)
             } else {
-//                showTodayButton(false, .down)
+                //                showTodayButton(false, .down)
             }
         }
     }
@@ -156,11 +156,11 @@ class CalendarViewController: UIViewController {
         floatingBar.translatesAutoresizingMaskIntoConstraints = false
         let floatingBarWidth: CGFloat = Utility.isIpad ? 320 : 220
         let floatingBarHeight: CGFloat = Utility.isIpad ? 65 : 55
-    
+        
         bottomContainer = BottomContainer(frame: CGRect(x: 0, y: calendarView.frame.maxY, width: view.frame.width, height: 600))
         bottomContainer.tableView.separatorStyle = .none
         bottomContainer.tableView.backgroundColor = .clear
-    
+        
         
         let views = [calendarView!,toggleEvents,profileImage,bottomContainer!]
         views.forEach(view.addSubview(_:))
@@ -180,7 +180,7 @@ class CalendarViewController: UIViewController {
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             floatingBar.widthAnchor.constraint(equalToConstant: floatingBarWidth),
             floatingBar.heightAnchor.constraint(equalToConstant: floatingBarHeight),
-
+            
         ])
         
         bottomContainer.deleteSub = { id in
@@ -218,7 +218,7 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func  subListButtonTapped() {
-      
+        
     }
     
     func newEventButtonTapped() {

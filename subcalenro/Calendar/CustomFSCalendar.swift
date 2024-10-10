@@ -23,6 +23,9 @@ class CustomFSCalendar: FSCalendar {
     
     func setupCalendar() {
         register(CalendarViewCell.self, forCellReuseIdentifier: "cell")
+        today = nil
+        rowHeight = 40
+        weekdayHeight = 12
         scrollDirection = .vertical
         pagingEnabled = true
         appearance.selectionColor = .clear
@@ -30,22 +33,19 @@ class CustomFSCalendar: FSCalendar {
         appearance.titleDefaultColor = .clear
         appearance.headerSeparatorColor = .clear
         appearance.separators = .none
+        allowsMultipleSelection = false
         appearance.headerTitleFont = UIFont(name: "SFProRounded-Regular", size: 30)
         appearance.headerTitleAlignment = .left
         appearance.headerTitleOffset = CGPoint(x: 12, y: 0)
         appearance.headerDateFormat = "MMMM"
         appearance.headerTitleColor = ThemeManager.color(for: .primaryText)
         appearance.titleSelectionColor = .clear
-        weekdayHeight = 12
         appearance.weekdayTextColor =  ThemeManager.color(for: .primaryText)
         appearance.caseOptions = .weekdayUsesSingleUpperCase
         appearance.weekdayFont = UIFont(name: "SFProDisplay-Medium", size: 10)
         appearance.titlePlaceholderColor = .clear
         placeholderType = .fillHeadTail
         adjustsBoundingRectWhenChangingMonths = true
-        rowHeight = 40
-        allowsMultipleSelection = false
-        today = nil
         firstWeekday = UInt(PreferencesManager.shared.firstWeekday)
     }
     
