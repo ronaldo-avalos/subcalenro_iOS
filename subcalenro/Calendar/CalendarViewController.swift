@@ -68,7 +68,7 @@ class CalendarViewController: UIViewController {
         
         calendarDelegate?.test = { (bounds : CGRect, calendar : FSCalendar) in
             self.calendarView.frame = CGRect(origin: calendar.frame.origin, size: bounds.size)
-            self.bottomContainer.frame = CGRect(x: 0, y: calendar.frame.maxY, width: self.view.frame.width, height: 200)
+            self.bottomContainer.frame = CGRect(x: 0, y: calendar.frame.maxY, width: self.view.frame.width, height: 600)
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)

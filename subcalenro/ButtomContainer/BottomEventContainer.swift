@@ -15,7 +15,9 @@ class BottomContainer: UIView {
     var subscriptions: [Subscription] = []
     var deleteSub: ((UUID) -> Void)?
     var editSub: ((UUID) -> Void)?
-
+    var dateLabel = UILabel()
+    var thereNotSubLabel = UILabel()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -30,6 +32,15 @@ class BottomContainer: UIView {
         topBorder.backgroundColor = .systemGray4
         topBorder.translatesAutoresizingMaskIntoConstraints = false
         
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.text = "23 Octubre, 2024"
+        dateLabel.font = UIFont(name: "SFProRounded-Semibold", size: 16)
+        
+        thereNotSubLabel.translatesAutoresizingMaskIntoConstraints = false
+        thereNotSubLabel.text = "No renewal on this day"
+        thereNotSubLabel.font = UIFont(name: "SFProDisplay-Regular", size: 14)
+        thereNotSubLabel.textColor = .tertiaryLabel
+        
         tableView.register(SubscriptionCell.self, forCellReuseIdentifier: "SubscriptionCell")
         tableView.dataSource = self
         tableView.delegate = self
@@ -37,6 +48,8 @@ class BottomContainer: UIView {
      
         addSubview(topBorder)
         addSubview(tableView)
+        addSubview(dateLabel)
+        addSubview(thereNotSubLabel)
 
         NSLayoutConstraint.activate([
             topBorder.topAnchor.constraint(equalTo: topAnchor),
@@ -44,16 +57,25 @@ class BottomContainer: UIView {
             topBorder.trailingAnchor.constraint(equalTo: trailingAnchor),
             topBorder.heightAnchor.constraint(equalToConstant: 0.3),
             
-            tableView.topAnchor.constraint(equalTo: topBorder.bottomAnchor, constant: 6),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            dateLabel.topAnchor.constraint(equalTo: topBorder.bottomAnchor,constant: 14),
+            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            
+            tableView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            thereNotSubLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
+            thereNotSubLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+        
         ])
     }
 
     // Método para cargar las suscripciones
     func loadSubscriptions(_ subscriptions: [Subscription]) {
         self.subscriptions = subscriptions
+        thereNotSubLabel.isHidden = !subscriptions.isEmpty
+        tableView.isScrollEnabled = subscriptions.count != 1
         tableView.reloadData()
     }
 }
@@ -122,7 +144,7 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
             completionHandler(true)
         }
         deleteAction.image = UIImage(systemName: "trash")
-        deleteAction.backgroundColor = .systemRed
+        deleteAction.backgroundColor = .systemRed.withAlphaComponent(0.3)
         
         // Acción para editar la suscripción
         let editAction = UIContextualAction(style: .normal, title: "Edit") { [weak self] (_, _, completionHandler) in
@@ -130,7 +152,7 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
             completionHandler(true)
         }
         editAction.image = UIImage(systemName: "pencil")
-        editAction.backgroundColor = .systemBlue
+        editAction.backgroundColor = .systemBlue.withAlphaComponent(0.3)
         
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         configuration.performsFirstActionWithFullSwipe = false

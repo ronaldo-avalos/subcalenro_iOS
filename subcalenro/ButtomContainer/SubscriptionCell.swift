@@ -32,7 +32,7 @@ class SubscriptionCell: UITableViewCell {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.contentMode = .center
         logoImageView.layer.cornerRadius = 8
-        logoImageView.backgroundColor = ThemeManager.color(for: .primaryBackground)
+        logoImageView.backgroundColor = .white
         logoImageView.clipsToBounds = true
         
         // Configuración del título
