@@ -20,6 +20,7 @@ enum ThemeElement {
     case secondaryText
     case tableViewBacground
     case tableCellbackground
+    case tableViewCellColor
 }
 
 extension Notification.Name {
@@ -70,7 +71,8 @@ class ThemeManager {
     .primaryBackground: .DefaultTheme.principal,
     .secondaryBackground: .DefaultTheme.selection,
     .primaryText: .label,
-    .secondaryText: .DefaultTheme.principal
+    .secondaryText: .DefaultTheme.principal,
+    .tableViewCellColor: .DefaultTheme.graycell
     ]
 
 }

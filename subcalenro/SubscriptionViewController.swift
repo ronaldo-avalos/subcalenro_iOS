@@ -8,12 +8,14 @@
 import Foundation
 import UIKit
 
-import Foundation
-import UIKit
-
+protocol SubscriptionViewDelegate: AnyObject {
+    func changedSubscriptionData()
+}
 
 class SubscriptionViewController: UIViewController {
     
+    weak var delegate: SubscriptionViewDelegate?
+    var subId: UUID?
     // Botón para seleccionar el periodo
     private let periodButton: UIButton = {
         let button = UIButton(type: .system)
@@ -63,6 +65,12 @@ class SubscriptionViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.systemBackground
         setupLayout()
+        print(subId ?? "does not exist ID")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        delegate?.changedSubscriptionData()
     }
     
     // Configuración de layout
@@ -163,16 +171,16 @@ class SubscriptionViewController: UIViewController {
     private func saveSubscription(name: String?, price: Double?) {
         guard let name = name, !name.isEmpty,
               let price = price, let date = selectedDate else {
-            // Mostrar alerta si los datos no son válidos
             Utility.showSimpleAlert(on: self, title: nil, message: "Please fill in all details.", completion: {})
             return
         }
         
         let subscription = Subscription(id: UUID(),logoName:name, name: name, price: price, nextPaymentDate: date, period: selectedPeriod)
-        
         SubscriptionManager.shared.save(subscription)
+        delegate?.changedSubscriptionData()
+
     }
-    
+
     // Método para mostrar alertas de error
     private func showErrorAlert(message: String) {
         let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)

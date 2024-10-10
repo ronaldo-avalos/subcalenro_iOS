@@ -17,19 +17,9 @@ class CalendarViewController: UIViewController {
     private var floatingBar: OptionsFloatingBarView!
     var calendarHeight: CGFloat = 0
     var lastCalendarHeight: CGFloat = 500
-    var bottomContainer = BottomContainer()
+    var bottomContainer : BottomContainer!
     private var subscriptions: [(Date, Subscription)] = []
-
-    let buttonToday: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Today", for: .normal)
-        button.setTitleColor(ThemeManager.color(for: .secondaryText), for: .normal)
-        button.backgroundColor =  ThemeManager.color(for: .secondaryBackground)
-        button.layer.cornerRadius = 17
-        button.titleLabel?.font = UIFont(name: "SFProRounded-Semibold", size: 14)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private var subscriptionVC = SubscriptionViewController()
     
     let detailEvenstIcon = UIImage(systemName: "rectangle.grid.1x2")?.withTintColor(.label, renderingMode: .alwaysOriginal)
     let compactEventsIcon = UIImage(systemName: "ellipsis.rectangle")?.withTintColor(.label, renderingMode: .alwaysOriginal)
@@ -56,8 +46,9 @@ class CalendarViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
+        subscriptionVC.delegate = self
         setupViews()
+        reloadCalendar()
         calendarDataSource?.didCellFor = { (date: Date, cell: CalendarViewCell) in
             self.setupCell(cell: cell, date: date)
         }
@@ -81,8 +72,6 @@ class CalendarViewController: UIViewController {
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)
-        calendarDataSource?.set(subs: subscriptions)
-        print(subscriptions)
         applyTheme()
         
     }
@@ -95,10 +84,15 @@ class CalendarViewController: UIViewController {
     
     // MARK: - Calendar Selection Handling
     private func handleDateSelection(date: Date, cell: CalendarViewCell) {
-        if date == self.dateTapped {
-  //OPEN NEW EVENT
+        let subs = subscriptions.filter{ Calendar.current.isDate($0.0, inSameDayAs: date) }
+        print("SubSeleted \(subs)")
+        if subs.count > 0 {
+            let selectedSubs = SubscriptionManager.shared.readByIds(subs.map({return $0.1.id}))
+            print("SubSeleted \(selectedSubs)")
+            bottomContainer.loadSubscriptions(selectedSubs)
+            
         } else {
-            self.dateTapped = date
+            bottomContainer.loadSubscriptions([])
         }
         setupCell(cell: cell, date: date)
     }
@@ -125,11 +119,11 @@ class CalendarViewController: UIViewController {
         if let currentPageDate = Calendar.current.date(from: currentPageComponents),
            let todayDate = Calendar.current.date(from: todayComponents) {
             if currentPageDate > todayDate {
-                showTodayButton(false, .up)
+//                showTodayButton(false, .up)
             } else if currentPageDate == todayDate {
-               showTodayButton(true, .up)
+//               showTodayButton(true, .up)
             } else {
-                showTodayButton(false, .down)
+//                showTodayButton(false, .down)
             }
         }
     }
@@ -180,30 +174,20 @@ class CalendarViewController: UIViewController {
         toggleEvents.setImage(self.detailEvenstIcon, for: .normal)
         toggleEvents.menu = menu
         toggleEvents.showsMenuAsPrimaryAction = true
-        buttonToday.isHidden = true
-        buttonToday.addAction(UIAction(handler: { [weak self] _ in
-            self?.calendarView.setCurrentPage(Date(), animated: true)
-        }), for: .touchUpInside)
         
-        bottomContainer.frame =  CGRect(x: 0, y: calendarView.frame.maxY, width: view.frame.width, height: 200)
-
         
         floatingBar = OptionsFloatingBarView()
         floatingBar.delegate = self
         floatingBar.translatesAutoresizingMaskIntoConstraints = false
         let floatingBarWidth: CGFloat = Utility.isIpad ? 320 : 220
         let floatingBarHeight: CGFloat = Utility.isIpad ? 65 : 55
-        
-        let exampleSubscriptions = [
-            Subscription(id: UUID(), logoName: "Spotify", name: "Spotify", price: 199.00, nextPaymentDate: Date(), period: .monthly),
-            Subscription(id: UUID(), logoName: "Chatgpt", name: "Chatgpt", price: 999.00, nextPaymentDate: Date(), period: .yearly)
-        ]
-
-        bottomContainer.loadSubscriptions(exampleSubscriptions)
-        bottomContainer.tableView.separatorStyle = .none
-        bottomContainer.tableView.backgroundColor = ThemeManager.color(for: .primaryBackground)
     
-        let views = [calendarView,toggleEvents,profileImage,bottomContainer,buttonToday]
+        bottomContainer = BottomContainer(frame: CGRect(x: 0, y: calendarView.frame.maxY, width: view.frame.width, height: 600))
+        bottomContainer.tableView.separatorStyle = .none
+        bottomContainer.tableView.backgroundColor = .clear
+    
+        
+        let views = [calendarView,toggleEvents,profileImage,bottomContainer!]
         views.forEach(view.addSubview(_:))
         view.addSubview(floatingBar)
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
@@ -221,27 +205,32 @@ class CalendarViewController: UIViewController {
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             floatingBar.widthAnchor.constraint(equalToConstant: floatingBarWidth),
             floatingBar.heightAnchor.constraint(equalToConstant: floatingBarHeight),
-            
-            buttonToday.bottomAnchor.constraint(equalTo: floatingBar.topAnchor, constant: -6),
-            buttonToday.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonToday.widthAnchor.constraint(equalToConstant: 78),
-            buttonToday.heightAnchor.constraint(equalToConstant: 34),
+
         ])
-    }
-    
- 
-    
-    func showTodayButton(_ isHidden: Bool,_ imagePosition : TodayImageToggle) {
-        buttonToday.isHidden = isHidden
-        let imageButton: UIImage = switch imagePosition {
-        case .up:
-            UIImage(systemName: "chevron.up")?.withTintColor(ThemeManager.color(for: .secondaryText), renderingMode: .alwaysOriginal) ?? UIImage()
-        case .down:
-            UIImage(systemName: "chevron.down")?.withTintColor(ThemeManager.color(for: .secondaryText), renderingMode: .alwaysOriginal) ?? UIImage()
-        }
-        buttonToday.setImage(imageButton, for: .normal)
         
+        bottomContainer.deleteSub = { id in
+            SubscriptionManager.shared.deleteById(id)
+            self.reloadCalendar()
+        }
+        bottomContainer.editSub = { id in
+            let nc = UINavigationController(rootViewController: self.subscriptionVC)
+            self.subscriptionVC.subId = id
+            self.present(nc, animated: true)
+        }
     }
+    
+    
+    private func reloadCalendar() {
+        subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
+        calendarDataSource?.set(subs: subscriptions)
+    }
+}
+
+extension CalendarViewController: SubscriptionViewDelegate {
+    func changedSubscriptionData() {
+        self.reloadCalendar()
+    }
+    
 }
 
 
@@ -257,8 +246,7 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func newEventButtonTapped() {
-        let vc = SubscriptionViewController()
-        let nc = UINavigationController(rootViewController: vc)
+        let nc = UINavigationController(rootViewController: subscriptionVC)
         self.present(nc, animated: true)
     }
     
@@ -267,14 +255,4 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
         let nc = UINavigationController(rootViewController: vc)
         self.present(nc, animated: true)
     }
-}
-
-
-enum TodayImageToggle {
-    case up
-    case down
-}
-enum TypeEventView {
-    case compact
-    case detail
 }

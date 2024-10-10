@@ -27,7 +27,7 @@ class SubscriptionCell: UITableViewCell {
     }
     
     func setupCell() {
-        
+        contentView.backgroundColor = ThemeManager.color(for: .primaryBackground)
         // Configuración del logo
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.contentMode = .center
@@ -66,7 +66,7 @@ class SubscriptionCell: UITableViewCell {
         contentCellView.translatesAutoresizingMaskIntoConstraints = false
         contentCellView.clipsToBounds = true
         contentCellView.layer.cornerRadius = 12
-        contentCellView.backgroundColor = .systemGray6.withAlphaComponent(0.5)
+        contentCellView.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
         contentView.addSubview(contentCellView)
         
         NSLayoutConstraint.activate([
@@ -103,8 +103,6 @@ class SubscriptionCell: UITableViewCell {
         logoImageView.image = UIImage(named: subscription.logoName)
         titleLabel.text = subscription.name
         priceLabel.text = String(format: "$%.2f", subscription.price)
-        
-        // Configurar el periodo
         periodLabel.text = subscription.period.rawValue
         
         // Configurar el recordatorio (ejemplo: puedes calcular el tiempo restante para el próximo pago)
