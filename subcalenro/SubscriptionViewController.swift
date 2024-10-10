@@ -65,6 +65,11 @@ class SubscriptionViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.systemBackground
         setupLayout()
+    
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         print(subId ?? "does not exist ID")
     }
     

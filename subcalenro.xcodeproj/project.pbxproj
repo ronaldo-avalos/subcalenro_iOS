@@ -13,6 +13,7 @@
 		D310DE242CB37663008A6F39 /* SubscriptionsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */; };
 		D310DE262CB38C25008A6F39 /* SubViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE252CB38C25008A6F39 /* SubViewBuilder.swift */; };
 		D351D99B2CB762D6005B4CF0 /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351D99A2CB762D6005B4CF0 /* SubscriptionCell.swift */; };
+		D375081F2CB856E300FDFBB4 /* CustomFSCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D375081E2CB856E300FDFBB4 /* CustomFSCalendar.swift */; };
 		D387D1522CAFA0BF00F0BCD6 /* CalendarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */; };
 		D387D1542CAFA0CC00F0BCD6 /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */; };
 		D387D1562CAFA10F00F0BCD6 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */; };
@@ -60,6 +61,7 @@
 		D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsLoader.swift; sourceTree = "<group>"; };
 		D310DE252CB38C25008A6F39 /* SubViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubViewBuilder.swift; sourceTree = "<group>"; };
 		D351D99A2CB762D6005B4CF0 /* SubscriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCell.swift; sourceTree = "<group>"; };
+		D375081E2CB856E300FDFBB4 /* CustomFSCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFSCalendar.swift; sourceTree = "<group>"; };
 		D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDelegate.swift; sourceTree = "<group>"; };
 		D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
 		D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */,
 				D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */,
 				D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */,
+				D375081E2CB856E300FDFBB4 /* CustomFSCalendar.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 				D387D1922CAFA50700F0BCD6 /* AppearanceViewController.swift in Sources */,
 				D310DE242CB37663008A6F39 /* SubscriptionsLoader.swift in Sources */,
 				D3B649752CAE3B1000ADD119 /* subcalenro.xcdatamodeld in Sources */,
+				D375081F2CB856E300FDFBB4 /* CustomFSCalendar.swift in Sources */,
 				D3B649762CAE3B1000ADD119 /* CalendarViewController.swift in Sources */,
 				D387D1882CAFA37700F0BCD6 /* OptionsFloatingBarView.swift in Sources */,
 				D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */,

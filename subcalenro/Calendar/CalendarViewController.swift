@@ -9,7 +9,7 @@ import UIKit
 import FSCalendar
 
 class CalendarViewController: UIViewController {
-    private var calendarView = FSCalendar()
+    private var calendarView : FSCalendar!
     private var calendarDataSource: CalendarDataSource?
     private var calendarDelegate: CalendarDelegate?
     private var lastTapDate: Date?
@@ -131,36 +131,11 @@ class CalendarViewController: UIViewController {
     // MARK: - Setup Views
     private func setupViews() {
         let calendarHeight : CGFloat = Utility.isIphoneWithSmallScreen() ? 450 : Utility.isIpad ? 700 : 500
-        calendarView.frame = CGRect(x: 0, y:44, width: view.frame.width, height: calendarHeight)
-        calendarView.register(CalendarViewCell.self, forCellReuseIdentifier: "cell")
-        calendarView.scrollDirection = .vertical
-        calendarView.pagingEnabled = true
-        calendarView.appearance.selectionColor = .clear
-        calendarView.appearance.todayColor = .clear
-        calendarView.appearance.titleDefaultColor = .clear
-        calendarView.appearance.headerSeparatorColor = .clear
-        calendarView.appearance.separators = .none
-        calendarView.appearance.headerTitleFont = UIFont(name: "SFProRounded-Regular", size: 30)
-        calendarView.appearance.headerTitleAlignment = .left
-        calendarView.appearance.headerTitleOffset = CGPoint(x: 12, y: 0)
-        calendarView.appearance.headerDateFormat = "MMMM"
-        calendarView.appearance.headerTitleColor = ThemeManager.color(for: .primaryText)
-        calendarView.appearance.titleSelectionColor = .clear
-        calendarView.weekdayHeight = 12
-        calendarView.appearance.weekdayTextColor =  ThemeManager.color(for: .primaryText)
-        calendarView.appearance.caseOptions = .weekdayUsesSingleUpperCase
-        calendarView.appearance.weekdayFont = UIFont(name: "SFProDisplay-Medium", size: 10)
-        calendarView.appearance.titlePlaceholderColor = .clear
-        calendarView.placeholderType = .fillHeadTail
-        calendarView.adjustsBoundingRectWhenChangingMonths = true
-        calendarView.rowHeight = 40
-        calendarView.allowsMultipleSelection = false
-        calendarView.today = nil
-        calendarView.firstWeekday = UInt(PreferencesManager.shared.firstWeekday)
+        calendarView = CustomFSCalendar(frame: CGRect(x: 0, y:44, width: view.frame.width, height: calendarHeight))
         calendarDelegate = CalendarDelegate()
-        calendarDataSource = CalendarDataSource(calendar: calendarView)
-        calendarView.dataSource = calendarDataSource
-        calendarView.delegate = calendarDelegate
+        calendarDataSource = CalendarDataSource(calendar: calendarView ?? FSCalendar())
+        calendarView?.dataSource = calendarDataSource
+        calendarView?.delegate = calendarDelegate
         
         let menu = UIMenu(title: "", children: [
             UIAction(title: "Compact", image: compactEventsIcon, handler: { [self] _ in
@@ -187,7 +162,7 @@ class CalendarViewController: UIViewController {
         bottomContainer.tableView.backgroundColor = .clear
     
         
-        let views = [calendarView,toggleEvents,profileImage,bottomContainer!]
+        let views = [calendarView!,toggleEvents,profileImage,bottomContainer!]
         views.forEach(view.addSubview(_:))
         view.addSubview(floatingBar)
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
@@ -223,6 +198,7 @@ class CalendarViewController: UIViewController {
     private func reloadCalendar() {
         subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
         calendarDataSource?.set(subs: subscriptions)
+        print("Reload Calendar")
     }
 }
 
@@ -246,6 +222,7 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func newEventButtonTapped() {
+        self.subscriptionVC.subId = nil
         let nc = UINavigationController(rootViewController: subscriptionVC)
         self.present(nc, animated: true)
     }
