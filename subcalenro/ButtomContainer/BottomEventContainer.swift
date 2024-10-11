@@ -33,8 +33,8 @@ class BottomContainer: UIView {
         topBorder.translatesAutoresizingMaskIntoConstraints = false
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.text = "23 Octubre, 2024"
         dateLabel.font = UIFont(name: "SFProRounded-Semibold", size: 16)
+        setDateLabel(Date())
         
         thereNotSubLabel.translatesAutoresizingMaskIntoConstraints = false
         thereNotSubLabel.text = "No renewal on this day"
@@ -158,6 +158,16 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }
+    
+    func setDateLabel(_ date: Date) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMMM, yyyy"
+        dateFormatter.locale = Locale.current
+        let formattedDate = dateFormatter.string(from: date)
+        dateLabel.text = formattedDate
+        layoutIfNeeded()
+    }
+
     
     
     // MARK: - Métodos para manejar la edición y eliminación

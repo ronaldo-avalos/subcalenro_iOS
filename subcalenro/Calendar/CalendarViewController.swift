@@ -84,13 +84,11 @@ class CalendarViewController: UIViewController {
     
     // MARK: - Calendar Selection Handling
     private func handleDateSelection(date: Date, cell: CalendarViewCell) {
+        bottomContainer.setDateLabel(date)
         let subs = subscriptions.filter{ Calendar.current.isDate($0.0, inSameDayAs: date) }
-        print("SubSeleted \(subs)")
         if subs.count > 0 {
             let selectedSubs = SubscriptionManager.shared.readByIds(subs.map({return $0.1.id}))
-            print("SubSeleted \(selectedSubs)")
             bottomContainer.loadSubscriptions(selectedSubs)
-            
         } else {
             bottomContainer.loadSubscriptions([])
         }
