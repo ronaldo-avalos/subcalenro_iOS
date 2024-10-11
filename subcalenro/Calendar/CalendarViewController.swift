@@ -184,13 +184,16 @@ class CalendarViewController: UIViewController {
         ])
         
         bottomContainer.deleteSub = { id in
-            SubscriptionManager.shared.deleteById(id)
-            if let sub = self.subscriptions.first(where: { $0.1.id == id })?.1 {
-                NotificationManager.shared.cancelNotifications(for: sub)
-            } else {
-                print("No se encontró la suscripción con el ID: \(id)")
+            Utility.showDeleteConfirmationAlert(on: self, title: "Delete", message: "¿Are you sure you want to delete this subscription?") {
+                SubscriptionManager.shared.deleteById(id)
+                if let sub = self.subscriptions.first(where: { $0.1.id == id })?.1 {
+                    NotificationManager.shared.cancelNotifications(for: sub)
+                } else {
+                    print("No se encontró la suscripción con el ID: \(id)")
+                }
+                self.reloadCalendar()
+                self.bottomContainer.loadSubscriptions(self.subscriptions.map({return $0.1}))
             }
-            self.reloadCalendar()
         }
 
         bottomContainer.editSub = { id in
@@ -206,7 +209,6 @@ class CalendarViewController: UIViewController {
         subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
         calendarDataSource?.set(subs: subscriptions)
         print("Reload Calendar")
-        
     }
 
 }

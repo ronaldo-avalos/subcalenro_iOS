@@ -162,10 +162,8 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - Métodos para manejar la edición y eliminación
     private func deleteSubscription(at indexPath: IndexPath) {
-         let  sub =  subscriptions[indexPath.row]
-        deleteSub?(sub.id)
-        subscriptions.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .automatic)
+            let sub =  self.subscriptions[indexPath.row]
+            self.deleteSub?(sub.id)
     }
 
     private func editSubscription(at indexPath: IndexPath) {
