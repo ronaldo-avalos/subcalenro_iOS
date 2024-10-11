@@ -186,7 +186,7 @@ class CalendarViewController: UIViewController {
         bottomContainer.deleteSub = { id in
             SubscriptionManager.shared.deleteById(id)
             if let sub = self.subscriptions.first(where: { $0.1.id == id })?.1 {
-                NotificationManager.shared.scheduleFirstTenNotifications(for: sub)
+                NotificationManager.shared.cancelNotifications(for: sub)
             } else {
                 print("No se encontró la suscripción con el ID: \(id)")
             }

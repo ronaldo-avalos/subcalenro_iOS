@@ -189,7 +189,7 @@ class SubscriptionViewController: UIViewController {
     
     private func scheduleNotificationsForActiveSubscriptions(sub: Subscription) {
             if sub.hasReminder && !sub.isExpired {
-                NotificationManager.shared.scheduleFirstTenNotifications(for: sub)
+                NotificationManager.shared.scheduleNotifications(for: sub)
                 print("Notificaciones programadas para \(sub.name)")
             } else {
                 print("No se programaron notificaciones para \(sub.name) porque no tiene recordatorio activado o ha expirado.")

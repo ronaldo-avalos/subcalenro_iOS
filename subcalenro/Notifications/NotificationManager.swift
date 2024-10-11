@@ -10,9 +10,10 @@ import UserNotifications
 
 class NotificationManager {
     static let shared = NotificationManager()
+    private var calendar = Calendar.current
     
     private init() {}
-
+    
     // Solicitar permisos para enviar notificaciones
     func requestNotificationPermission() {
         let center = UNUserNotificationCenter.current()
@@ -29,73 +30,73 @@ class NotificationManager {
     }
     
     // Programar las primeras 10 notificaciones para una suscripción
-    func scheduleFirstTenNotifications(for subscription: Subscription) {
+    func scheduleNotifications(for subscription: Subscription) {
         guard subscription.hasReminder, !subscription.isExpired else {
             print("No se puede programar la notificación porque la suscripción ha expirado o no tiene recordatorio")
             return
         }
-        
+        calendar.timeZone = TimeZone.current
         var nextPaymentDate = subscription.nextPaymentDate
         
-        // Programar las primeras 10 notificaciones
-        for i in 1...10 {
-            guard let triggerDateComponents = calculateTriggerDate(for: subscription, nextPaymentDate: nextPaymentDate) else {
-                print("No se pudo calcular la fecha de activación de la notificación para el ciclo \(i)")
-                continue
-            }
-            
-            let content = UNMutableNotificationContent()
-            content.title = "Recordatorio"
-            content.body = "El siguiente pago de \(subscription.name) es pronto."
-            content.sound = .default
-            
-            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
-            
-            // Crear una solicitud de notificación con identificador único para cada ciclo
-            let request = UNNotificationRequest(identifier: "\(subscription.id.uuidString)_\(i)", content: content, trigger: trigger)
-            
-            // Añadir la notificación
-            UNUserNotificationCenter.current().add(request) { error in
-                if let error = error {
-                    print("Error al programar la notificación \(i): \(error.localizedDescription)")
-                } else {
-                    print("Notificación \(i) programada para \(subscription.name)")
+        var notificationCounter = 0
+        var notificationDates: [Date] = []
+        let endDate = calendar.date(byAdding: .year, value: 2, to: nextPaymentDate) ?? Date()
+        
+        if calendar.startOfDay(for: nextPaymentDate) > calendar.startOfDay(for: Date()) {
+            if let day = calendar.date(byAdding: .day, value: -1, to: nextPaymentDate) {
+                var components = calendar.dateComponents([.year, .month, .day], from: day)
+                components.hour = 12
+                components.minute = 0
+                
+                if let nextDateAtNoon = calendar.date(from: components) {
+                    self.scheduleNotification(nextDateAtNoon, subscription, notificationCounter: notificationCounter)
                 }
             }
-            
-            // Calcular la siguiente fecha de pago en función del periodo
+        }
+        
+        while calendar.startOfDay(for: nextPaymentDate) <= calendar.startOfDay(for: endDate) {
             nextPaymentDate = calculateNextPaymentDate(from: nextPaymentDate, period: subscription.period)
+            let notificationDate = calendar.startOfDay(for: nextPaymentDate)
+            
+            if notificationDate >= calendar.startOfDay(for: Date()) {
+                notificationDates.append(notificationDate)
+                
+                if let notificationTriggerDate = calendar.date(byAdding: .hour, value: -12, to: notificationDate) {
+                    self.scheduleNotification(notificationTriggerDate, subscription, notificationCounter: notificationCounter)
+                    if notificationCounter >= 20 {
+                        break
+                    }
+                }
+                
+                notificationCounter += 1
+            }
         }
     }
     
-    // Calcular la fecha de activación de la notificación
-    private func calculateTriggerDate(for subscription: Subscription, nextPaymentDate: Date) -> DateComponents? {
-        let calendar = Calendar.current
+    // Programar notificación individual
+    private func scheduleNotification(_ notificationTriggerDate: Date, _ sub: Subscription, notificationCounter: Int) {
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.title = "Recordatorio!"
+        notificationContent.body = "Tienes un proximo pago de \(sub.name)"
+        notificationContent.sound = .default
         
-        // Restar los días seleccionados (reminderTime) de la fecha del siguiente pago
-        var reminderDate: Date?
+        let calendarComponents = calendar.dateComponents([.month, .day, .year, .hour, .minute, .second], from: notificationTriggerDate)
+        let notificationTrigger = UNCalendarNotificationTrigger(dateMatching: calendarComponents, repeats: false)
         
-        switch subscription.reminderTime {
-        case .sameDay:
-            reminderDate = nextPaymentDate
-        case .oneDayBefore:
-            reminderDate = calendar.date(byAdding: .day, value: -1, to: nextPaymentDate)
-        case .threeDaysBefore:
-            reminderDate = calendar.date(byAdding: .day, value: -3, to: nextPaymentDate)
-        case .oneWeekBefore:
-            reminderDate = calendar.date(byAdding: .day, value: -7, to: nextPaymentDate)
-        case .none:
-            return nil
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYYMMdd"
+        let formattedDate = dateFormatter.string(from: notificationTriggerDate)
+        
+        // Asegurar un identificador único usando el contador
+        let notificationRequest = UNNotificationRequest(identifier: "\(sub.id)_\(formattedDate)_\(notificationCounter)", content: notificationContent, trigger: notificationTrigger)
+        
+        UNUserNotificationCenter.current().add(notificationRequest) { error in
+            guard error == nil else {
+                 print("Error Notification schedule \(String(describing: error))")
+                return
+            }
+            print("Notification scheduled for \(sub.name) on date = \(notificationTriggerDate)")
         }
-        
-        guard let finalReminderDate = reminderDate else {
-            return nil
-        }
-        
-        // Crear los componentes de fecha necesarios para el trigger
-        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: finalReminderDate)
-        
-        return components
     }
     
     // Calcular la siguiente fecha de pago según el periodo de la suscripción
@@ -119,7 +120,8 @@ class NotificationManager {
     
     // Cancelar notificaciones para una suscripción específica
     func cancelNotifications(for subscription: Subscription) {
-        let identifiers = (1...10).map { "\(subscription.id.uuidString)_\($0)" }
+        // Elimina las notificaciones utilizando un patrón que incluya el ID de la suscripción
+        let identifiers = (0...20).map { "\(subscription.id)_\($0)" }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
         print("Notificaciones canceladas para \(subscription.name)")
     }
