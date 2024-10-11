@@ -65,7 +65,7 @@ class SubscriptionViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.systemBackground
         setupLayout()
-    
+        NotificationManager.shared.requestNotificationPermission()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,7 +134,7 @@ class SubscriptionViewController: UIViewController {
     // Menú para seleccionar el periodo de suscripción
     @objc private func showPeriodMenu() {
         let menuItems = SubscriptionPeriod.allCases.map { period in
-            UIAction(title: period.rawValue) { [weak self] _ in
+            UIAction(title: period.name) { [weak self] _ in
                 self?.selectedPeriod = period
             }
         }
@@ -180,10 +180,20 @@ class SubscriptionViewController: UIViewController {
             return
         }
         
-        let subscription = Subscription(id: UUID(),logoName:name, name: name, price: price, nextPaymentDate: date, period: selectedPeriod)
+        let subscription = Subscription(id: UUID(), logoUrl: name, name: name, price: price, nextPaymentDate: date, period: selectedPeriod, reminderTime: .oneDayBefore)
         SubscriptionManager.shared.save(subscription)
+        scheduleNotificationsForActiveSubscriptions(sub: subscription)
         delegate?.changedSubscriptionData()
-
+        self.dismiss(animated: true)
+    }
+    
+    private func scheduleNotificationsForActiveSubscriptions(sub: Subscription) {
+            if sub.hasReminder && !sub.isExpired {
+                NotificationManager.shared.scheduleNotifications(for: sub)
+                print("Notificaciones programadas para \(sub.name)")
+            } else {
+                print("No se programaron notificaciones para \(sub.name) porque no tiene recordatorio activado o ha expirado.")
+            }
     }
 
     // Método para mostrar alertas de error

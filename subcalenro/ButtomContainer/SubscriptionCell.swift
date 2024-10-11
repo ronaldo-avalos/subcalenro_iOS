@@ -100,16 +100,15 @@ class SubscriptionCell: UITableViewCell {
     }
     
     func configure(with subscription: Subscription) {
-        logoImageView.image = UIImage(named: subscription.logoName)
+        logoImageView.image = UIImage(named: subscription.logoUrl)
         titleLabel.text = subscription.name
         priceLabel.text = String(format: "$%.2f", subscription.price)
-        periodLabel.text = subscription.period.rawValue
+        periodLabel.text = subscription.period.name
         
         // Configurar el recordatorio (ejemplo: puedes calcular el tiempo restante para el próximo pago)
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
-        let nextPaymentText = "Next: " + dateFormatter.string(from: subscription.nextPaymentDate)
-        reminderLabel.text = nextPaymentText
+        reminderLabel.text = subscription.reminderTime.name
         
         // Configuración del color de estado
         statusIndicatorView.backgroundColor = .systemGreen // Cambia según tu lógica
