@@ -143,16 +143,16 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
             self?.deleteSubscription(at: indexPath)
             completionHandler(true)
         }
-        deleteAction.image = UIImage(systemName: "trash")
-        deleteAction.backgroundColor = .systemRed.withAlphaComponent(0.3)
+        deleteAction.image = UIImage(systemName: "trash")?.withTintColor(.red, renderingMode: .alwaysOriginal)
+        deleteAction.backgroundColor = ThemeManager.color(for: .primaryBackground)
         
         // Acción para editar la suscripción
         let editAction = UIContextualAction(style: .normal, title: "Edit") { [weak self] (_, _, completionHandler) in
             self?.editSubscription(at: indexPath)
             completionHandler(true)
         }
-        editAction.image = UIImage(systemName: "pencil")
-        editAction.backgroundColor = .systemBlue.withAlphaComponent(0.3)
+        editAction.image = UIImage(systemName: "pencil")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        editAction.backgroundColor = ThemeManager.color(for: .primaryBackground)
         
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         configuration.performsFirstActionWithFullSwipe = false

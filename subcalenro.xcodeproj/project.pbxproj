@@ -14,6 +14,7 @@
 		D310DE262CB38C25008A6F39 /* SubViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE252CB38C25008A6F39 /* SubViewBuilder.swift */; };
 		D351D99B2CB762D6005B4CF0 /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351D99A2CB762D6005B4CF0 /* SubscriptionCell.swift */; };
 		D375081F2CB856E300FDFBB4 /* CustomFSCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D375081E2CB856E300FDFBB4 /* CustomFSCalendar.swift */; };
+		D37508222CB8953300FDFBB4 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37508212CB8953300FDFBB4 /* NotificationManager.swift */; };
 		D387D1522CAFA0BF00F0BCD6 /* CalendarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */; };
 		D387D1542CAFA0CC00F0BCD6 /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */; };
 		D387D1562CAFA10F00F0BCD6 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */; };
@@ -62,6 +63,7 @@
 		D310DE252CB38C25008A6F39 /* SubViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubViewBuilder.swift; sourceTree = "<group>"; };
 		D351D99A2CB762D6005B4CF0 /* SubscriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCell.swift; sourceTree = "<group>"; };
 		D375081E2CB856E300FDFBB4 /* CustomFSCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFSCalendar.swift; sourceTree = "<group>"; };
+		D37508212CB8953300FDFBB4 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDelegate.swift; sourceTree = "<group>"; };
 		D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
 		D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
@@ -129,6 +131,14 @@
 				BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D37508202CB8952500FDFBB4 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				D37508212CB8953300FDFBB4 /* NotificationManager.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		D387D15A2CAFA1C900F0BCD6 /* Managers */ = {
@@ -250,6 +260,7 @@
 		D3B649712CAE3B1000ADD119 /* subcalenro */ = {
 			isa = PBXGroup;
 			children = (
+				D37508202CB8952500FDFBB4 /* Notifications */,
 				D387D1952CAFAAA000F0BCD6 /* ButtomContainer */,
 				D387D1942CAFAA8300F0BCD6 /* OptionButtomBar */,
 				D387D1932CAFAA7300F0BCD6 /* Calendar */,
@@ -408,6 +419,7 @@
 				D3B649732CAE3B1000ADD119 /* AppDelegate.swift in Sources */,
 				D310DE222CB34184008A6F39 /* Subscription.swift in Sources */,
 				D387D1832CAFA1D200F0BCD6 /* Utility.swift in Sources */,
+				D37508222CB8953300FDFBB4 /* NotificationManager.swift in Sources */,
 				D387D1842CAFA1D200F0BCD6 /* PreferencesManager.swift in Sources */,
 				D387D1972CB0A70A00F0BCD6 /* SubscriptionViewController.swift in Sources */,
 				D387D16E2CAFA1C900F0BCD6 /* ThemeManager.swift in Sources */,

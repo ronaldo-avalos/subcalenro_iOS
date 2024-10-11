@@ -185,8 +185,14 @@ class CalendarViewController: UIViewController {
         
         bottomContainer.deleteSub = { id in
             SubscriptionManager.shared.deleteById(id)
+            if let sub = self.subscriptions.first(where: { $0.1.id == id })?.1 {
+                NotificationManager.shared.scheduleFirstTenNotifications(for: sub)
+            } else {
+                print("No se encontró la suscripción con el ID: \(id)")
+            }
             self.reloadCalendar()
         }
+
         bottomContainer.editSub = { id in
             let nc = UINavigationController(rootViewController: self.subscriptionVC)
             self.subscriptionVC.subId = id
@@ -196,10 +202,13 @@ class CalendarViewController: UIViewController {
     
     
     private func reloadCalendar() {
+        // Cargar las suscripciones
         subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
         calendarDataSource?.set(subs: subscriptions)
         print("Reload Calendar")
+        
     }
+
 }
 
 extension CalendarViewController: SubscriptionViewDelegate {
