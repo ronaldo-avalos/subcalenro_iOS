@@ -1,86 +1,42 @@
 //
-//  bottomEventContainer.swift
+//  SubListViewController.swift
 //  subcalenro
 //
-//  Created by ronaldo avalos on 08/09/24.
+//  Created by ronaldo avalos on 11/10/24.
 //
 
-import Foundation
 import UIKit
 
-class BottomContainer: UIView {
-
-    let topBorder = UIView()
-    let tableView = UITableView()
-    var subscriptions: [Subscription] = []
-    var deleteSub: ((UUID) -> Void)?
-    var editSub: ((UUID) -> Void)?
-    var dateLabel = UILabel()
-    var thereNotSubLabel = UILabel()
+class SubListViewController: UIViewController {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    var tableView = UITableView()
+    var subscriptions: [Subscription] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupView()
     }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
+    
     func setupView() {
-        backgroundColor = ThemeManager.color(for: .primaryBackground)
-        topBorder.backgroundColor = .systemGray4
-        topBorder.translatesAutoresizingMaskIntoConstraints = false
-        
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.font = UIFont(name: "SFProRounded-Semibold", size: 16)
-        setDateLabel(Date())
-        
-        thereNotSubLabel.translatesAutoresizingMaskIntoConstraints = false
-        thereNotSubLabel.text = "No renewal on this day"
-        thereNotSubLabel.font = UIFont(name: "SFProDisplay-Regular", size: 14)
-        thereNotSubLabel.textColor = .tertiaryLabel
-        
+        subscriptions = SubscriptionManager.shared.readAllSubscriptions()
+        tableView.frame = view.bounds
         tableView.register(SubscriptionCell.self, forCellReuseIdentifier: "SubscriptionCell")
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-     
-        addSubview(topBorder)
-        addSubview(tableView)
-        addSubview(dateLabel)
-        addSubview(thereNotSubLabel)
-
-        NSLayoutConstraint.activate([
-            topBorder.topAnchor.constraint(equalTo: topAnchor),
-            topBorder.leadingAnchor.constraint(equalTo: leadingAnchor),
-            topBorder.trailingAnchor.constraint(equalTo: trailingAnchor),
-            topBorder.heightAnchor.constraint(equalToConstant: 0.3),
-            
-            dateLabel.topAnchor.constraint(equalTo: topBorder.bottomAnchor,constant: 14),
-            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            
-            tableView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            thereNotSubLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
-            thereNotSubLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-        
-        ])
+        tableView.separatorStyle = .none
+        view.addSubview(tableView)
     }
+    
 
-    // Método para cargar las suscripciones
-    func loadSubscriptions(_ subscriptions: [Subscription]) {
-        self.subscriptions = subscriptions
-        thereNotSubLabel.isHidden = !subscriptions.isEmpty
-        tableView.isScrollEnabled = subscriptions.count != 1
-        tableView.reloadData()
-    }
+
 }
 
-extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
+
+extension SubListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return  83
@@ -159,29 +115,15 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
         return configuration
     }
     
-    func setDateLabel(_ date: Date) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d MMMM, yyyy"
-        dateFormatter.locale = Locale.current
-        let formattedDate = dateFormatter.string(from: date)
-        dateLabel.text = formattedDate
-        Date.dateSelected = date
-        layoutIfNeeded()
-    }
 
     
     // MARK: - Métodos para manejar la edición y eliminación
     private func deleteSubscription(at indexPath: IndexPath) {
             let sub =  self.subscriptions[indexPath.row]
-            self.deleteSub?(sub.id)
     }
 
     private func editSubscription(at indexPath: IndexPath) {
         let  sub = subscriptions[indexPath.row]
-        editSub?(sub.id)
     }
 
 }
-
-
-

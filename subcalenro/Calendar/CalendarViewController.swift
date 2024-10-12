@@ -234,7 +234,9 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func  subListButtonTapped() {
-        
+        let vc = SubListViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        self.present(nc, animated: true)
     }
     
     func newEventButtonTapped() {
