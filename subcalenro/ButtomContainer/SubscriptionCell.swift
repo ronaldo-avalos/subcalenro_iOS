@@ -71,8 +71,8 @@ class SubscriptionCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             contentCellView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-            contentCellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 6),
-            contentCellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -6),
+            contentCellView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            contentCellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             contentCellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
             
             logoImageView.leadingAnchor.constraint(equalTo: contentCellView.leadingAnchor, constant: 16),

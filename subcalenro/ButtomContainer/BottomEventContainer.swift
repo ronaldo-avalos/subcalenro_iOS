@@ -61,8 +61,8 @@ class BottomContainer: UIView {
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             
             tableView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             thereNotSubLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
