@@ -22,7 +22,7 @@ class SubViewBuilder {
         let eventsToShow = subs.filter { Calendar.current.isDate($0.0, inSameDayAs: date) }.prefix(maxEventsToShow)
         
         eventsToShow.forEach { event in
-            let imageView = UIImageView(image: UIImage(named:event.1.name))
+            let imageView = UIImageView(image: UIImage(named:event.1.logoUrl))
             imageView.layer.cornerRadius = 10
             imageView.clipsToBounds = true
             imageView.layer.masksToBounds = true

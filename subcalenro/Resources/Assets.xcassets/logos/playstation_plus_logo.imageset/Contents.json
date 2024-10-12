@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "playstation_plus_logo.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -19,7 +19,6 @@ class CalendarViewController: UIViewController {
     var lastCalendarHeight: CGFloat = 500
     var bottomContainer : BottomContainer!
     private var subscriptions: [(Date, Subscription)] = []
-    private var subscriptionVC = SubscriptionViewController()
     
     let detailEvenstIcon = UIImage(systemName: "rectangle.grid.1x2")?.withTintColor(.label, renderingMode: .alwaysOriginal)
     let compactEventsIcon = UIImage(systemName: "ellipsis.rectangle")?.withTintColor(.label, renderingMode: .alwaysOriginal)
@@ -46,7 +45,6 @@ class CalendarViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        subscriptionVC.delegate = self
         setupViews()
         reloadCalendar()
         calendarDataSource?.didCellFor = { (date: Date, cell: CalendarViewCell) in
@@ -74,7 +72,18 @@ class CalendarViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)
         applyTheme()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleSaveNewSaub(_:)), name: Notification.Name("SaveNewSubObserver"), object: nil)
     }
+
+    @objc func handleSaveNewSaub(_ notification: Notification) {
+        self.reloadCalendar()
+    }
+    
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     
     // MARK: - Apply Theme
     @objc func applyTheme() {
@@ -109,7 +118,7 @@ class CalendarViewController: UIViewController {
     
     
     // MARK: - Page Change Handling
-    private func handlePageChange(_ calendar: FSCalendar) {
+    private func handlePageChange(_ calendar: FSCalendar) {        
         let currentPageComponents = Calendar.current.dateComponents([.year, .month], from: calendar.currentPage)
         var todayComponents = Calendar.current.dateComponents([.year, .month], from: Date())
         todayComponents.day = 1
@@ -190,13 +199,13 @@ class CalendarViewController: UIViewController {
                     print("No se encontró la suscripción con el ID: \(id)")
                 }
                 self.reloadCalendar()
-                self.bottomContainer.loadSubscriptions(self.subscriptions.map({return $0.1}))
             }
         }
 
         bottomContainer.editSub = { id in
-            let nc = UINavigationController(rootViewController: self.subscriptionVC)
-            self.subscriptionVC.subId = id
+            let vc = SubscriptionViewController()
+            let nc = UINavigationController(rootViewController: vc)
+            vc.subId = id
             self.present(nc, animated: true)
         }
     }
@@ -206,17 +215,15 @@ class CalendarViewController: UIViewController {
         // Cargar las suscripciones
         subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
         calendarDataSource?.set(subs: subscriptions)
+        let subs = subscriptions.filter{ Calendar.current.isDate($0.0, inSameDayAs: Date.dateSelected) }
+        let selectedSubs = SubscriptionManager.shared.readByIds(subs.map({return $0.1.id}))
+        bottomContainer.loadSubscriptions(selectedSubs)
         print("Reload Calendar")
     }
 
 }
 
-extension CalendarViewController: SubscriptionViewDelegate {
-    func changedSubscriptionData() {
-        self.reloadCalendar()
-    }
-    
-}
+
 
 
 // MARK: - OptionsFloatingBarViewDelegate
@@ -231,8 +238,9 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func newEventButtonTapped() {
-        self.subscriptionVC.subId = nil
-        let nc = UINavigationController(rootViewController: subscriptionVC)
+//        self.subscriptionVC.subId = nil
+        let vc = SubscriptionsViewController()
+        let nc = UINavigationController(rootViewController: vc)
         self.present(nc, animated: true)
     }
     
