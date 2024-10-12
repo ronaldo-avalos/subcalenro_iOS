@@ -23,6 +23,12 @@ struct Subscription: Codable {
     var isExpired: Bool {
         return nextPaymentDate < Date()
     }
+    
+    var nextDateFomatter: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: nextPaymentDate)
+    }
 }
 
 enum SubscriptionPeriod: Int, CaseIterable, Codable {

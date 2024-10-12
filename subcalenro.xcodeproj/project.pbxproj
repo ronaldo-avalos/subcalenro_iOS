@@ -16,6 +16,8 @@
 		D375081F2CB856E300FDFBB4 /* CustomFSCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D375081E2CB856E300FDFBB4 /* CustomFSCalendar.swift */; };
 		D37508222CB8953300FDFBB4 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37508212CB8953300FDFBB4 /* NotificationManager.swift */; };
 		D37508242CB91C9000FDFBB4 /* SubscriptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */; };
+		D375084B2CBA210400FDFBB4 /* SubListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D375084A2CBA210400FDFBB4 /* SubListViewController.swift */; };
+		D375084D2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */; };
 		D387D1522CAFA0BF00F0BCD6 /* CalendarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */; };
 		D387D1542CAFA0CC00F0BCD6 /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */; };
 		D387D1562CAFA10F00F0BCD6 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */; };
@@ -45,7 +47,7 @@
 		D387D1902CAFA50700F0BCD6 /* SettingsCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D18D2CAFA50700F0BCD6 /* SettingsCellModel.swift */; };
 		D387D1912CAFA50700F0BCD6 /* SettingsUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D18C2CAFA50700F0BCD6 /* SettingsUITableViewCell.swift */; };
 		D387D1922CAFA50700F0BCD6 /* AppearanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1892CAFA50700F0BCD6 /* AppearanceViewController.swift */; };
-		D387D1972CB0A70A00F0BCD6 /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1962CB0A70A00F0BCD6 /* SubscriptionViewController.swift */; };
+		D387D1972CB0A70A00F0BCD6 /* EditSubcriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1962CB0A70A00F0BCD6 /* EditSubcriptionViewController.swift */; };
 		D3B649732CAE3B1000ADD119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B649672CAE3B1000ADD119 /* AppDelegate.swift */; };
 		D3B649742CAE3B1000ADD119 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B6496E2CAE3B1000ADD119 /* SceneDelegate.swift */; };
 		D3B649752CAE3B1000ADD119 /* subcalenro.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D3B6496F2CAE3B1000ADD119 /* subcalenro.xcdatamodeld */; };
@@ -66,6 +68,8 @@
 		D375081E2CB856E300FDFBB4 /* CustomFSCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFSCalendar.swift; sourceTree = "<group>"; };
 		D37508212CB8953300FDFBB4 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsViewController.swift; sourceTree = "<group>"; };
+		D375084A2CBA210400FDFBB4 /* SubListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubListViewController.swift; sourceTree = "<group>"; };
+		D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSubcriptionViewController.swift; sourceTree = "<group>"; };
 		D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDelegate.swift; sourceTree = "<group>"; };
 		D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
 		D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
@@ -95,7 +99,7 @@
 		D387D18B2CAFA50700F0BCD6 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D387D18C2CAFA50700F0BCD6 /* SettingsUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUITableViewCell.swift; sourceTree = "<group>"; };
 		D387D18D2CAFA50700F0BCD6 /* SettingsCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellModel.swift; sourceTree = "<group>"; };
-		D387D1962CB0A70A00F0BCD6 /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
+		D387D1962CB0A70A00F0BCD6 /* EditSubcriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubcriptionViewController.swift; sourceTree = "<group>"; };
 		D3B6494C2CAE2E4700ADD119 /* subcalenro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = subcalenro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B649672CAE3B1000ADD119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3B649692CAE3B1000ADD119 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -275,12 +279,14 @@
 				D3B649672CAE3B1000ADD119 /* AppDelegate.swift */,
 				D3B6496E2CAE3B1000ADD119 /* SceneDelegate.swift */,
 				D3B6496F2CAE3B1000ADD119 /* subcalenro.xcdatamodeld */,
-				D387D1962CB0A70A00F0BCD6 /* SubscriptionViewController.swift */,
+				D387D1962CB0A70A00F0BCD6 /* EditSubcriptionViewController.swift */,
 				D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */,
 				D310DE212CB34184008A6F39 /* Subscription.swift */,
 				D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */,
 				D310DE252CB38C25008A6F39 /* SubViewBuilder.swift */,
 				D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */,
+				D375084A2CBA210400FDFBB4 /* SubListViewController.swift */,
+				D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */,
 			);
 			path = subcalenro;
 			sourceTree = "<group>";
@@ -425,7 +431,8 @@
 				D387D1832CAFA1D200F0BCD6 /* Utility.swift in Sources */,
 				D37508222CB8953300FDFBB4 /* NotificationManager.swift in Sources */,
 				D387D1842CAFA1D200F0BCD6 /* PreferencesManager.swift in Sources */,
-				D387D1972CB0A70A00F0BCD6 /* SubscriptionViewController.swift in Sources */,
+				D375084B2CBA210400FDFBB4 /* SubListViewController.swift in Sources */,
+				D387D1972CB0A70A00F0BCD6 /* EditSubcriptionViewController.swift in Sources */,
 				D387D16E2CAFA1C900F0BCD6 /* ThemeManager.swift in Sources */,
 				D3B649742CAE3B1000ADD119 /* SceneDelegate.swift in Sources */,
 				D351D99B2CB762D6005B4CF0 /* SubscriptionCell.swift in Sources */,
@@ -435,6 +442,7 @@
 				D387D1912CAFA50700F0BCD6 /* SettingsUITableViewCell.swift in Sources */,
 				D387D1922CAFA50700F0BCD6 /* AppearanceViewController.swift in Sources */,
 				D310DE242CB37663008A6F39 /* SubscriptionsLoader.swift in Sources */,
+				D375084D2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift in Sources */,
 				D3B649752CAE3B1000ADD119 /* subcalenro.xcdatamodeld in Sources */,
 				D375081F2CB856E300FDFBB4 /* CustomFSCalendar.swift in Sources */,
 				D3B649762CAE3B1000ADD119 /* CalendarViewController.swift in Sources */,

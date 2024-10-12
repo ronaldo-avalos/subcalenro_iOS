@@ -15,6 +15,7 @@ class BottomContainer: UIView {
     var subscriptions: [Subscription] = []
     var deleteSub: ((UUID) -> Void)?
     var editSub: ((UUID) -> Void)?
+    var didSelecSub: ((UUID) -> Void)?
     var dateLabel = UILabel()
     var thereNotSubLabel = UILabel()
     
@@ -61,8 +62,8 @@ class BottomContainer: UIView {
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             
             tableView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             thereNotSubLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
@@ -92,6 +93,7 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        didSelecSub?(subscriptions[indexPath.row].id)
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {

@@ -203,10 +203,17 @@ class CalendarViewController: UIViewController {
         }
 
         bottomContainer.editSub = { id in
-            let vc = SubscriptionViewController()
+            let vc = EditSubcriptionViewController()
             let nc = UINavigationController(rootViewController: vc)
             vc.subId = id
             self.present(nc, animated: true)
+        }
+        
+        bottomContainer.didSelecSub = { id in
+            let vc = DetailSubcriptionViewController()
+            let nv = UINavigationController(rootViewController: vc)
+            vc.subId = id
+            self.present(nv, animated: true)
         }
     }
     
@@ -234,7 +241,9 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func  subListButtonTapped() {
-        
+        let vc = SubListViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        self.present(nc, animated: true)
     }
     
     func newEventButtonTapped() {
