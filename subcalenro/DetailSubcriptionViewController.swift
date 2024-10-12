@@ -49,7 +49,7 @@ class DetailSubcriptionViewController: UIViewController {
         imageContainer.addSubview(imageView)
         
         let editImageButton = UIButton(type: .system)
-        editImageButton.setImage(UIImage(systemName: "pencil")?.withTintColor(.label, renderingMode: .automatic), for: .normal)
+        editImageButton.setImage(UIImage(systemName: "pencil")?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
         editImageButton.layer.cornerRadius = 26
         editImageButton.clipsToBounds = true
         editImageButton.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
@@ -82,7 +82,10 @@ class DetailSubcriptionViewController: UIViewController {
             view.addSubview(reminderView)
             view.addSubview(planDetailsView)
             
-            
+            editImageButton.addAction(UIAction(handler: { [weak self] _ in
+                self?.toggleEditMode(button: editImageButton)
+            }), for: .touchUpInside)
+
             // Configurar restricciones
             NSLayoutConstraint.activate([
                 nextBillLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
@@ -128,6 +131,22 @@ class DetailSubcriptionViewController: UIViewController {
                 editImageButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor,constant: -40),
             ])
             
+        }
+    }
+    
+    private func toggleEditMode(button: UIButton) {
+        // Verificamos si ya está en modo "Save"
+        if button.currentImage == UIImage(systemName: "checkmark") {
+            // Regresar al modo de edición
+            UIView.transition(with: button, duration: 0.3, options: .transitionCrossDissolve, animations: {
+                button.setImage(UIImage(systemName: "pencil")?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
+                button.setTitle(nil, for: .normal)
+            }, completion: nil)
+        } else {
+            // Cambiar al modo "Save"
+            UIView.transition(with: button, duration: 0.3, options: .transitionCrossDissolve, animations: {
+                button.setImage(UIImage(systemName: "checkmark")?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
+            }, completion: nil)
         }
     }
     
