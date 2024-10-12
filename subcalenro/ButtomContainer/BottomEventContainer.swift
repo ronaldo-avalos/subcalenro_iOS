@@ -61,8 +61,8 @@ class BottomContainer: UIView {
             dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             
             tableView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 14),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             thereNotSubLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
@@ -143,7 +143,7 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
             self?.deleteSubscription(at: indexPath)
             completionHandler(true)
         }
-        deleteAction.image = UIImage(systemName: "trash")?.withTintColor(.red, renderingMode: .alwaysOriginal)
+        deleteAction.image = UIImage(systemName: "trash")?.withTintColor(.label, renderingMode: .alwaysOriginal)
         deleteAction.backgroundColor = ThemeManager.color(for: .primaryBackground)
         
         // Acción para editar la suscripción
@@ -165,10 +165,10 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
         dateFormatter.locale = Locale.current
         let formattedDate = dateFormatter.string(from: date)
         dateLabel.text = formattedDate
+        Date.dateSelected = date
         layoutIfNeeded()
     }
 
-    
     
     // MARK: - Métodos para manejar la edición y eliminación
     private func deleteSubscription(at indexPath: IndexPath) {

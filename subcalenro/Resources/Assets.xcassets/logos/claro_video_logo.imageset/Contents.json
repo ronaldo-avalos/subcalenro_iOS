@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "claro_video_logo.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

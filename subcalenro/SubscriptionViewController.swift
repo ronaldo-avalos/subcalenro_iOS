@@ -8,14 +8,11 @@
 import Foundation
 import UIKit
 
-protocol SubscriptionViewDelegate: AnyObject {
-    func changedSubscriptionData()
-}
-
 class SubscriptionViewController: UIViewController {
     
-    weak var delegate: SubscriptionViewDelegate?
-    var subId: UUID?
+    public var subId: UUID?
+    public var subName: String?
+    public var subImage: String?
     // Botón para seleccionar el periodo
     private let periodButton: UIButton = {
         let button = UIButton(type: .system)
@@ -68,15 +65,6 @@ class SubscriptionViewController: UIViewController {
         NotificationManager.shared.requestNotificationPermission()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        print(subId ?? "does not exist ID")
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        delegate?.changedSubscriptionData()
-    }
     
     // Configuración de layout
     private func setupLayout() {
@@ -88,6 +76,9 @@ class SubscriptionViewController: UIViewController {
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         nameTextField.placeholder = "Name"
         nameTextField.backgroundColor = .systemGray4
+        if let text = subName {
+            nameTextField.text = text
+        }
         view.addSubview(nameTextField)
         
         let priceTextField = UITextField()
@@ -151,6 +142,7 @@ class SubscriptionViewController: UIViewController {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .wheels
+        datePicker.date = Date.dateSelected
         
         alertController.view.addSubview(datePicker)
         
@@ -180,10 +172,10 @@ class SubscriptionViewController: UIViewController {
             return
         }
         
-        let subscription = Subscription(id: UUID(), logoUrl: name, name: name, price: price, nextPaymentDate: date, period: selectedPeriod, reminderTime: .oneDayBefore)
+        let subscription = Subscription(id: UUID(), logoUrl: subImage ?? name, name: name, price: price, nextPaymentDate: date, period: selectedPeriod, reminderTime: .oneDayBefore)
         SubscriptionManager.shared.save(subscription)
         scheduleNotificationsForActiveSubscriptions(sub: subscription)
-        delegate?.changedSubscriptionData()
+        NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
         self.dismiss(animated: true)
     }
     
@@ -202,4 +194,10 @@ class SubscriptionViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
+}
+
+
+
+extension Date {
+    static var dateSelected = Date()
 }
