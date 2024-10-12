@@ -15,6 +15,7 @@ class BottomContainer: UIView {
     var subscriptions: [Subscription] = []
     var deleteSub: ((UUID) -> Void)?
     var editSub: ((UUID) -> Void)?
+    var didSelecSub: ((UUID) -> Void)?
     var dateLabel = UILabel()
     var thereNotSubLabel = UILabel()
     
@@ -92,6 +93,7 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        didSelecSub?(subscriptions[indexPath.row].id)
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {

@@ -183,9 +183,8 @@ extension SubscriptionsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedSubscription = subscriptions[indexPath.row]
         let subImage = logos[indexPath.row]
-        let vc = SubscriptionViewController()
-        vc.subName = selectedSubscription
-        vc.subImage = subImage
+        let vc = EditSubcriptionViewController()
+        vc.imgURL = subImage
         self.navigationController?.pushViewController(vc, animated: true)
         print("Seleccionaste: \(selectedSubscription)")
         

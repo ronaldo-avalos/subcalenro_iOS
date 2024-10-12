@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-class SubscriptionViewController: UIViewController {
+class EditSubcriptionViewController: UIViewController {
     
-    public var subId: UUID?
-    public var subName: String?
-    public var subImage: String?
+     var subId: UUID?
+    var imgURL: String?
+    private var subscription: Subscription?
     // Botón para seleccionar el periodo
     private let periodButton: UIButton = {
         let button = UIButton(type: .system)
@@ -71,14 +71,13 @@ class SubscriptionViewController: UIViewController {
         periodButton.addTarget(self, action: #selector(showPeriodMenu), for: .touchUpInside)
         dateButton.addTarget(self, action: #selector(showDatePicker), for: .touchUpInside)
      
+        self.navigationController?.navigationBar.tintColor = ThemeManager.color(for: .primaryText)
+        
         // TextFields
         let nameTextField = UITextField()
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         nameTextField.placeholder = "Name"
         nameTextField.backgroundColor = .systemGray4
-        if let text = subName {
-            nameTextField.text = text
-        }
         view.addSubview(nameTextField)
         
         let priceTextField = UITextField()
@@ -120,6 +119,23 @@ class SubscriptionViewController: UIViewController {
             saveButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             saveButton.topAnchor.constraint(equalTo: dateButton.bottomAnchor, constant: 14)
         ])
+        
+        if let id = subId {
+            guard let sub = SubscriptionManager.shared.readById(id) else { return }
+            nameTextField.text = sub.name
+            priceTextField.text = String(sub.price)
+            periodButton.setTitle(sub.period.name, for: .normal)
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            dateButton.setTitle(sub.nextDateFomatter, for: .normal)
+        }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(subId ?? "null id")
+        
     }
     
     // Menú para seleccionar el periodo de suscripción
@@ -172,7 +188,7 @@ class SubscriptionViewController: UIViewController {
             return
         }
         
-        let subscription = Subscription(id: UUID(), logoUrl: subImage ?? name, name: name, price: price, nextPaymentDate: date, period: selectedPeriod, reminderTime: .oneDayBefore)
+        let subscription = Subscription(id: UUID(), logoUrl:  imgURL ?? name, name: name, price: price, nextPaymentDate: date, period: selectedPeriod, reminderTime: .oneDayBefore)
         SubscriptionManager.shared.save(subscription)
         scheduleNotificationsForActiveSubscriptions(sub: subscription)
         NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
