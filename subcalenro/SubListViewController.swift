@@ -9,13 +9,11 @@ import UIKit
 class SubListViewController: UIViewController {
 
     var tableView = UITableView()
-    var subscriptions: [(Date, Subscription)] = [] {
+    var subscriptions: [Subscription] = [] {
         didSet {
             tableView.reloadData()
         }
     }
-
-    var groupedSubscriptions: [Date: [Subscription]] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,15 +38,10 @@ class SubListViewController: UIViewController {
     }
 
     func reloadSubscriptions() {
-        let today = Calendar.current.startOfDay(for: Date())
-        subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
-            .filter { Calendar.current.startOfDay(for: $0.0) >= today }
-        
-        groupedSubscriptions = Dictionary(grouping: subscriptions, by: { Calendar.current.startOfDay(for: $0.0) })
-            .mapValues { $0.map { $0.1 } }
-        
+        subscriptions = SubscriptionManager.shared.readAllSubscriptions()
         tableView.reloadData()
     }
+    
     @objc func closeModal() {
         self.dismiss(animated: true)
     }
@@ -58,21 +51,15 @@ class SubListViewController: UIViewController {
 extension SubListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return groupedSubscriptions.keys.count
+        return 1 // Una sola sección para todas las suscripciones
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sortedDates = groupedSubscriptions.keys.sorted()
-        let date = sortedDates[section]
-        return groupedSubscriptions[date]?.count ?? 0
+        return subscriptions.count
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sortedDates = groupedSubscriptions.keys.sorted()
-        let date = sortedDates[section]
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE — MMM d yyyy"
-        return dateFormatter.string(from: date).uppercased()
+        return "\(subscriptions.count) subscriptions"
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -80,11 +67,9 @@ extension SubListViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         
-        let sortedDates = groupedSubscriptions.keys.sorted()
-        let date = sortedDates[indexPath.section]
-        if let subscription = groupedSubscriptions[date]?[indexPath.row] {
-            cell.configure(with: subscription)
-        }
+        let subscription = subscriptions[indexPath.row]
+        cell.configure(with: subscription)
+        
         return cell
     }
 
@@ -97,21 +82,12 @@ extension SubListViewController: UITableViewDataSource, UITableViewDelegate {
         editSubscription(at: indexPath)
     }
     
-    
     private func editSubscription(at indexPath: IndexPath) {
-        // Obtener la fecha de la sección seleccionada
-        let sortedDates = groupedSubscriptions.keys.sorted()
-        let date = sortedDates[indexPath.section]
+        let sub = subscriptions[indexPath.row]
+        print(sub)
         
-        // Obtener la suscripción correcta de la fila seleccionada
-        if let sub = groupedSubscriptions[date]?[indexPath.row] {
-            print(sub)
-            
-            // Navegar a la pantalla de edición con los detalles de la suscripción seleccionada
-            let vc = DetailSubcriptionViewController()
-            vc.subId = sub.id
-            self.show(vc, sender: nil)
-        }
+        let vc = DetailSubcriptionViewController()
+        vc.subId = sub.id
+        self.show(vc, sender: nil)
     }
-
 }
