@@ -24,7 +24,7 @@ class OptionsFloatingBarView : UIView {
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
         button.configuration = configuration
-        button.setImage(UIImage(systemName: "chart.bar.xaxis"), for: .normal)
+        button.setImage(UIImage(systemName: "chart.bar.fill"), for: .normal)
         button.tintColor = ThemeManager.color(for: .primaryBackground)
         return button
     }()
