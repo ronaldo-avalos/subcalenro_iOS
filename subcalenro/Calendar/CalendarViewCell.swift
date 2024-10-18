@@ -83,7 +83,7 @@ class CalendarViewCell: FSCalendarCell {
             let eventStack =  SubViewBuilder.build(for: subs, on: date)
             if let stack = eventStack {
                 contentCell.addSubview(stack)
-                contentCell.backgroundColor = .systemGray5.withAlphaComponent(0.4)
+                contentCell.backgroundColor = .systemGray5.withAlphaComponent(0.2)
                 stack.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     stack.centerXAnchor.constraint(equalTo: contentCell.centerXAnchor),

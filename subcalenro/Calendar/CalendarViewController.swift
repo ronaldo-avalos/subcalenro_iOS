@@ -31,17 +31,6 @@ class CalendarViewController: UIViewController {
         return button
     }()
     
-    let profileImage: UIImageView = {
-        let image = UIImageView()
-        image.clipsToBounds = true
-        image.layer.cornerRadius = 15
-        image.layer.cornerCurve = .circular
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.image = UIImage(named: "profileImage")
-        image.contentMode = .scaleAspectFit
-        return image
-    }()
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -169,19 +158,14 @@ class CalendarViewController: UIViewController {
         bottomContainer.tableView.backgroundColor = .clear
         
         
-        let views = [calendarView!,toggleEvents,profileImage,bottomContainer!]
+        let views = [calendarView!,toggleEvents,bottomContainer!]
         views.forEach(view.addSubview(_:))
         view.addSubview(floatingBar)
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
         NSLayoutConstraint.activate([
-            profileImage.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 10),
-            profileImage.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            profileImage.widthAnchor.constraint(equalToConstant: 30),
-            profileImage.heightAnchor.constraint(equalToConstant:30),
             
-            toggleEvents.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor),
-            toggleEvents.trailingAnchor.constraint(equalTo: profileImage.leadingAnchor,constant: -16),
-            
+            toggleEvents.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor,constant: 6),
+            toggleEvents.trailingAnchor.constraint(equalTo: view.leadingAnchor,constant: -16),
             
             floatingBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),

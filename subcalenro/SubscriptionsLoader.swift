@@ -36,8 +36,7 @@ class SubscriptionsLoader {
                         intervalo = .day
                         days = 14
                     case .custom:
-                        intervalo = .day  // Custom también es en días
-                        // Asume que ya tienes el valor correcto para "days" en otro lugar
+                        intervalo = .day 
                     }
                     if let newDate = calendar.date(byAdding: intervalo, value: days, to: currentDate) {
                         currentDate = newDate
