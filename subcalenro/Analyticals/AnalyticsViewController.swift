@@ -115,7 +115,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
             tableViewContainer.topAnchor.constraint(equalTo: expensesChart.bottomAnchor, constant: 20),
             tableViewContainer.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             tableViewContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            tableViewContainer.heightAnchor.constraint(equalToConstant: 1000)
+            tableViewContainer.heightAnchor.constraint(equalToConstant: 500)
             
         ])
         
@@ -131,7 +131,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
             tableView.topAnchor.constraint(equalTo: tableViewTitleLabel.bottomAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: tableViewContainer.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: tableViewContainer.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: tableViewContainer.bottomAnchor)
         ])
         
     }
@@ -256,6 +256,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let data = PieChartData(dataSet: dataSet)
         
+        
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
         formatter.maximumFractionDigits = 1
@@ -292,7 +293,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         
         return cardView
     }
-
+    // MARK: - Mostrar y Ocultar la Tabla
     private func showTableView(for category: String) {
         selectedCategory = category
         tableViewTitleLabel.text = category
@@ -332,7 +333,12 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         
         showTableView(for: category)
     }
-
+    
+    
+    func chartValueNothingSelected(_ chartView: ChartViewBase) {
+        //
+    }
+    
     
 }
 
