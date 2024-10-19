@@ -131,7 +131,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
             tableView.topAnchor.constraint(equalTo: tableViewTitleLabel.bottomAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: tableViewContainer.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: tableViewContainer.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: tableViewContainer.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
         
     }
