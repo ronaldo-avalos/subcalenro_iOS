@@ -256,7 +256,6 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let data = PieChartData(dataSet: dataSet)
         
-        
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
         formatter.maximumFractionDigits = 1
@@ -293,7 +292,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         
         return cardView
     }
-    // MARK: - Mostrar y Ocultar la Tabla
+
     private func showTableView(for category: String) {
         selectedCategory = category
         tableViewTitleLabel.text = category
@@ -333,12 +332,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         
         showTableView(for: category)
     }
-    
-    
-    func chartValueNothingSelected(_ chartView: ChartViewBase) {
-        //
-    }
-    
+
     
 }
 
