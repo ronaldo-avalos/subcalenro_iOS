@@ -4,227 +4,341 @@
 //
 //  Created by Ronaldo Avalos on 18/10/24.
 //
-
 import Foundation
 import UIKit
 import DGCharts
 
-class AnalyticsViewController: UIViewController {
+class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,ChartViewDelegate {
     
+    private var selectedCategory: String?
+    private var subscriptions: [Subscription] = []
+    
+    // MARK: - UI Elements
+    private lazy var tableViewContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
+        view.layer.cornerRadius = 16
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true // Oculto por defecto
+        return view
+    }()
+    
+    private lazy var tableViewTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Suscripciones por Categoría"
+        label.textColor = .secondaryLabel
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(SubscriptionCell.self, forCellReuseIdentifier: "SubscriptionCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
+    
+    // MARK: - Ciclo de Vida
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViewController()
+        setupLayout()
+    }
+    
+    // MARK: - Configuraciones de UI
+    private func setupViewController() {
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
         self.title = "Analytics"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.largeTitleDisplayMode = .automatic
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .automatic
+        navigationController?.navigationBar.largeTitleTextAttributes = [
             NSAttributedString.Key.foregroundColor: ThemeManager.color(for: .primaryText)
         ]
-        self.navigationController?.navigationBar.tintColor = ThemeManager.color(for: .primaryText)
-        setupDashboard()
+        navigationController?.navigationBar.tintColor = ThemeManager.color(for: .primaryText)
     }
     
-    private func setupDashboard() {
-        // Creación de contenedor principal de la vista
-        let mainScrollView = UIScrollView()
-        mainScrollView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(mainScrollView)
-        
-        NSLayoutConstraint.activate([
-            mainScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            mainScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            mainScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mainScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
-        
+    private func setupLayout() {
+        // Crear UIScrollView y containerView
+        let scrollView = UIScrollView()
         let containerView = UIView()
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        mainScrollView.addSubview(containerView)
         
-        NSLayoutConstraint.activate([
-            containerView.widthAnchor.constraint(equalTo: mainScrollView.widthAnchor),
-            containerView.topAnchor.constraint(equalTo: mainScrollView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: mainScrollView.bottomAnchor)
-        ])
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
         
-        // MARK: - Sección de cuentas (Cash, Revolut Main, Subscriptions Card)
-        let accountsStack = createAccountsStack()
-        containerView.addSubview(accountsStack)
-        
-        NSLayoutConstraint.activate([
-            accountsStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
-            accountsStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
-            accountsStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20)
-        ])
-        
-        // MARK: - Sección de gráfico de gastos (ahora dentro de un contenedor con estilo)
-        let chartCardView = createChartCard()
-        containerView.addSubview(chartCardView)
-        
-        NSLayoutConstraint.activate([
-            chartCardView.topAnchor.constraint(equalTo: accountsStack.bottomAnchor, constant: 20),
-            chartCardView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
-            chartCardView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            chartCardView.heightAnchor.constraint(equalToConstant: 320) // Ajusta la altura según tu preferencia
-        ])
-    }
-
-    private func createChartCard() -> UIView {
-        let cardView = UIView()
-        cardView.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
-        cardView.layer.cornerRadius = 10
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.heightAnchor.constraint(equalToConstant: 320).isActive = true
-        cardView.isUserInteractionEnabled = true  // Asegurar que el contenedor pueda recibir toques
-        
-        let titleLabel = UILabel()
-        titleLabel.text = " "
-        titleLabel.textColor = .secondaryLabel
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 12)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Crear el gráfico de gastos
+        // Agregar cardsStack y expensesChart al containerView
         let expensesChart = createExpensesChart()
-        expensesChart.isUserInteractionEnabled = true // Asegurar que el gráfico reciba toques
-        expensesChart.highlightPerTapEnabled = true   // Permitir destacar las secciones con tap
+        let cardsStack = createAccountsStack()
         
-        cardView.addSubview(expensesChart)
+        containerView.addSubview(cardsStack)
+        containerView.addSubview(expensesChart)
+        containerView.addSubview(tableViewContainer)
         
-        // Constraints para el gráfico dentro del contenedor
+        
+        // Desactivar la traducción de AutoresizingMask a restricciones
+        cardsStack.translatesAutoresizingMaskIntoConstraints = false
+        expensesChart.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Constraints para el scrollView y containerView
         NSLayoutConstraint.activate([
-            expensesChart.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 10),
-            expensesChart.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 10),
-            expensesChart.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -10),
-            expensesChart.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -10)
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            containerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
         
-        return cardView
+        // Constraints para las tarjetas y el gráfico dentro del containerView
+        NSLayoutConstraint.activate([
+            cardsStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
+            cardsStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            cardsStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            cardsStack.heightAnchor.constraint(equalToConstant: 95),
+            
+            expensesChart.topAnchor.constraint(equalTo: cardsStack.bottomAnchor, constant: 16),
+            expensesChart.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            expensesChart.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            expensesChart.heightAnchor.constraint(equalToConstant: 320),
+            expensesChart.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
+            
+            tableViewContainer.topAnchor.constraint(equalTo: expensesChart.bottomAnchor, constant: 20),
+            tableViewContainer.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            tableViewContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            tableViewContainer.heightAnchor.constraint(equalToConstant: 1000)
+            
+        ])
+        
+        // Agregar titleLabel y tableView al tableViewContainer
+        tableViewContainer.addSubview(tableViewTitleLabel)
+        tableViewContainer.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableViewTitleLabel.topAnchor.constraint(equalTo: tableViewContainer.topAnchor, constant: 12),
+            tableViewTitleLabel.leadingAnchor.constraint(equalTo: tableViewContainer.leadingAnchor, constant: 16),
+            tableViewTitleLabel.trailingAnchor.constraint(equalTo: tableViewContainer.trailingAnchor, constant: -16),
+            
+            tableView.topAnchor.constraint(equalTo: tableViewTitleLabel.bottomAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: tableViewContainer.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: tableViewContainer.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: tableViewContainer.bottomAnchor)
+        ])
+        
     }
-
+    
+    //
+    //        // Agregar titleLabel y tableView al tableViewContainer
+    //        tableViewContainer.addSubview(tableViewTitleLabel)
+    //        tableViewContainer.addSubview(tableView)
+    //
+    //        NSLayoutConstraint.activate([
+    //            tableViewTitleLabel.topAnchor.constraint(equalTo: tableViewContainer.topAnchor, constant: 12),
+    //            tableViewTitleLabel.leadingAnchor.constraint(equalTo: tableViewContainer.leadingAnchor, constant: 16),
+    //            tableViewTitleLabel.trailingAnchor.constraint(equalTo: tableViewContainer.trailingAnchor, constant: -16),
+    //
+    //            tableView.topAnchor.constraint(equalTo: tableViewTitleLabel.bottomAnchor, constant: 10),
+    //            tableView.leadingAnchor.constraint(equalTo: tableViewContainer.leadingAnchor),
+    //            tableView.trailingAnchor.constraint(equalTo: tableViewContainer.trailingAnchor),
+    //            tableView.bottomAnchor.constraint(equalTo: tableViewContainer.bottomAnchor)
+    //        ])
+    
+    
+    
     
     private func createAccountsStack() -> UIStackView {
-        let cashView = createAccountCard(title: "Subscriptions", amount: String(SubscriptionManager().getSubscriptionTotal()), iconName: "person.crop.rectangle.stack")
-        let revolutView = createAccountCard(title: "Total cost", amount: "$800", iconName: "dollarsign.circle")
+        let subscriptionsView = createAccountCard(title: "Subscriptions", amount: String(SubscriptionManager().getSubscriptionTotal()), iconName: "person.crop.rectangle.stack")
+        let totalCostView = createAccountCard(title: "Total cost", amount: "$800.00 MXN", iconName: "dollarsign.circle")
         
-        let accountsStack = UIStackView(arrangedSubviews: [cashView, revolutView])
+        let accountsStack = UIStackView(arrangedSubviews: [subscriptionsView, totalCostView])
         accountsStack.axis = .horizontal
         accountsStack.distribution = .fillEqually
-        accountsStack.spacing = 6
-        accountsStack.translatesAutoresizingMaskIntoConstraints = false
-        accountsStack.isUserInteractionEnabled = true
+        accountsStack.spacing = 8
+        
+        // Añadir tap gesture
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(subscriptionViewTapped))
+        subscriptionsView.addGestureRecognizer(tapGesture)
+        
         return accountsStack
     }
     
+    // MARK: - Funciones de Eventos
+    @objc private func subscriptionViewTapped() {
+        let vc = SubListViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    // MARK: - Método para Crear la Tarjeta (Account Card)
     private func createAccountCard(title: String, amount: String, iconName: String) -> UIView {
         let cardView = UIView()
         cardView.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
-        cardView.layer.cornerRadius = 10
-        cardView.translatesAutoresizingMaskIntoConstraints = false
-        cardView.heightAnchor.constraint(equalToConstant: 95).isActive = true
+        cardView.layer.cornerRadius = 16
         
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.textColor = .secondaryLabel
         titleLabel.font = UIFont.boldSystemFont(ofSize: 12)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let amountLabel = UILabel()
         amountLabel.text = amount
-        amountLabel.translatesAutoresizingMaskIntoConstraints = false
         amountLabel.textColor = ThemeManager.color(for: .primaryText)
         amountLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         
         let iconView = UIImageView()
         iconView.image = UIImage(systemName: iconName)?.withTintColor(.label, renderingMode: .alwaysOriginal)
-        iconView.contentMode = .scaleAspectFit
-        iconView.layer.cornerRadius = 15
-        iconView.translatesAutoresizingMaskIntoConstraints = false
-        iconView.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        iconView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        iconView.contentMode = .scaleAspectFill
         
-        let views =  [iconView, titleLabel, amountLabel]
-        views.forEach(cardView.addSubview(_:))
+        // Agregar sub-vistas
+        let stackView = UIStackView(arrangedSubviews: [iconView, titleLabel, amountLabel])
+        stackView.axis = .vertical
+        stackView.spacing = 6
+        stackView.alignment = .leading
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(stackView)
         
+        // Constraints
         NSLayoutConstraint.activate([
-            iconView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 6),
-            iconView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
-            titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor,constant: 6),
-            titleLabel.leadingAnchor.constraint(equalTo: iconView.leadingAnchor,constant: 6),
-            amountLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,constant: 6),
-            amountLabel.leadingAnchor.constraint(equalTo: iconView.leadingAnchor,constant: 6),
-            
+            stackView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
+            stackView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -10),
+            stackView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -12)
         ])
         
         return cardView
     }
     
-    
-    private func createExpensesChart() -> PieChartView {
+    // MARK: - Creación del Gráfico
+    private func createExpensesChart() -> UIView {
+        let cardView = UIView()
+        cardView.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
+        cardView.layer.cornerRadius = 16
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Distribución de gastos por categoría"
+        titleLabel.textColor = .secondaryLabel
+        titleLabel.font =  UIFont.systemFont(ofSize: 14, weight: .medium)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let iconView = UIImageView()
+        iconView.image = UIImage(systemName: "circle.dashed")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        iconView.contentMode = .scaleAspectFill
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        
         let pieChartView = PieChartView()
         pieChartView.usePercentValuesEnabled = true
         pieChartView.holeColor = .clear
         pieChartView.transparentCircleColor = .clear
         pieChartView.chartDescription.enabled = false
-        pieChartView.translatesAutoresizingMaskIntoConstraints = false
-        pieChartView.highlightPerTapEnabled = true // Permite resaltar la sección al hacer tap
-
-
-        // Crear un diccionario para acumular los montos por categoría
+        pieChartView.highlightPerTapEnabled = true
+        pieChartView.delegate = self
+        
+        
         let categoryTotals = SubscriptionManager().getSubscriptionTotalsByCategory()
+        let totalGeneral = categoryTotals.values.reduce(0, +)
 
-        // Crear las entradas para el gráfico
         var entries = [PieChartDataEntry]()
-        for (category, total) in categoryTotals {
-            entries.append(PieChartDataEntry(value: total, label: category))
-        }
+           for (category, total) in categoryTotals {
+               let percentage = (total / totalGeneral) * 100
+               entries.append(PieChartDataEntry(value: percentage, label: category))
+           }
 
         let dataSet = PieChartDataSet(entries: entries, label: "Suscripciones por Categoría")
         dataSet.colors = ChartColorTemplates.vordiplom()
-
+        
         let data = PieChartData(dataSet: dataSet)
-
+        
+        
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
         formatter.maximumFractionDigits = 1
         formatter.multiplier = 1
         data.setValueFormatter(DefaultValueFormatter(formatter: formatter))
-        data.setValueFont(UIFont.boldSystemFont(ofSize: 12))
-        data.setValueTextColor(ThemeManager.color(for: .primaryText))
-
+        data.setValueFont(UIFont.systemFont(ofSize: 14, weight: .medium))
+        data.setValueTextColor(.black)
+        
         pieChartView.data = data
         pieChartView.holeRadiusPercent = 0.5
         pieChartView.legend.enabled = false
-
-        return pieChartView
-    }
-    
-    
-
-    
-    
-    private func createLastRecordsView() -> UIView {
-        let recordsView = UIView()
-        recordsView.backgroundColor = .darkGray
-        recordsView.layer.cornerRadius = 10
-        recordsView.translatesAutoresizingMaskIntoConstraints = false
+        pieChartView.translatesAutoresizingMaskIntoConstraints = false
+        pieChartView.animate(xAxisDuration: 1.5, easingOption: .easeInOutQuad)
         
-        let recordsLabel = UILabel()
-        recordsLabel.text = "Last Records"
-        recordsLabel.textColor = .white
-        recordsLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        cardView.addSubview(iconView)
+        cardView.addSubview(titleLabel)
+        cardView.addSubview(pieChartView)
         
-        recordsView.addSubview(recordsLabel)
-        recordsLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            recordsLabel.topAnchor.constraint(equalTo: recordsView.topAnchor, constant: 10),
-            recordsLabel.leadingAnchor.constraint(equalTo: recordsView.leadingAnchor, constant: 10)
+            iconView.topAnchor.constraint(equalTo: cardView.topAnchor,constant: 10),
+            iconView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor,constant: 10),
+            iconView.widthAnchor.constraint(equalToConstant: 24),
+            iconView.heightAnchor.constraint(equalToConstant: 24),
+            
+            titleLabel.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -10),
+            
+            pieChartView.topAnchor.constraint(equalTo: iconView.bottomAnchor),
+            pieChartView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor,constant: 10),
+            pieChartView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor,constant: -10),
+            pieChartView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor,constant: -10),
+            
         ])
         
-        // Implementar la tabla o lista para los registros.
-        
-        return recordsView
+        return cardView
     }
+    // MARK: - Mostrar y Ocultar la Tabla
+    private func showTableView(for category: String) {
+        selectedCategory = category
+        tableViewTitleLabel.text = category
+        
+        subscriptions = SubscriptionManager().getSubscriptions(for: category)
+        tableView.reloadData()
+        
+        if tableViewContainer.isHidden {
+            tableViewContainer.alpha = 0
+            tableViewContainer.isHidden = false
+            UIView.animate(withDuration: 0.5) {
+                self.tableViewContainer.alpha = 1
+            }
+        }
+    }
+    
+    // MARK: - Métodos de UITableViewDataSource
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return subscriptions.count
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        83
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SubscriptionCell", for: indexPath) as! SubscriptionCell
+        let subscription = subscriptions[indexPath.row]
+        cell.configure(with: subscription)
+        return cell
+    }
+    
+    
+    // MARK: - Método para cuando se seleccione una categoría en el gráfico
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        guard let pieEntry = entry as? PieChartDataEntry,
+              let category = pieEntry.label else { return }
+        
+        showTableView(for: category)
+    }
+    
+    
+    func chartValueNothingSelected(_ chartView: ChartViewBase) {
+        //
+    }
+    
+    
 }
-
-
 

@@ -10,7 +10,7 @@ import UIKit
 
 protocol OptionsFloatingBarViewDelegate: AnyObject {
     func analyticsButtonTapped()
-    func subListButtonTapped()
+//    func subListButtonTapped()
     func newEventButtonTapped()
     func settingsButtonTapped()
 }
@@ -80,7 +80,7 @@ class OptionsFloatingBarView : UIView {
         self.layer.shadowRadius = 10
         self.backgroundColor = ThemeManager.color(for: .secondaryBackground)
 
-        let stackView = UIStackView(arrangedSubviews: [settingsButton,analyticsButton, subListButton, addButton])
+        let stackView = UIStackView(arrangedSubviews: [settingsButton,analyticsButton,addButton])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
@@ -103,7 +103,7 @@ class OptionsFloatingBarView : UIView {
         }), for: .touchUpInside)
         
         subListButton.addAction(UIAction(handler: { _ in
-            self.delegate?.subListButtonTapped()
+//            self.delegate?.subListButtonTapped()
         }), for: .touchUpInside)
         
         addButton.addAction(UIAction(handler: { _ in

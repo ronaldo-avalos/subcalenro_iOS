@@ -150,7 +150,7 @@ class CalendarViewController: UIViewController {
         floatingBar = OptionsFloatingBarView()
         floatingBar.delegate = self
         floatingBar.translatesAutoresizingMaskIntoConstraints = false
-        let floatingBarWidth: CGFloat = Utility.isIpad ? 320 : 220
+        let floatingBarWidth: CGFloat = Utility.isIpad ? 220 : 55 * 3
         let floatingBarHeight: CGFloat = Utility.isIpad ? 65 : 55
         
         bottomContainer = BottomContainer(frame: CGRect(x: 0, y: calendarView.frame.maxY, width: view.frame.width, height: 600))
@@ -226,11 +226,11 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
         self.present(nc, animated: true)
     }
     
-    func  subListButtonTapped() {
-        let vc = SubListViewController()
-        let nc = UINavigationController(rootViewController: vc)
-        self.present(nc, animated: true)
-    }
+//    func  subListButtonTapped() {
+//        let vc = SubListViewController()
+//        let nc = UINavigationController(rootViewController: vc)
+//        self.present(nc, animated: true)
+//    }
     
     func newEventButtonTapped() {
 //        self.subscriptionVC.subId = nil

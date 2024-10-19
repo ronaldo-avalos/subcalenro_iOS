@@ -86,7 +86,14 @@ struct SubscriptionManager {
         
         return categoryTotals // Devolvemos el diccionario con los totales por categoría
     }
-
+    
+    func getSubscriptions(for category: String) -> [Subscription] {
+          let allSubscriptions = readAllSubscriptions()
+          // Filtrar las suscripciones que coincidan con la categoría dada
+        let filteredSubscriptions = allSubscriptions.filter { $0.category.displayName() == category }
+          return filteredSubscriptions
+      }
+      
 
 }
 
