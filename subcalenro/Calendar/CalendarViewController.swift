@@ -85,7 +85,7 @@ class CalendarViewController: UIViewController {
         bottomContainer.setDateLabel(date)
         let subs = subscriptions.filter{ Calendar.current.isDate($0.0, inSameDayAs: date) }
         if subs.count > 0 {
-            let selectedSubs = SubscriptionManager.shared.readByIds(subs.map({return $0.1.id}))
+            let selectedSubs = SubscriptionManager().readByIds(subs.map({return $0.1.id}))
             bottomContainer.loadSubscriptions(selectedSubs)
         } else {
             bottomContainer.loadSubscriptions([])
@@ -176,7 +176,7 @@ class CalendarViewController: UIViewController {
         
         bottomContainer.deleteSub = { id in
             Utility.showDeleteConfirmationAlert(on: self, title: "Delete", message: "¿Are you sure you want to delete this subscription?") {
-                SubscriptionManager.shared.deleteById(id)
+                SubscriptionManager().deleteById(id)
                 if let sub = self.subscriptions.first(where: { $0.1.id == id })?.1 {
                     NotificationManager.shared.cancelNotifications(for: sub)
                 } else {
@@ -207,7 +207,7 @@ class CalendarViewController: UIViewController {
         subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
         calendarDataSource?.set(subs: subscriptions)
         let subs = subscriptions.filter{ Calendar.current.isDate($0.0, inSameDayAs: Date.dateSelected) }
-        let selectedSubs = SubscriptionManager.shared.readByIds(subs.map({return $0.1.id}))
+        let selectedSubs = SubscriptionManager().readByIds(subs.map({return $0.1.id}))
         bottomContainer.loadSubscriptions(selectedSubs)
         print("Reload Calendar")
     }
@@ -221,7 +221,9 @@ class CalendarViewController: UIViewController {
 extension CalendarViewController: OptionsFloatingBarViewDelegate {
     
     func analyticsButtonTapped() {
-        //TODO:
+        let vc = AnalyticsViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        self.present(nc, animated: true)
     }
     
     func  subListButtonTapped() {

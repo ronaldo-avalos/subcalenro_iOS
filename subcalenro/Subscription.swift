@@ -15,6 +15,7 @@ struct Subscription: Codable {
     var nextPaymentDate: Date
     var period: SubscriptionPeriod
     var reminderTime: ReminderOption
+    var category: CategoryType
     
     var hasReminder: Bool {
         return reminderTime != .none
@@ -29,7 +30,77 @@ struct Subscription: Codable {
         formatter.dateStyle = .medium
         return formatter.string(from: nextPaymentDate)
     }
+
 }
+
+enum CategoryType: Int, CaseIterable, Codable {
+    case other = 0
+    case fitness = 1
+    case hobby = 2
+    case tools = 3
+    case education = 4
+    case entertainment = 5
+    case productivity = 6
+    case food = 7
+    case transportation = 8
+    case cloudStorage = 9
+    case finance = 10
+    case home = 11
+    case gaming = 12
+    case news = 13
+    case beauty = 14
+    case pets = 15
+    case travel = 16
+    case health = 17
+    case sports = 18
+    case socialMedia = 19
+    
+    func displayName() -> String {
+        switch self {
+        case .other:
+            return "Other"
+        case .fitness:
+            return "Fitness"
+        case .hobby:
+            return "Hobby"
+        case .tools:
+            return "Tools"
+        case .education:
+            return "Education"
+        case .entertainment:
+            return "Entertainment"
+        case .productivity:
+            return "Productivity"
+        case .food:
+            return "Food"
+        case .transportation:
+            return "Transportation"
+        case .cloudStorage:
+            return "Cloud Storage"
+        case .finance:
+            return "Finance"
+        case .home:
+            return "Home"
+        case .gaming:
+            return "Gaming"
+        case .news:
+            return "News"
+        case .beauty:
+            return "Beauty"
+        case .pets:
+            return "Pets"
+        case .travel:
+            return "Travel"
+        case .health:
+            return "Health"
+        case .sports:
+            return "Sports"
+        case .socialMedia:
+            return "Social Media"
+        }
+    }
+}
+
 
 enum SubscriptionPeriod: Int, CaseIterable, Codable {
     case monthly = 1
@@ -54,7 +125,6 @@ enum SubscriptionPeriod: Int, CaseIterable, Codable {
     }
 }
 
-
 enum ReminderOption: Int, Codable, CaseIterable {
     case sameDay = 0
     case oneDayBefore = 1
@@ -77,4 +147,9 @@ enum ReminderOption: Int, Codable, CaseIterable {
         }
     }
 }
+
+
+
+
+
 

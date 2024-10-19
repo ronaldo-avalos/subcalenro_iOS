@@ -1,20 +1,26 @@
 PODS:
   - CalendarKit (1.1.10)
+  - DGCharts (5.1.0):
+    - DGCharts/Core (= 5.1.0)
+  - DGCharts/Core (5.1.0)
   - FSCalendar (2.8.4)
 
 DEPENDENCIES:
   - CalendarKit
+  - DGCharts
   - FSCalendar
 
 SPEC REPOS:
   trunk:
     - CalendarKit
+    - DGCharts
     - FSCalendar
 
 SPEC CHECKSUMS:
   CalendarKit: fc3228a9e797e1970c6b9370ee0763cf88a1da9a
+  DGCharts: 1c6daf585b6cfc78807af44ea690d357c410627f
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
 
-PODFILE CHECKSUM: 037af166efccd51ffad3e139ebca014bd347c473
+PODFILE CHECKSUM: e9c504e0e656870a30a9a7d81bc69f29ac73f3dc
 
 COCOAPODS: 1.15.2

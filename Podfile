@@ -8,7 +8,8 @@ target 'subcalenro' do
   # Pods for subcalenro
   pod 'FSCalendar'
   pod 'CalendarKit'
-
+  pod 'DGCharts'
+  
 end
 
 post_install do |installer|

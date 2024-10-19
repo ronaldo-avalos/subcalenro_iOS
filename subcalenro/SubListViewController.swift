@@ -38,7 +38,7 @@ class SubListViewController: UIViewController {
     }
 
     func reloadSubscriptions() {
-        subscriptions = SubscriptionManager.shared.readAllSubscriptions()
+        subscriptions = SubscriptionManager().readAllSubscriptions()
         tableView.reloadData()
     }
     

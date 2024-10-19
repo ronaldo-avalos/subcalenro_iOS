@@ -69,7 +69,7 @@ class DetailSubcriptionViewController: UIViewController {
         view.addSubview(priceLabel)
         
         if let id = subId {
-            guard let sub = SubscriptionManager.shared.readById(id) else { return }
+            guard let sub = SubscriptionManager().readById(id) else { return }
             imageView.image = UIImage(named: sub.logoUrl)
             nameLabel.text = sub.name
             priceLabel.text = "$\(String(sub.price))"

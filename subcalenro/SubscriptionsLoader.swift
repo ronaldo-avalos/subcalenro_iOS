@@ -12,7 +12,7 @@ class SubscriptionsLoader {
     static let shared = SubscriptionsLoader()
    
     func loadSubscriptionsDate() -> [(Date, Subscription)] {
-        let subscriptions = SubscriptionManager.shared.readAllSubscriptions()
+        let subscriptions = SubscriptionManager().readAllSubscriptions()
         let calendar = Calendar.current
         var eventDates: [(Date, Subscription)] = []
         for sub in subscriptions {

@@ -7,10 +7,8 @@
 
 import Foundation
 
-class SubscriptionManager {
-    static let shared = SubscriptionManager()
+struct SubscriptionManager {
     private let fileName = "subscriptions.json"
-    
     
     // Ruta del archivo
     private var fileURL: URL {
@@ -60,6 +58,10 @@ class SubscriptionManager {
     private func saveToDisk(_ subscriptions: [Subscription]) {
         let data = try? JSONEncoder().encode(subscriptions)
         try? data?.write(to: fileURL)
+    }
+    
+    func getSubscriptionTotal () -> Int {
+        return readAllSubscriptions().count
     }
 }
 

@@ -80,10 +80,10 @@ class SubscriptionCell: UITableViewCell {
             logoImageView.widthAnchor.constraint(equalToConstant: 55),
             logoImageView.heightAnchor.constraint(equalToConstant: 55),
             
-            titleLabel.topAnchor.constraint(equalTo: contentCellView.topAnchor, constant: 10),
+            titleLabel.topAnchor.constraint(equalTo: contentCellView.topAnchor, constant: 16),
             titleLabel.leadingAnchor.constraint(equalTo: logoImageView.trailingAnchor, constant: 12),
             
-            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             
             periodLabel.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 8),
