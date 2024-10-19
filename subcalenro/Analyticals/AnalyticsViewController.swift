@@ -57,35 +57,50 @@ class AnalyticsViewController: UIViewController {
             accountsStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20)
         ])
         
-        // MARK: - Sección de gráfico de gastos
-        let expensesChart = createExpensesChart()
-        view.addSubview(expensesChart)
+        // MARK: - Sección de gráfico de gastos (ahora dentro de un contenedor con estilo)
+        let chartCardView = createChartCard()
+        containerView.addSubview(chartCardView)
         
         NSLayoutConstraint.activate([
-            expensesChart.topAnchor.constraint(equalTo: accountsStack.bottomAnchor, constant: 20),
-            expensesChart.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            expensesChart.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            expensesChart.heightAnchor.constraint(equalToConstant: 300) // Ajusta la altura según tu preferencia
+            chartCardView.topAnchor.constraint(equalTo: accountsStack.bottomAnchor, constant: 20),
+            chartCardView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            chartCardView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            chartCardView.heightAnchor.constraint(equalToConstant: 320) // Ajusta la altura según tu preferencia
         ])
-        //        NSLayoutConstraint.activate([
-        //            expensesChartView.topAnchor.constraint(equalTo: accountsStack.bottomAnchor, constant: 20),
-        //            expensesChartView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
-        //            expensesChartView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-        //            expensesChartView.heightAnchor.constraint(equalToConstant: 300)
-        //        ])
-        //
-        //        // MARK: - Sección de últimos registros
-        //        let lastRecordsView = createLastRecordsView()
-        //        containerView.addSubview(lastRecordsView)
-        //
-        //        NSLayoutConstraint.activate([
-        //            lastRecordsView.topAnchor.constraint(equalTo: expensesChartView.bottomAnchor, constant: 20),
-        //            lastRecordsView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
-        //            lastRecordsView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-        //            lastRecordsView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
-        //            lastRecordsView.heightAnchor.constraint(equalToConstant: 100)
-        //        ])
     }
+
+    private func createChartCard() -> UIView {
+        let cardView = UIView()
+        cardView.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
+        cardView.layer.cornerRadius = 10
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        cardView.heightAnchor.constraint(equalToConstant: 320).isActive = true
+        cardView.isUserInteractionEnabled = true  // Asegurar que el contenedor pueda recibir toques
+        
+        let titleLabel = UILabel()
+        titleLabel.text = " "
+        titleLabel.textColor = .secondaryLabel
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Crear el gráfico de gastos
+        let expensesChart = createExpensesChart()
+        expensesChart.isUserInteractionEnabled = true // Asegurar que el gráfico reciba toques
+        expensesChart.highlightPerTapEnabled = true   // Permitir destacar las secciones con tap
+        
+        cardView.addSubview(expensesChart)
+        
+        // Constraints para el gráfico dentro del contenedor
+        NSLayoutConstraint.activate([
+            expensesChart.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 10),
+            expensesChart.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 10),
+            expensesChart.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -10),
+            expensesChart.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -10)
+        ])
+        
+        return cardView
+    }
+
     
     private func createAccountsStack() -> UIStackView {
         let cashView = createAccountCard(title: "Subscriptions", amount: String(SubscriptionManager().getSubscriptionTotal()), iconName: "person.crop.rectangle.stack")
@@ -96,6 +111,7 @@ class AnalyticsViewController: UIViewController {
         accountsStack.distribution = .fillEqually
         accountsStack.spacing = 6
         accountsStack.translatesAutoresizingMaskIntoConstraints = false
+        accountsStack.isUserInteractionEnabled = true
         return accountsStack
     }
     
@@ -144,28 +160,29 @@ class AnalyticsViewController: UIViewController {
     
     
     private func createExpensesChart() -> PieChartView {
-        
         let pieChartView = PieChartView()
         pieChartView.usePercentValuesEnabled = true
         pieChartView.holeColor = .clear
         pieChartView.transparentCircleColor = .clear
         pieChartView.chartDescription.enabled = false
         pieChartView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let categories = ["Hobby", "Tools", "fitness","Otros"]
-        let values = [30.0, 25.0, 20.0, 10.0]
-        
+        pieChartView.highlightPerTapEnabled = true // Permite resaltar la sección al hacer tap
+
+
+        // Crear un diccionario para acumular los montos por categoría
+        let categoryTotals = SubscriptionManager().getSubscriptionTotalsByCategory()
+
+        // Crear las entradas para el gráfico
         var entries = [PieChartDataEntry]()
-        for (index, value) in values.enumerated() {
-            entries.append(PieChartDataEntry(value: value, label: categories[index]))
+        for (category, total) in categoryTotals {
+            entries.append(PieChartDataEntry(value: total, label: category))
         }
-        
-        let dataSet = PieChartDataSet(entries: entries, label: "Label")
-        
+
+        let dataSet = PieChartDataSet(entries: entries, label: "Suscripciones por Categoría")
         dataSet.colors = ChartColorTemplates.vordiplom()
-        
+
         let data = PieChartData(dataSet: dataSet)
-        
+
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
         formatter.maximumFractionDigits = 1
@@ -173,14 +190,16 @@ class AnalyticsViewController: UIViewController {
         data.setValueFormatter(DefaultValueFormatter(formatter: formatter))
         data.setValueFont(UIFont.boldSystemFont(ofSize: 12))
         data.setValueTextColor(ThemeManager.color(for: .primaryText))
-        
-        
+
         pieChartView.data = data
-        
         pieChartView.holeRadiusPercent = 0.5
         pieChartView.legend.enabled = false
+
         return pieChartView
     }
+    
+    
+
     
     
     private func createLastRecordsView() -> UIView {

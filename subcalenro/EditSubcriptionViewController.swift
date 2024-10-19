@@ -123,7 +123,7 @@ class EditSubcriptionViewController: UIViewController {
         if let id = subId {
             guard let sub = SubscriptionManager().readById(id) else { return }
             nameTextField.text = sub.name
-            priceTextField.text = String(sub.price)
+            priceTextField.text = String(sub.amount)
             periodButton.setTitle(sub.period.name, for: .normal)
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
@@ -188,7 +188,7 @@ class EditSubcriptionViewController: UIViewController {
             return
         }
         
-        let subscription = Subscription(id: UUID(), logoUrl:  imgURL ?? name, name: name, price: price, nextPaymentDate: date, period: selectedPeriod, reminderTime: .oneDayBefore, category: .entertainment)
+        let subscription = Subscription(id: UUID(), logoUrl:  imgURL ?? name, name: name, amount: price, nextPaymentDate: date, period: selectedPeriod, reminderTime: .oneDayBefore, category: .tools)
         SubscriptionManager().save(subscription)
         scheduleNotificationsForActiveSubscriptions(sub: subscription)
         NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)

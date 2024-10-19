@@ -11,7 +11,7 @@ struct Subscription: Codable {
     let id: UUID
     let logoUrl: String
     var name: String
-    var price: Double
+    var amount: Double
     var nextPaymentDate: Date
     var period: SubscriptionPeriod
     var reminderTime: ReminderOption

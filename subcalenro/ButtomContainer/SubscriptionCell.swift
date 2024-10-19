@@ -102,7 +102,7 @@ class SubscriptionCell: UITableViewCell {
     func configure(with subscription: Subscription) {
         logoImageView.image = UIImage(named: subscription.logoUrl)
         titleLabel.text = subscription.name
-        priceLabel.text = String(format: "$%.2f", subscription.price)
+        priceLabel.text = String(format: "$%.2f", subscription.amount)
         periodLabel.text = subscription.period.name
         
         // Configurar el recordatorio (ejemplo: puedes calcular el tiempo restante para el próximo pago)

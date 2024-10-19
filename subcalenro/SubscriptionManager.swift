@@ -63,6 +63,31 @@ struct SubscriptionManager {
     func getSubscriptionTotal () -> Int {
         return readAllSubscriptions().count
     }
+
+    func getSubscriptionTotalsByCategory() -> [String: Double] {
+        // Leer todas las suscripciones
+        let subscriptions = readAllSubscriptions()
+        
+        // Diccionario para acumular los montos por categoría
+        var categoryTotals: [String: Double] = [:]
+        
+        // Iterar sobre cada suscripción
+        for subscription in subscriptions {
+            let category = subscription.category.displayName() // Obtenemos la categoría de la suscripción
+            let amount = subscription.amount     // Obtenemos el monto de la suscripción
+            
+            // Si la categoría ya existe, sumamos el monto; si no, la creamos con el monto inicial
+            if let total = categoryTotals[category] { // Accedemos usando un String como clave
+                categoryTotals[category] = total + amount // Sumamos si ya existe
+            } else {
+                categoryTotals[category] = amount // Asignamos el valor si no existe
+            }
+        }
+        
+        return categoryTotals // Devolvemos el diccionario con los totales por categoría
+    }
+
+
 }
 
 

@@ -72,7 +72,7 @@ class DetailSubcriptionViewController: UIViewController {
             guard let sub = SubscriptionManager().readById(id) else { return }
             imageView.image = UIImage(named: sub.logoUrl)
             nameLabel.text = sub.name
-            priceLabel.text = "$\(String(sub.price))"
+            priceLabel.text = "$\(String(sub.amount))"
             nextBillLabel.text = "Next bill: \(sub.nextDateFomatter)"
             let periodView = createDetailView(title: "Period", value: sub.period.name)
             let reminderView = createDetailView(title: "Remind me", value: sub.reminderTime.name)
