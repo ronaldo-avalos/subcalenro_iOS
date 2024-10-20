@@ -12,7 +12,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     
     
     let subscriptions = [
-        "Spotify",  "Netflix", "Apple Music","Disney+",
+        "Custom","Spotify",  "Netflix", "Apple Music","Disney+",
         "HBO Max", "SmartFit",  "Apple TV+", "Amazon Prime", "Figma","Adobe",
         "iCloud", "Xbox Game Pass", "Megacable", "YouTube Premium", "PlayStation Plus",
         "Dropbox", "Google Drive", "Slack","Duolingo Plus", "Notion", "Zoom", "Vix",
@@ -25,7 +25,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     ]
     
     let logos = [
-        "spotify_logo",  "netflix_logo", "apple_music_logo","disney_logo",
+        "addIconCustom","spotify_logo",  "netflix_logo", "apple_music_logo","disney_logo",
         "hbo_max_logo", "smartfit_logo",  "apple_tv_logo", "amazon_prime_logo",  "figma_logo","adobe_logo",
         "icloud_logo", "xbox_gamepass_logo", "megacable_logo", "youtube_premium_logo", "playstation_plus_logo",
         "dropbox_logo", "google_drive_logo", "slack_logo", "duolingo_logo","notion_logo", "zoom_logo", "vix_logo",
@@ -52,6 +52,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
         let closeIcon = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeModal))
         closeIcon.tintColor = .systemGray2
         self.navigationItem.rightBarButtonItem = closeIcon
+    
         
         // Configuración del Search Controller
         showAllSubscriptions()

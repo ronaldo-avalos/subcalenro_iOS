@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		14D730B4F063CDC67E989B72 /* Pods_subcalenro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */; };
 		CE333DE72CC3210000DC6481 /* AnalyticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE333DE62CC3210000DC6481 /* AnalyticsViewController.swift */; };
+		CEC1EF332CC4A9B6008F7A9F /* NotificationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */; };
 		D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */; };
 		D310DE222CB34184008A6F39 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE212CB34184008A6F39 /* Subscription.swift */; };
 		D310DE242CB37663008A6F39 /* SubscriptionsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */; };
@@ -62,6 +63,7 @@
 		B5A14581D6C13DFA917E4532 /* Pods-subcalenro.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-subcalenro.debug.xcconfig"; path = "Target Support Files/Pods-subcalenro/Pods-subcalenro.debug.xcconfig"; sourceTree = "<group>"; };
 		BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_subcalenro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE333DE62CC3210000DC6481 /* AnalyticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewController.swift; sourceTree = "<group>"; };
+		CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionViewController.swift; sourceTree = "<group>"; };
 		D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		D310DE212CB34184008A6F39 /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsLoader.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */,
 				D375084A2CBA210400FDFBB4 /* SubListViewController.swift */,
 				D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */,
+				CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */,
 			);
 			path = subcalenro;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 			files = (
 				D387D1522CAFA0BF00F0BCD6 /* CalendarDelegate.swift in Sources */,
 				D37508242CB91C9000FDFBB4 /* SubscriptionsViewController.swift in Sources */,
+				CEC1EF332CC4A9B6008F7A9F /* NotificationPermissionViewController.swift in Sources */,
 				D387D1862CAFA37200F0BCD6 /* BottomEventContainer.swift in Sources */,
 				D387D1562CAFA10F00F0BCD6 /* CalendarViewCell.swift in Sources */,
 				D3B649732CAE3B1000ADD119 /* AppDelegate.swift in Sources */,

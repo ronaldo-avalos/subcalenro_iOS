@@ -62,7 +62,6 @@ class EditSubcriptionViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.systemBackground
         setupLayout()
-        NotificationManager.shared.requestNotificationPermission()
     }
     
     

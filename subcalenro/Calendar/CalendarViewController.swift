@@ -36,6 +36,7 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         reloadCalendar()
+      
         calendarDataSource?.didCellFor = { (date: Date, cell: CalendarViewCell) in
             self.setupCell(cell: cell, date: date)
         }
@@ -58,10 +59,13 @@ class CalendarViewController: UIViewController {
             self.bottomContainer.frame = CGRect(x: 0, y: calendar.frame.maxY, width: self.view.frame.width, height: 600)
         }
         
+    
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)
         applyTheme()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleSaveNewSaub(_:)), name: Notification.Name("SaveNewSubObserver"), object: nil)
+     
+        
     }
 
     @objc func handleSaveNewSaub(_ notification: Notification) {
@@ -71,6 +75,15 @@ class CalendarViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        Utility.executeFunctionWithDelay(delay: 3) {
+            if NotificationManager.shared.getPermissionStatus() == PermissionType.undefined {
+                let vc = NotificationPermissionViewController()
+                self.present(vc, animated: true)
+            }
+        }
     }
 
     
@@ -226,11 +239,6 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
         self.present(nc, animated: true)
     }
     
-//    func  subListButtonTapped() {
-//        let vc = SubListViewController()
-//        let nc = UINavigationController(rootViewController: vc)
-//        self.present(nc, animated: true)
-//    }
     
     func newEventButtonTapped() {
 //        self.subscriptionVC.subId = nil

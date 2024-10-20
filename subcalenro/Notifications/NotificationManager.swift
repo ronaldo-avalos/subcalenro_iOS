@@ -8,26 +8,43 @@
 import Foundation
 import UserNotifications
 
+enum PermissionType: String {
+    case undefined
+    case granted
+    case denied
+    case notNow
+}
+
 class NotificationManager {
     static let shared = NotificationManager()
     private var calendar = Calendar.current
-    
+    private let permissionKey = "notificationPermission"
+
     private init() {}
     
-    // Solicitar permisos para enviar notificaciones
-    func requestNotificationPermission() {
+    func requestNotificationPermission(completion: @escaping (PermissionType) -> Void) {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
                 print("Error requesting permission: \(error.localizedDescription)")
-            }
-            if granted {
-                print("Notification permission granted")
+                self.savePermissionStatus(.denied)
+                completion(.denied)
             } else {
-                print("Notification permission denied")
+                let status: PermissionType = granted ? .granted : .denied
+                self.savePermissionStatus(status)
+                completion(status) 
             }
         }
     }
+    
+    func savePermissionStatus(_ status: PermissionType) {
+           UserDefaults.standard.set(status.rawValue, forKey: permissionKey)
+       }
+       
+       func getPermissionStatus() -> PermissionType {
+           let savedStatus = UserDefaults.standard.string(forKey: permissionKey) ?? PermissionType.undefined.rawValue
+           return PermissionType(rawValue: savedStatus) ?? .undefined
+       }
     
     // Programar las primeras 10 notificaciones para una suscripción
     func scheduleNotifications(for subscription: Subscription) {
