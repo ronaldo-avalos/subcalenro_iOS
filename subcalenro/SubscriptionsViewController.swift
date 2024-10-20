@@ -7,8 +7,9 @@
 
 import Foundation
 import UIKit
+class SubscriptionsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
 
-class SubscriptionsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     
     let subscriptions = [
         "Spotify",  "Netflix", "Apple Music","Disney+",
@@ -22,9 +23,9 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
         "GitHub Copilot", "Midjourney", "Apple Fitness+", "Discord Nitro", "Roblox Premium", "Azure DevOps Services",
         "AWS (Amazon Web Services)", "Google Cloud", "Docker", "Vercel"
     ]
-
+    
     let logos = [
-         "spotify_logo",  "netflix_logo", "apple_music_logo","disney_logo",
+        "spotify_logo",  "netflix_logo", "apple_music_logo","disney_logo",
         "hbo_max_logo", "smartfit_logo",  "apple_tv_logo", "amazon_prime_logo",  "figma_logo","adobe_logo",
         "icloud_logo", "xbox_gamepass_logo", "megacable_logo", "youtube_premium_logo", "playstation_plus_logo",
         "dropbox_logo", "google_drive_logo", "slack_logo", "duolingo_logo","notion_logo", "zoom_logo", "vix_logo",
@@ -35,57 +36,158 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
         "github_copilot_logo", "midjourney_logo", "apple_fitness_logo", "discord_nitro_logo", "roblox_premium_logo", "azure_devops_logo",
         "aws_logo", "google_cloud_logo", "docker_logo", "vercel_logo"
     ]
-
-
+    
+    var filteredSubscriptions: [String] = []
+    var filteredLogos: [String] = []
     
     var collectionView: UICollectionView!
+    var tableView: UITableView!
+    let segmentedControl = UISegmentedControl(items: ["popular", "All"])
+    let searchController = UISearchController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "New subscription"
+        
+        self.title = "New Subscription"
+        let closeIcon = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeModal))
+        closeIcon.tintColor = .systemGray2
+        self.navigationItem.rightBarButtonItem = closeIcon
+        
+        // Configuración del Search Controller
+        showAllSubscriptions()
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search by company"
+        searchController.hidesNavigationBarDuringPresentation = false
+        
+        
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        self.definesPresentationContext = true
+        
+        
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
+        
+        // Configuración del SegmentedControl
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
+        self.navigationItem.titleView = segmentedControl
+        
+        setupCollectionView()
+        setupTableView()
+    }
+    
+    // Método para configurar la UICollectionView
+    private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 115, height: 115)  // Tamaño de las celdas
         layout.minimumInteritemSpacing = 10  // Espacio entre columnas (horizontal)
         layout.minimumLineSpacing = 20  // Espacio entre filas (vertical)
-
-        // Añade separación con los bordes de la pantalla
         layout.sectionInset = UIEdgeInsets(top: 20, left: 14, bottom: 80, right: 14)
-
-        // Asigna el layout al UICollectionView
-        collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-
         
-        // Crear UICollectionView
-        collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(SubscriptionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.backgroundColor = ThemeManager.color(for: .primaryBackground)
-        
-        // Agregar la UICollectionView a la vista principal
+        collectionView.isHidden = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(collectionView)
-      
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    // Método para configurar la UITableView
+    private func setupTableView() {
+        tableView = UITableView(frame:.zero,  style: .plain)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "tableCell")
+        tableView.isHidden = true // Por defecto oculto, hasta que se seleccione "Alls"
+        self.view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    // Método para mostrar todas las suscripciones por defecto
+    private func showAllSubscriptions() {
+        filteredSubscriptions = subscriptions
+        filteredLogos = logos
+    }
+    
+    @objc func closeModal() {
+        self.dismiss(animated: true)
     }
     
     // MARK: - UICollectionViewDataSource
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return subscriptions.count
+        return filteredSubscriptions.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SubscriptionViewCell
-        cell.label.text = subscriptions[indexPath.row]
-        cell.imageView.image = UIImage(named: logos[indexPath.row])
+        cell.label.text = filteredSubscriptions[indexPath.row]
+        cell.imageView.image = UIImage(named: filteredLogos[indexPath.row])
         return cell
     }
     
-    // MARK: - UICollectionViewDelegateFlowLayout
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (view.frame.width / 3) - 20, height: 120)
+    // MARK: - UITableViewDataSource
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredSubscriptions.count
     }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath)
+        cell.textLabel?.text = filteredSubscriptions[indexPath.row]
+        cell.imageView?.image = UIImage(named: filteredLogos[indexPath.row])
+        return cell
+    }
+    
+    // MARK: - UISegmentedControl
+    @objc func segmentChanged(_ sender: UISegmentedControl) {
+           if sender.selectedSegmentIndex == 0 {
+               // Mostrar colección de "Populars"
+               collectionView.isHidden = false
+               tableView.isHidden = true
+               
+           } else {
+               
+               // Mostrar lista de "Alls"
+               collectionView.isHidden = true
+               tableView.isHidden = false
+           }
+    
+        updateSearchResults(for: searchController)
+    }
+    
+    // MARK: - UISearchResultsUpdating
+    
+    func updateSearchResults(for searchController: UISearchController) {
+           guard let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty else {
+               // Si la búsqueda está vacía, mostrar todas las suscripciones
+               showAllSubscriptions()
+               collectionView.reloadData()
+               tableView.reloadData()
+               return
+           }
+           
+           // Filtrar las suscripciones y logos basados en el texto ingresado
+           filteredSubscriptions = subscriptions.filter { $0.lowercased().contains(searchText) }
+           filteredLogos = zip(subscriptions, logos).filter { $0.0.lowercased().contains(searchText) }.map { $0.1 }
+           
+           collectionView.reloadData()
+           tableView.reloadData()
+       }
 }
 
 class SubscriptionViewCell: UICollectionViewCell {
@@ -168,9 +270,9 @@ class SubscriptionViewCell: UICollectionViewCell {
             }, completion: nil)
         }
     }
-
-
-
+    
+    
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -179,14 +281,11 @@ class SubscriptionViewCell: UICollectionViewCell {
 
 
 extension SubscriptionsViewController: UICollectionViewDelegate {
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedSubscription = subscriptions[indexPath.row]
+        _ = subscriptions[indexPath.row]
         let subImage = logos[indexPath.row]
         let vc = EditSubcriptionViewController()
         vc.imgURL = subImage
         self.navigationController?.pushViewController(vc, animated: true)
-        print("Seleccionaste: \(selectedSubscription)")
-        
     }
 }

@@ -22,8 +22,6 @@ class SubListViewController: UIViewController {
     
     func setupView() {
         self.title = "Subscriptions"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.largeTitleDisplayMode = .automatic
         let closeIcon = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeModal))
         closeIcon.tintColor = .systemGray2
         self.navigationItem.rightBarButtonItem = closeIcon

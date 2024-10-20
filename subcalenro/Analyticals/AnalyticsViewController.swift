@@ -52,13 +52,14 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
     private func setupViewController() {
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
         self.title = "Analytics"
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .automatic
-        navigationController?.navigationBar.largeTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: ThemeManager.color(for: .primaryText)
-        ]
+        let closeIcon = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeModal))
+        closeIcon.tintColor = .systemGray2
+        self.navigationItem.rightBarButtonItem = closeIcon        
         navigationController?.navigationBar.tintColor = ThemeManager.color(for: .primaryText)
+    }
+    
+    @objc func closeModal() {
+        self.dismiss(animated: true)
     }
     
     private func setupLayout() {
@@ -136,28 +137,9 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         
     }
     
-    //
-    //        // Agregar titleLabel y tableView al tableViewContainer
-    //        tableViewContainer.addSubview(tableViewTitleLabel)
-    //        tableViewContainer.addSubview(tableView)
-    //
-    //        NSLayoutConstraint.activate([
-    //            tableViewTitleLabel.topAnchor.constraint(equalTo: tableViewContainer.topAnchor, constant: 12),
-    //            tableViewTitleLabel.leadingAnchor.constraint(equalTo: tableViewContainer.leadingAnchor, constant: 16),
-    //            tableViewTitleLabel.trailingAnchor.constraint(equalTo: tableViewContainer.trailingAnchor, constant: -16),
-    //
-    //            tableView.topAnchor.constraint(equalTo: tableViewTitleLabel.bottomAnchor, constant: 10),
-    //            tableView.leadingAnchor.constraint(equalTo: tableViewContainer.leadingAnchor),
-    //            tableView.trailingAnchor.constraint(equalTo: tableViewContainer.trailingAnchor),
-    //            tableView.bottomAnchor.constraint(equalTo: tableViewContainer.bottomAnchor)
-    //        ])
-    
-    
-    
-    
     private func createAccountsStack() -> UIStackView {
         let subscriptionsView = createAccountCard(title: "Subscriptions", amount: String(SubscriptionManager().getSubscriptionTotal()), iconName: "person.crop.rectangle.stack")
-        let totalCostView = createAccountCard(title: "Total cost", amount: "$800.00 MXN", iconName: "dollarsign.circle")
+        let totalCostView = createAccountCard(title: "Total cost", amount:String(SubscriptionManager().getConstTotal()), iconName: "dollarsign.circle")
         
         let accountsStack = UIStackView(arrangedSubviews: [subscriptionsView, totalCostView])
         accountsStack.axis = .horizontal
@@ -242,17 +224,20 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         pieChartView.delegate = self
         
         
-        let categoryTotals = SubscriptionManager().getSubscriptionTotalsByCategory()
-        let totalGeneral = categoryTotals.values.reduce(0, +)
+        // Obtener el total de suscripciones por categoría
+        let categoryTotals = SubscriptionManager().getSubscriptionCountByCategory()
+        let totalSubscriptions = categoryTotals.values.reduce(0, +) // Total de suscripciones
 
         var entries = [PieChartDataEntry]()
-           for (category, total) in categoryTotals {
-               let percentage = (total / totalGeneral) * 100
-               entries.append(PieChartDataEntry(value: percentage, label: category))
-           }
+        // Calcular el porcentaje de suscripciones por categoría
+        for (category, count) in categoryTotals {
+            let percentage = (Double(count) / Double(totalSubscriptions)) * 100
+            entries.append(PieChartDataEntry(value: percentage, label: category))
+        }
+
 
         let dataSet = PieChartDataSet(entries: entries, label: "Suscripciones por Categoría")
-        dataSet.colors = ChartColorTemplates.vordiplom()
+        dataSet.colors = ChartColorTemplates.material()
         
         let data = PieChartData(dataSet: dataSet)
         
