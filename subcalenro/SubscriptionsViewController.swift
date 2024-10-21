@@ -11,7 +11,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
 
     
     
-    let subscriptions = [
+    let companysNames = [
         "Custom","Spotify",  "Netflix", "Apple Music","Disney+",
         "HBO Max", "SmartFit",  "Apple TV+", "Amazon Prime", "Figma","Adobe",
         "iCloud", "Xbox Game Pass", "Megacable", "YouTube Premium", "PlayStation Plus",
@@ -122,7 +122,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     
     // Método para mostrar todas las suscripciones por defecto
     private func showAllSubscriptions() {
-        filteredSubscriptions = subscriptions
+        filteredSubscriptions = companysNames
         filteredLogos = logos
     }
     
@@ -183,8 +183,8 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
            }
            
            // Filtrar las suscripciones y logos basados en el texto ingresado
-           filteredSubscriptions = subscriptions.filter { $0.lowercased().contains(searchText) }
-           filteredLogos = zip(subscriptions, logos).filter { $0.0.lowercased().contains(searchText) }.map { $0.1 }
+           filteredSubscriptions = companysNames.filter { $0.lowercased().contains(searchText) }
+           filteredLogos = zip(companysNames, logos).filter { $0.0.lowercased().contains(searchText) }.map { $0.1 }
            
            collectionView.reloadData()
            tableView.reloadData()
@@ -283,10 +283,11 @@ class SubscriptionViewCell: UICollectionViewCell {
 
 extension SubscriptionsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        _ = subscriptions[indexPath.row]
+        let comapany = companysNames[indexPath.row]
         let subImage = logos[indexPath.row]
         let vc = EditSubcriptionViewController()
         vc.imgURL = subImage
+        vc.companyName = comapany
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

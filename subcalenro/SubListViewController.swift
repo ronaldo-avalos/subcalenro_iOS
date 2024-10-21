@@ -22,17 +22,26 @@ class SubListViewController: UIViewController {
     
     func setupView() {
         self.title = "Subscriptions"
+        view.backgroundColor = ThemeManager.color(for: .primaryBackground)
         let closeIcon = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeModal))
         closeIcon.tintColor = .systemGray2
         self.navigationItem.rightBarButtonItem = closeIcon
         
-        tableView.frame = view.bounds
+       
         tableView.register(SubscriptionCell.self, forCellReuseIdentifier: "SubscriptionCell")
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         reloadSubscriptions()
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
     }
 
     func reloadSubscriptions() {

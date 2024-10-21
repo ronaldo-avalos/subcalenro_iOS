@@ -11,7 +11,8 @@ import UIKit
 class EditSubcriptionViewController: UIViewController {
     
      var subId: UUID?
-    var imgURL: String?
+     var imgURL: String?
+    var companyName: String?
     private var subscription: Subscription?
     // Botón para seleccionar el periodo
     private let periodButton: UIButton = {
@@ -38,7 +39,7 @@ class EditSubcriptionViewController: UIViewController {
     private var selectedPeriod: SubscriptionPeriod = .monthly {
         didSet {
             // Actualizar el título del botón cuando se selecciona un periodo
-            periodButton.setTitle("Period: \(selectedPeriod.rawValue)", for: .normal)
+            periodButton.setTitle("Period: \(selectedPeriod.name)", for: .normal)
         }
     }
     
@@ -67,7 +68,7 @@ class EditSubcriptionViewController: UIViewController {
     
     // Configuración de layout
     private func setupLayout() {
-        periodButton.addTarget(self, action: #selector(showPeriodMenu), for: .touchUpInside)
+//        periodButton.addTarget(self, action: #selector(showPeriodMenu), for: .touchUpInside)
         dateButton.addTarget(self, action: #selector(showDatePicker), for: .touchUpInside)
      
         self.navigationController?.navigationBar.tintColor = ThemeManager.color(for: .primaryText)
@@ -82,9 +83,20 @@ class EditSubcriptionViewController: UIViewController {
         let priceTextField = UITextField()
         priceTextField.translatesAutoresizingMaskIntoConstraints = false
         priceTextField.placeholder = "Price"
+        priceTextField.text = "120"
         priceTextField.keyboardType = .decimalPad
         priceTextField.backgroundColor = .systemGray4
         view.addSubview(priceTextField)
+        
+        let menuItems = SubscriptionPeriod.allCases.map { period in
+            UIAction(title: period.name) { [weak self] _ in
+                self?.selectedPeriod = period
+            }
+        }
+        
+        let menu = UIMenu(title: "Select Period", children: menuItems)
+        periodButton.menu = menu
+        periodButton.showsMenuAsPrimaryAction = true
         
         view.addSubview(periodButton)
         view.addSubview(dateButton)
@@ -127,6 +139,8 @@ class EditSubcriptionViewController: UIViewController {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
             dateButton.setTitle(sub.nextDateFomatter, for: .normal)
+        } else {
+            nameTextField.text = companyName
         }
         
     }
