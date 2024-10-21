@@ -13,7 +13,7 @@ final class CalendarDelegate : NSObject, FSCalendarDelegate {
     var didSelectDate: ((Date, CalendarViewCell) -> Void)?
     var didDeselectDate: ((Date, CalendarViewCell) -> Void)?
     var didDeselect: (() -> Void)?
-    var test: ((CGRect, FSCalendar) -> Void)?
+    var boundingRectWillChange: ((CGRect, FSCalendar) -> Void)?
     var currentPageDidChange: ((FSCalendar) -> Void)?
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -63,7 +63,7 @@ final class CalendarDelegate : NSObject, FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
           calendar.frame = CGRect(origin: calendar.frame.origin, size: bounds.size)
-          test?(bounds, calendar)
+        boundingRectWillChange?(bounds, calendar)
       }
 }
 

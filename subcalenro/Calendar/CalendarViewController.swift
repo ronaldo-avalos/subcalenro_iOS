@@ -16,11 +16,24 @@ class CalendarViewController: UIViewController {
     private var lastTapDate: Date?
     private var dateTapped: Date?
     private var floatingBar: OptionsFloatingBarView!
-    var calendarHeight: CGFloat = 0
-    var lastCalendarHeight: CGFloat = 500
-    var bottomContainer : BottomContainer!
+    private let scrollView = UIScrollView()
+    private var calendarHeight: CGFloat = 0
+    private var lastCalendarHeight: CGFloat = 500
+    private var bottomContainer : BottomContainer!
     private var subscriptions: [(Date, Subscription)] = []
+    private var selectedSubs: [Subscription] = []  {
+        didSet {
+            scrollView.isScrollEnabled = selectedSubs.count > 1
+            UIView.animate(withDuration: 0.4) {
+                self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+            }
+            
+        }
+    }
     
+    private var calendarViewHeightConstraint: NSLayoutConstraint!
+    private var bottomContainerHeightConstraint: NSLayoutConstraint!
+
     let detailEvenstIcon = UIImage(systemName: "rectangle.grid.1x2")?.withTintColor(.label, renderingMode: .alwaysOriginal)
     let compactEventsIcon = UIImage(systemName: "ellipsis.rectangle")?.withTintColor(.label, renderingMode: .alwaysOriginal)
     
@@ -37,7 +50,7 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         reloadCalendar(completion: {})
-      
+        
         calendarDataSource?.didCellFor = { (date: Date, cell: CalendarViewCell) in
             self.setupCell(cell: cell, date: date)
         }
@@ -55,20 +68,23 @@ class CalendarViewController: UIViewController {
             self?.handlePageChange(calendar)
         }
         
-        calendarDelegate?.test = { (bounds : CGRect, calendar : FSCalendar) in
-            self.calendarView.frame = CGRect(origin: calendar.frame.origin, size: bounds.size)
-            self.bottomContainer.frame = CGRect(x: 0, y: calendar.frame.maxY, width: self.view.frame.width, height: self.view.frame.height - bounds.height)
+        calendarDelegate?.boundingRectWillChange = { (bounds : CGRect, calendar : FSCalendar) in
+            self.calendarViewHeightConstraint.constant = bounds.height
+            
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         }
         
-    
+        
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)
         applyTheme()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleSaveNewSaub(_:)), name: Notification.Name("SaveNewSubObserver"), object: nil)
-     
+        
         
     }
-
+    
     @objc func handleSaveNewSaub(_ notification: Notification) {
         self.reloadCalendar(completion: { })
         Utility.executeFunctionWithDelay(delay: 1, function: {
@@ -95,7 +111,7 @@ class CalendarViewController: UIViewController {
             }
         }
     }
-
+    
     
     // MARK: - Apply Theme
     @objc func applyTheme() {
@@ -108,10 +124,16 @@ class CalendarViewController: UIViewController {
         bottomContainer.setDateLabel(date)
         let subs = subscriptions.filter{ Calendar.current.isDate($0.0, inSameDayAs: date) }
         if subs.count > 0 {
-            let selectedSubs = SubscriptionManager().readByIds(subs.map({return $0.1.id}))
+            selectedSubs = SubscriptionManager().readByIds(subs.map({return $0.1.id}))
             bottomContainer.loadSubscriptions(selectedSubs)
         } else {
+            selectedSubs = []
             bottomContainer.loadSubscriptions([])
+        }
+        
+        self.bottomContainerHeightConstraint.constant = CGFloat((selectedSubs.count * 83) + 138)
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
         }
         setupCell(cell: cell, date: date)
     }
@@ -130,7 +152,10 @@ class CalendarViewController: UIViewController {
     
     
     // MARK: - Page Change Handling
-    private func handlePageChange(_ calendar: FSCalendar) {        
+    private func handlePageChange(_ calendar: FSCalendar) {
+        UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
+              self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+          }, completion: nil)
         let currentPageComponents = Calendar.current.dateComponents([.year, .month], from: calendar.currentPage)
         var todayComponents = Calendar.current.dateComponents([.year, .month], from: Date())
         todayComponents.day = 1
@@ -147,27 +172,17 @@ class CalendarViewController: UIViewController {
         }
     }
     
+    
     // MARK: - Setup Views
     private func setupViews() {
-        let calendarHeight : CGFloat = Utility.isIphoneWithSmallScreen() ? 450 : Utility.isIpad ? 700 : 500
-        calendarView = CustomFSCalendar(frame: CGRect(x: 0, y:44, width: view.frame.width, height: calendarHeight))
-        calendarDelegate = CalendarDelegate()
-        calendarDataSource = CalendarDataSource(calendar: calendarView ?? FSCalendar())
-        calendarView?.dataSource = calendarDataSource
-        calendarView?.delegate = calendarDelegate
+        scrollView.isScrollEnabled = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
+        view.addSubview(scrollView)
         
-        let menu = UIMenu(title: "", children: [
-            UIAction(title: "Compact", image: compactEventsIcon, handler: { [self] _ in
-                toggleEvents.setImage(compactEventsIcon, for: .normal)
-            }),
-            UIAction(title: "Detail", image: detailEvenstIcon, handler: { [self] _ in
-                toggleEvents.setImage(self.detailEvenstIcon, for: .normal)
-            })
-        ])
-        
-        toggleEvents.setImage(self.detailEvenstIcon, for: .normal)
-        toggleEvents.menu = menu
-        toggleEvents.showsMenuAsPrimaryAction = true
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentView)
         
         
         floatingBar = OptionsFloatingBarView()
@@ -176,25 +191,61 @@ class CalendarViewController: UIViewController {
         let floatingBarWidth: CGFloat = Utility.isIpad ? 220 : 55 * 3
         let floatingBarHeight: CGFloat = Utility.isIpad ? 65 : 55
         
-        bottomContainer = BottomContainer(frame: CGRect(x: 0, y: calendarView.frame.maxY, width: view.frame.width, height: self.view.bounds.width + calendarView.bounds.height))
+        // Configurar el calendarView
+        
+        calendarView = CustomFSCalendar()
+        calendarView.translatesAutoresizingMaskIntoConstraints = false
+        calendarDelegate = CalendarDelegate()
+        calendarDataSource = CalendarDataSource(calendar: calendarView)
+        calendarView?.dataSource = calendarDataSource
+        calendarView?.delegate = calendarDelegate
+        let calendarHeight: CGFloat = Utility.isIphoneWithSmallScreen() ? 450 : Utility.isIpad ? 700 : 500
+        calendarViewHeightConstraint = calendarView?.heightAnchor.constraint(equalToConstant: calendarHeight)
+     
+        bottomContainer = BottomContainer()
+        bottomContainer.translatesAutoresizingMaskIntoConstraints = false
         bottomContainer.tableView.separatorStyle = .none
         bottomContainer.tableView.backgroundColor = .clear
+        bottomContainerHeightConstraint = bottomContainer.heightAnchor.constraint(equalToConstant: 100 )
         
+        contentView.addSubview(calendarView)
+        contentView.addSubview(bottomContainer)
         
-        let views = [calendarView!,toggleEvents,bottomContainer!]
-        views.forEach(view.addSubview(_:))
+        view.addSubview(toggleEvents)
         view.addSubview(floatingBar)
-        view.backgroundColor = ThemeManager.color(for: .primaryBackground)
+        
+        
         NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            toggleEvents.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor,constant: 6),
-            toggleEvents.trailingAnchor.constraint(equalTo: view.leadingAnchor,constant: -16),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            calendarView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            calendarView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            calendarView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            calendarView.heightAnchor.constraint(equalToConstant: calendarHeight),
+            calendarViewHeightConstraint!,
+
+            bottomContainer.topAnchor.constraint(equalTo: calendarView.bottomAnchor, constant: 16),
+            bottomContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            bottomContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            bottomContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            bottomContainerHeightConstraint!,
+            
+            toggleEvents.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 6),
+            toggleEvents.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             floatingBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             floatingBar.widthAnchor.constraint(equalToConstant: floatingBarWidth),
             floatingBar.heightAnchor.constraint(equalToConstant: floatingBarHeight),
-            
         ])
         
         bottomContainer.deleteSub = { id in
@@ -208,7 +259,7 @@ class CalendarViewController: UIViewController {
                 self.reloadCalendar(completion: {})
             }
         }
-
+        
         bottomContainer.editSub = { id in
             let vc = EditSubcriptionViewController()
             let nc = UINavigationController(rootViewController: vc)
@@ -235,7 +286,7 @@ class CalendarViewController: UIViewController {
         print("Reload Calendar")
         completion()
     }
-
+    
 }
 
 
@@ -252,7 +303,7 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     
     
     func newEventButtonTapped() {
-//        self.subscriptionVC.subId = nil
+        //        self.subscriptionVC.subId = nil
         let vc = SubscriptionsViewController()
         let nc = UINavigationController(rootViewController: vc)
         self.present(nc, animated: true)
@@ -266,8 +317,8 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
             subtitle: nil
         )
         toast.show(haptic: .success)
-//        let vc = SettingsViewController()
-//        let nc = UINavigationController(rootViewController: vc)
-//        self.present(nc, animated: true)
+        //        let vc = SettingsViewController()
+        //        let nc = UINavigationController(rootViewController: vc)
+        //        self.present(nc, animated: true)
     }
 }

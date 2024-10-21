@@ -48,7 +48,8 @@ class BottomContainer: UIView {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
-     
+        tableView.isScrollEnabled = false
+        
         addSubview(topBorder)
         addSubview(tableView)
         addSubview(dateLabel)
@@ -68,8 +69,8 @@ class BottomContainer: UIView {
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -12),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
+            thereNotSubLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 50),
             thereNotSubLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            thereNotSubLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -50),
         
         ])
     }
@@ -78,7 +79,7 @@ class BottomContainer: UIView {
     func loadSubscriptions(_ subscriptions: [Subscription]) {
         self.subscriptions = subscriptions
         thereNotSubLabel.isHidden = !subscriptions.isEmpty
-        tableView.isScrollEnabled = subscriptions.count != 1
+     //   tableView.isScrollEnabled = subscriptions.count != 1
         tableView.reloadData()
     }
 }
