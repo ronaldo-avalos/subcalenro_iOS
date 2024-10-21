@@ -34,11 +34,13 @@ class BottomContainer: UIView {
         topBorder.translatesAutoresizingMaskIntoConstraints = false
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.font = UIFont(name: "SFProRounded-Semibold", size: 16)
+        dateLabel.font = UIFont(name: "SFProRounded-Semibold", size: 18)
         setDateLabel(Date())
         
         thereNotSubLabel.translatesAutoresizingMaskIntoConstraints = false
-        thereNotSubLabel.text = "No renewal on this day"
+        thereNotSubLabel.text = "No subscription on this day \nadd a new sub for this date"
+        thereNotSubLabel.numberOfLines = 2
+        thereNotSubLabel.textAlignment = .center
         thereNotSubLabel.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         thereNotSubLabel.textColor = .tertiaryLabel
         
@@ -66,8 +68,8 @@ class BottomContainer: UIView {
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -12),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            thereNotSubLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
-            thereNotSubLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            thereNotSubLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            thereNotSubLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -50),
         
         ])
     }

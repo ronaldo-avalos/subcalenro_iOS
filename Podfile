@@ -9,6 +9,7 @@ target 'subcalenro' do
   pod 'FSCalendar'
   pod 'CalendarKit'
   pod 'DGCharts'
+  pod "ToastViewSwift"
   
 end
 

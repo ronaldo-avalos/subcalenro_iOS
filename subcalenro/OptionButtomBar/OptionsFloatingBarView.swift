@@ -22,9 +22,12 @@ class OptionsFloatingBarView : UIView {
     let analyticsButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0)
         button.configuration = configuration
-        button.setImage(UIImage(named: "analyticsIcon"), for: .normal)
+        let symbolName = "chart.bar"
+        let boldConfig = UIImage.SymbolConfiguration(weight: .light)
+        let boldImage = UIImage(systemName: symbolName)?.withConfiguration(boldConfig)
+        button.setImage(boldImage, for: .normal)
         button.tintColor = ThemeManager.color(for: .primaryBackground)
         return button
     }()
@@ -32,9 +35,12 @@ class OptionsFloatingBarView : UIView {
     let settingsButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 6, bottom: 12, trailing: 12)
         button.configuration = configuration
-        button.setImage(UIImage(systemName: "gearshape"), for: .normal)
+        let symbolName = "gearshape"
+        let boldConfig = UIImage.SymbolConfiguration(weight: .regular)
+        let boldImage = UIImage(systemName: symbolName)?.withConfiguration(boldConfig)
+        button.setImage(boldImage, for: .normal)
         button.tintColor = ThemeManager.color(for: .primaryBackground)
         return button
     }()
@@ -55,9 +61,12 @@ class OptionsFloatingBarView : UIView {
     let addButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 6)
         button.configuration = configuration
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        let symbolName = "plus"
+        let boldConfig = UIImage.SymbolConfiguration(weight: .regular)
+        let boldImage = UIImage(systemName: symbolName)?.withConfiguration(boldConfig)
+        button.setImage(boldImage, for: .normal)
         button.tintColor = ThemeManager.color(for: .primaryBackground)
         return button
     }()

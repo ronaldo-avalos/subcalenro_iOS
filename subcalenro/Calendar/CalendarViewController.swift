@@ -7,6 +7,7 @@
 
 import UIKit
 import FSCalendar
+import ToastViewSwift
 
 class CalendarViewController: UIViewController {
     private var calendarView : FSCalendar!
@@ -35,7 +36,7 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        reloadCalendar()
+        reloadCalendar(completion: {})
       
         calendarDataSource?.didCellFor = { (date: Date, cell: CalendarViewCell) in
             self.setupCell(cell: cell, date: date)
@@ -56,7 +57,7 @@ class CalendarViewController: UIViewController {
         
         calendarDelegate?.test = { (bounds : CGRect, calendar : FSCalendar) in
             self.calendarView.frame = CGRect(origin: calendar.frame.origin, size: bounds.size)
-            self.bottomContainer.frame = CGRect(x: 0, y: calendar.frame.maxY, width: self.view.frame.width, height: 600)
+            self.bottomContainer.frame = CGRect(x: 0, y: calendar.frame.maxY, width: self.view.frame.width, height: self.view.frame.height - bounds.height)
         }
         
     
@@ -69,7 +70,16 @@ class CalendarViewController: UIViewController {
     }
 
     @objc func handleSaveNewSaub(_ notification: Notification) {
-        self.reloadCalendar()
+        self.reloadCalendar(completion: { })
+        Utility.executeFunctionWithDelay(delay: 1, function: {
+            let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            let toast = Toast.default(
+                image: icon!,
+                title: "Subscription saved",
+                subtitle: nil
+            )
+            toast.show(haptic: .success)
+        })
     }
     
     
@@ -166,7 +176,7 @@ class CalendarViewController: UIViewController {
         let floatingBarWidth: CGFloat = Utility.isIpad ? 220 : 55 * 3
         let floatingBarHeight: CGFloat = Utility.isIpad ? 65 : 55
         
-        bottomContainer = BottomContainer(frame: CGRect(x: 0, y: calendarView.frame.maxY, width: view.frame.width, height: 600))
+        bottomContainer = BottomContainer(frame: CGRect(x: 0, y: calendarView.frame.maxY, width: view.frame.width, height: self.view.bounds.width + calendarView.bounds.height))
         bottomContainer.tableView.separatorStyle = .none
         bottomContainer.tableView.backgroundColor = .clear
         
@@ -195,7 +205,7 @@ class CalendarViewController: UIViewController {
                 } else {
                     print("No se encontró la suscripción con el ID: \(id)")
                 }
-                self.reloadCalendar()
+                self.reloadCalendar(completion: {})
             }
         }
 
@@ -215,7 +225,7 @@ class CalendarViewController: UIViewController {
     }
     
     
-    private func reloadCalendar() {
+    private func reloadCalendar(completion: @escaping () -> Void) {
         // Cargar las suscripciones
         subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
         calendarDataSource?.set(subs: subscriptions)
@@ -223,6 +233,7 @@ class CalendarViewController: UIViewController {
         let selectedSubs = SubscriptionManager().readByIds(subs.map({return $0.1.id}))
         bottomContainer.loadSubscriptions(selectedSubs)
         print("Reload Calendar")
+        completion()
     }
 
 }
@@ -248,8 +259,15 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func settingsButtonTapped() {
-        let vc = SettingsViewController()
-        let nc = UINavigationController(rootViewController: vc)
-        self.present(nc, animated: true)
+        let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        let toast = Toast.default(
+            image: icon!,
+            title: "Subscription saved ",
+            subtitle: nil
+        )
+        toast.show(haptic: .success)
+//        let vc = SettingsViewController()
+//        let nc = UINavigationController(rootViewController: vc)
+//        self.present(nc, animated: true)
     }
 }

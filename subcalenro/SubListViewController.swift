@@ -80,12 +80,47 @@ extension SubListViewController: UITableViewDataSource, UITableViewDelegate {
         editSubscription(at: indexPath)
     }
     
-    private func editSubscription(at indexPath: IndexPath) {
-        let sub = subscriptions[indexPath.row]
-        print(sub)
+    // MARK: - Acciones de deslizar (Swipe actions)
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let vc = DetailSubcriptionViewController()
-        vc.subId = sub.id
-        self.show(vc, sender: nil)
+        // Acción para eliminar la suscripción
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
+            self?.deleteSubscription(at: indexPath)
+            completionHandler(true)
+        }
+        deleteAction.image = UIImage(systemName: "trash")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        deleteAction.backgroundColor = ThemeManager.color(for: .primaryBackground)
+        
+        // Acción para editar la suscripción
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { [weak self] (_, _, completionHandler) in
+            self?.editSubscription(at: indexPath)
+            completionHandler(true)
+        }
+        editAction.image = UIImage(systemName: "pencil")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        editAction.backgroundColor = ThemeManager.color(for: .primaryBackground)
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
     }
+    
+    
+    // MARK: - Métodos para manejar la edición y eliminación
+    private func deleteSubscription(at indexPath: IndexPath) {
+        Utility.showDeleteConfirmationAlert(on: self, title: "Delete", message: "¿Are you sure you want to delete this subscription?") {
+            let sub =  self.subscriptions[indexPath.row]
+            SubscriptionManager().deleteById(sub.id)
+            self.subscriptions = SubscriptionManager().readAllSubscriptions()
+        }
+    }
+
+    private func editSubscription(at indexPath: IndexPath) {
+        let  sub = subscriptions[indexPath.row]
+        let vc = EditSubcriptionViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        vc.subId = sub.id
+        self.present(nc, animated: true)
+    }
+    
+    
 }

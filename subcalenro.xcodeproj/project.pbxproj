@@ -154,6 +154,7 @@
 		D37508202CB8952500FDFBB4 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */,
 				D37508212CB8953300FDFBB4 /* NotificationManager.swift */,
 			);
 			path = Notifications;
@@ -300,7 +301,6 @@
 				D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */,
 				D375084A2CBA210400FDFBB4 /* SubListViewController.swift */,
 				D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */,
-				CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */,
 			);
 			path = subcalenro;
 			sourceTree = "<group>";
