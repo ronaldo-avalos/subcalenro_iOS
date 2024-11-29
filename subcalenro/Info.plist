@@ -18,7 +18,8 @@
         <string>SF-Pro-Display-Semibold.otf</string>
         <string>SF-Pro-Rounded-Bold.otf</string>
         <string>PlayfairDisplay-ExtraBoldItalic.ttf</string>
-        <string>PlayfairDisplay-ExtraBold.ttf</string>	</array>
+        <string>PlayfairDisplay-ExtraBold.ttf</string>
+    </array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -81,7 +81,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     // Método para configurar la UICollectionView
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 115, height: 115)  // Tamaño de las celdas
+        layout.itemSize = CGSize(width: 112, height: 112)  // Tamaño de las celdas
         layout.minimumInteritemSpacing = 10  // Espacio entre columnas (horizontal)
         layout.minimumLineSpacing = 20  // Espacio entre filas (vertical)
         layout.sectionInset = UIEdgeInsets(top: 20, left: 14, bottom: 80, right: 14)
@@ -285,7 +285,7 @@ extension SubscriptionsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let comapany = companysNames[indexPath.row]
         let subImage = logos[indexPath.row]
-        let vc = EditSubcriptionViewController()
+        let vc = EditSubViewController()
         vc.imgURL = subImage
         vc.companyName = comapany
         self.navigationController?.pushViewController(vc, animated: true)

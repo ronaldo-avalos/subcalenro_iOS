@@ -310,15 +310,8 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     }
     
     func settingsButtonTapped() {
-        let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-        let toast = Toast.default(
-            image: icon!,
-            title: "Subscription saved ",
-            subtitle: nil
-        )
-        toast.show(haptic: .success)
-        //        let vc = SettingsViewController()
-        //        let nc = UINavigationController(rootViewController: vc)
-        //        self.present(nc, animated: true)
+        let vc = SettingsViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        self.present(nc, animated: true)
     }
 }

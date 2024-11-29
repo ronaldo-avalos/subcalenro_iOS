@@ -1,15 +1,16 @@
 //
-//  SubPreviewViewController.swift
+//  EditSubViewController.swift
 //  subcalenro
 //
-//  Created by ronaldo avalos on 12/10/24.
+//  Created by Ronaldo Avalos on 28/11/24.
 //
 
+import Foundation
 import UIKit
 
-class DetailSubcriptionViewController: UIViewController {
+class EditSubViewController: UIViewController {
     
-    var subId: UUID?
+    
     var imgURL: String?
     var companyName: String?
     
@@ -71,14 +72,13 @@ class DetailSubcriptionViewController: UIViewController {
         
      
         
-        if let id = subId {
-            guard let sub = SubscriptionManager().readById(id) else { return }
-            imageView.image = UIImage(named: sub.logoUrl)
-            nameLabel.text = sub.name
-            priceLabel.text = "$\(String(sub.amount))"
-            nextBillLabel.text = "Next bill: \(sub.nextDateFomatter)"
-            let periodView = createDetailView(title: "Period", value: sub.period.name)
-            let reminderView = createDetailView(title: "Remind me", value: sub.reminderTime.name)
+        if let image = imgURL {
+            imageView.image = UIImage(named: image)
+            nameLabel.text = companyName
+            priceLabel.text = "$100"
+            nextBillLabel.text = "Next bill: "
+            let periodView = createDetailView(title: "Period", value: "Mensual")
+            let reminderView = createDetailView(title: "Remind me", value: "1 día antes")
             let planDetailsView = createDetailView(title: "Plan details", value:  "N/A")
             
             view.addSubview(periodView)
