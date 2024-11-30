@@ -8,26 +8,38 @@
 import Foundation
 import UIKit
 
-class EditSubViewController: UIViewController {
+class EditSubViewController: UIViewController, UITextFieldDelegate {
     
     
     var imgURL: String?
     var companyName: String?
     
+    
+    private var priceTextField : UITextField = {
+        let textField = UITextField()
+        textField.keyboardType = .decimalPad
+        textField.placeholder = "00.00"
+        textField.font = UIFont.systemFont(ofSize: 24)
+        textField.backgroundColor = .clear
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(endEditing))
+        view.addGestureRecognizer(tap)
+        priceTextField.delegate = self
         setupView()
     }
     
+    @objc func endEditing() {
+        view.endEditing(true)
+    }
+    
     private func setupView() {
-//        self.navigationItem.title = "Subcription"
         self.navigationController?.navigationBar.tintColor = .label
-        let nextBillLabel = UILabel()
-        nextBillLabel.font = UIFont.systemFont(ofSize: 16)
-        nextBillLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(nextBillLabel)
-  
         
         let dateLabel = UILabel()
         let dateFormatter = DateFormatter()
@@ -50,13 +62,14 @@ class EditSubViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageContainer.addSubview(imageView)
         
-        let editImageButton = UIButton(type: .system)
-        editImageButton.setImage(UIImage(systemName: "pencil")?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
-        editImageButton.layer.cornerRadius = 26
-        editImageButton.clipsToBounds = true
-        editImageButton.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
-        editImageButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(editImageButton)
+        let saveButton = UIButton(type: .system)
+        saveButton.setTitle("Save", for: .normal)
+        saveButton.layer.cornerRadius = 12
+        saveButton.tintColor = ThemeManager.color(for: .secondaryText)
+        saveButton.clipsToBounds = true
+        saveButton.backgroundColor = ThemeManager.color(for: .secondaryBackground)
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(saveButton)
 
         
         let nameLabel = UILabel()
@@ -66,39 +79,46 @@ class EditSubViewController: UIViewController {
         
         let priceLabel = UILabel()
         priceLabel.font = UIFont.systemFont(ofSize: 24)
-        priceLabel.textColor = .systemBlue
+        priceLabel.textColor = .label
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(priceLabel)
-        
      
         
         if let image = imgURL {
             imageView.image = UIImage(named: image)
             nameLabel.text = companyName
-            priceLabel.text = "$100"
-            nextBillLabel.text = "Next bill: "
-            let periodView = createDetailView(title: "Period", value: "Mensual")
-            let reminderView = createDetailView(title: "Remind me", value: "1 día antes")
-            let planDetailsView = createDetailView(title: "Plan details", value:  "N/A")
-            
+            priceLabel.text = "$"
+            let periodView = createDetailView(title: "Period", value: "Mensual", options: ["Mensual", "Anual", "Semanal"]) { selectedValue in
+                print("Periodo seleccionado: \(selectedValue)")
+            }
+
+            let reminderView = createDetailView(title: "Remind me", value: "1 día antes", options: ["1 día antes", "2 días antes", "1 semana antes"]) { selectedValue in
+                print("Recordatorio seleccionado: \(selectedValue)")
+            }
+
+            let planDetailsView = createDetailView(title: "Plan details", value: "N/A", options: ["Plan A", "Plan B", "Plan C"]) { selectedValue in
+                print("Detalles del plan seleccionado: \(selectedValue)")
+            }
+
+            // `nextBillView` no tiene opciones, por lo que no tendrá interacción
+            let nextBillView = createDetailView(title: "Next bill", value: "19 Dic 2024")
+
             view.addSubview(periodView)
             view.addSubview(reminderView)
             view.addSubview(planDetailsView)
+            view.addSubview(nextBillView)
+            view.addSubview(priceTextField)
+
             
-            editImageButton.addAction(UIAction(handler: { [weak self] _ in
-                self?.toggleEditMode(button: editImageButton)
+            saveButton.addAction(UIAction(handler: { [weak self] _ in
+                    //
             }), for: .touchUpInside)
 
             // Configurar restricciones
             NSLayoutConstraint.activate([
-                nextBillLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
-                nextBillLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                
-                dateLabel.topAnchor.constraint(equalTo: nextBillLabel.bottomAnchor, constant: 5),
-                dateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                
+
                 imageContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                imageContainer.topAnchor.constraint(equalTo: nextBillLabel.bottomAnchor, constant: 26),
+                imageContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
                 imageContainer.widthAnchor.constraint(equalToConstant: 120),  // Ancho del contenedor
                 imageContainer.heightAnchor.constraint(equalToConstant: 120),  // Altura del contenedor
                 
@@ -111,8 +131,16 @@ class EditSubViewController: UIViewController {
                 nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 
                 priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-                priceLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                priceLabel.trailingAnchor.constraint(equalTo: priceTextField.leadingAnchor, constant: -6),
+                priceLabel.centerYAnchor.constraint(equalTo: priceTextField.centerYAnchor),
+                priceLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 12),
                 
+                priceTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+                priceTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                priceTextField.widthAnchor.constraint(greaterThanOrEqualToConstant: 50),
+                priceTextField.heightAnchor.constraint(equalToConstant: 24),
+        
+            
                 periodView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 20),
                 periodView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                 periodView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -128,60 +156,94 @@ class EditSubViewController: UIViewController {
                 planDetailsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
                 planDetailsView.heightAnchor.constraint(equalToConstant: 54),
                 
-                editImageButton.widthAnchor.constraint(equalToConstant: 52),
-                editImageButton.heightAnchor.constraint(equalToConstant: 52),
-                editImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                editImageButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor,constant: -40),
+                nextBillView.topAnchor.constraint(equalTo: planDetailsView.bottomAnchor, constant: 4),
+                nextBillView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                nextBillView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                nextBillView.heightAnchor.constraint(equalToConstant: 54),
+                
+                saveButton.topAnchor.constraint(equalTo: nextBillView.bottomAnchor, constant: 48),
+                saveButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
+                saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                saveButton.heightAnchor.constraint(equalToConstant: 54)
+                
+
             ])
             
         }
     }
     
-    private func toggleEditMode(button: UIButton) {
-        // Verificamos si ya está en modo "Save"
-        if button.currentImage == UIImage(systemName: "checkmark") {
-            // Regresar al modo de edición
-            UIView.transition(with: button, duration: 0.3, options: .transitionCrossDissolve, animations: {
-                button.setImage(UIImage(systemName: "pencil")?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
-                button.setTitle(nil, for: .normal)
-            }, completion: nil)
-        } else {
-            // Cambiar al modo "Save"
-            UIView.transition(with: button, duration: 0.3, options: .transitionCrossDissolve, animations: {
-                button.setImage(UIImage(systemName: "checkmark")?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
-            }, completion: nil)
-        }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        priceTextField.resignFirstResponder()
+        return true
     }
     
-    private func createDetailView(title: String, value: String) -> UIView {
+    private func createDetailView(title: String, value: String, options: [String]? = nil, onSelect: ((String) -> Void)? = nil) -> UIView {
         let container = UIView()
         container.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
         container.layer.cornerRadius = 10
         container.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.font = UIFont.systemFont(ofSize: 16)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        let valueLabel = UILabel()
-        valueLabel.text = value
-        valueLabel.font = UIFont.systemFont(ofSize: 16)
-        valueLabel.textAlignment = .right
-        valueLabel.textColor = .tertiaryLabel
-        valueLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
+        let valueButton = UIButton(type: .system)
+        valueButton.setTitle(value, for: .normal)
+        valueButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        valueButton.setTitleColor(.secondaryLabel, for: .normal)
+        valueButton.contentHorizontalAlignment = .right
+        valueButton.translatesAutoresizingMaskIntoConstraints = false
+
+        // Configurar menú si hay opciones disponibles
+        if let options = options {
+            let menuItems = options.map { option in
+                UIAction(title: option, handler: { _ in
+                    valueButton.setTitle(option, for: .normal) // Actualizar el texto del botón
+                    onSelect?(option) // Ejecutar la acción de selección
+                })
+            }
+
+            valueButton.menu = UIMenu(title: "Selecciona \(title)", children: menuItems)
+            valueButton.showsMenuAsPrimaryAction = true // Activa el menú en toques cortos
+        }
+
         container.addSubview(titleLabel)
-        container.addSubview(valueLabel)
-        
+        container.addSubview(valueButton)
+
         NSLayoutConstraint.activate([
             titleLabel.centerYAnchor.constraint(equalTo: container.centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 10),
-            
-            valueLabel.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-            valueLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -12)
+
+            valueButton.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            valueButton.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -12),
+            valueButton.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: 10)
         ])
-        
+
         return container
     }
+
+
 }
+
+class ContextMenuHandler: NSObject, UIContextMenuInteractionDelegate {
+    private let options: [String]
+    private let onSelect: (String) -> Void
+
+    init(options: [String], onSelect: @escaping (String) -> Void) {
+        self.options = options
+        self.onSelect = onSelect
+    }
+
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let actions = self.options.map { option in
+                UIAction(title: option, handler: { _ in
+                    self.onSelect(option)
+                })
+            }
+            return UIMenu(title: "Selecciona una opción", children: actions)
+        }
+    }
+}
+

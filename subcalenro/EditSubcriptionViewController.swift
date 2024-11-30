@@ -151,6 +151,8 @@ class EditSubcriptionViewController: UIViewController {
         
     }
     
+    
+    
     // Menú para seleccionar el periodo de suscripción
     @objc private func showPeriodMenu() {
         let menuItems = SubscriptionPeriod.allCases.map { period in
