@@ -8,8 +8,25 @@
 import Foundation
 import UIKit
 
-class EditSubViewController: UIViewController, UITextFieldDelegate {
+class EditSubViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate {
     
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        options.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SettingsUITableViewCell
+        let settingOption = options[indexPath.row]
+
+        cell.configure(with: settingOption)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Utility.isIpad ? 60 : 50
+    }
+
     
     var imgURL: String?
     var companyName: String?
@@ -25,12 +42,23 @@ class EditSubViewController: UIViewController, UITextFieldDelegate {
         return textField
     }()
     
+    let tableOptionsView = UITableView(frame: .zero, style: .insetGrouped)
+    let options: [SettingsCellModel] = [
+        SettingsCellModel(type: .withAccessory, title: "Period", iconImage: Utility.renderingIcon("repeat.circle")),
+        SettingsCellModel(type: .withAccessory, title: "Remind me", iconImage: Utility.renderingIcon("bell.circle")),
+        SettingsCellModel(type: .withAccessory, title: "Plan detail", iconImage: Utility.renderingIcon("arrow.trianglehead.counterclockwise")),
+        SettingsCellModel(type: .withAccessory, title: "Next bill", iconImage: Utility.renderingIcon("calendar.circle")),
+        
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
         let tap = UITapGestureRecognizer(target: self, action: #selector(endEditing))
         view.addGestureRecognizer(tap)
         priceTextField.delegate = self
+        tableOptionsView.dataSource = self
+        tableOptionsView.delegate = self
         setupView()
     }
     
@@ -88,25 +116,13 @@ class EditSubViewController: UIViewController, UITextFieldDelegate {
             imageView.image = UIImage(named: image)
             nameLabel.text = companyName
             priceLabel.text = "$"
-            let periodView = createDetailView(title: "Period", value: "Mensual", options: ["Mensual", "Anual", "Semanal"]) { selectedValue in
-                print("Periodo seleccionado: \(selectedValue)")
-            }
-
-            let reminderView = createDetailView(title: "Remind me", value: "1 día antes", options: ["1 día antes", "2 días antes", "1 semana antes"]) { selectedValue in
-                print("Recordatorio seleccionado: \(selectedValue)")
-            }
-
-            let planDetailsView = createDetailView(title: "Plan details", value: "N/A", options: ["Plan A", "Plan B", "Plan C"]) { selectedValue in
-                print("Detalles del plan seleccionado: \(selectedValue)")
-            }
-
-            // `nextBillView` no tiene opciones, por lo que no tendrá interacción
-            let nextBillView = createDetailView(title: "Next bill", value: "19 Dic 2024")
-
-            view.addSubview(periodView)
-            view.addSubview(reminderView)
-            view.addSubview(planDetailsView)
-            view.addSubview(nextBillView)
+            
+            tableOptionsView.register(SettingsUITableViewCell.self, forCellReuseIdentifier: "cell")
+            tableOptionsView.translatesAutoresizingMaskIntoConstraints = false
+            tableOptionsView.isScrollEnabled = false
+            tableOptionsView.backgroundColor = .clear
+            
+            view.addSubview(tableOptionsView)
             view.addSubview(priceTextField)
 
             
@@ -141,27 +157,12 @@ class EditSubViewController: UIViewController, UITextFieldDelegate {
                 priceTextField.heightAnchor.constraint(equalToConstant: 24),
         
             
-                periodView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 20),
-                periodView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                periodView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                periodView.heightAnchor.constraint(equalToConstant: 54),
-                
-                reminderView.topAnchor.constraint(equalTo: periodView.bottomAnchor, constant: 4),
-                reminderView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                reminderView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                reminderView.heightAnchor.constraint(equalToConstant: 54),
-                
-                planDetailsView.topAnchor.constraint(equalTo: reminderView.bottomAnchor, constant: 4),
-                planDetailsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                planDetailsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                planDetailsView.heightAnchor.constraint(equalToConstant: 54),
-                
-                nextBillView.topAnchor.constraint(equalTo: planDetailsView.bottomAnchor, constant: 4),
-                nextBillView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                nextBillView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                nextBillView.heightAnchor.constraint(equalToConstant: 54),
-                
-                saveButton.topAnchor.constraint(equalTo: nextBillView.bottomAnchor, constant: 48),
+                tableOptionsView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 20),
+                tableOptionsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                tableOptionsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                tableOptionsView.heightAnchor.constraint(equalToConstant: CGFloat(options.count * 60) ), // Ajuste según contenido
+
+                saveButton.topAnchor.constraint(equalTo: tableOptionsView.bottomAnchor, constant: 48),
                 saveButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
                 saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 saveButton.heightAnchor.constraint(equalToConstant: 54)
@@ -225,25 +226,3 @@ class EditSubViewController: UIViewController, UITextFieldDelegate {
 
 
 }
-
-class ContextMenuHandler: NSObject, UIContextMenuInteractionDelegate {
-    private let options: [String]
-    private let onSelect: (String) -> Void
-
-    init(options: [String], onSelect: @escaping (String) -> Void) {
-        self.options = options
-        self.onSelect = onSelect
-    }
-
-    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            let actions = self.options.map { option in
-                UIAction(title: option, handler: { _ in
-                    self.onSelect(option)
-                })
-            }
-            return UIMenu(title: "Selecciona una opción", children: actions)
-        }
-    }
-}
-

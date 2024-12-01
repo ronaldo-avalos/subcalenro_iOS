@@ -77,6 +77,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
         setupCollectionView()
         setupTableView()
     }
+
     
     // Método para configurar la UICollectionView
     private func setupCollectionView() {
