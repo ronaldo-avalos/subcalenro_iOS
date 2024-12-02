@@ -13,17 +13,17 @@ class SettingsViewController: UIViewController {
     let sections: [[SettingsCellModel]] = [
         // GENERAL
         [
-        SettingsCellModel(type: .withAccessory, title: "Calenro Pro", iconImage: Utility.renderingIcon("sparkles")),
-        SettingsCellModel(type: .withAccessory, title: "Apariencia", iconImage: Utility.renderingIcon("eyeglasses")),
-        SettingsCellModel(type: .withAccessory, title: "Notifications", iconImage: Utility.renderingIcon("bell")),
-        SettingsCellModel(type: .withAccessory, title: "Edit Event", iconImage: Utility.renderingIcon("calendar")),
+        SettingsCellModel(type: .withAccessory, title: "Calenro Pro", iconImage: Utility.renderingIcon("sparkles"),options: [], selectedValue: ""),
+        SettingsCellModel(type: .withAccessory, title: "Apariencia", iconImage: Utility.renderingIcon("eyeglasses"),options: [], selectedValue: ""),
+        SettingsCellModel(type: .withAccessory, title: "Notifications", iconImage: Utility.renderingIcon("bell"),options: [], selectedValue: ""),
+        SettingsCellModel(type: .withAccessory, title: "Edit Event", iconImage: Utility.renderingIcon("calendar"),options: [], selectedValue: ""),
         ],
         // ACCOUNT
         [
-            SettingsCellModel(type: .withAccessory, title: "Account Settings", iconImage: Utility.renderingIcon("person.circle")),
-            SettingsCellModel(type: .withAccessory, title: "Privacy", iconImage: Utility.renderingIcon("lock.shield")),
-            SettingsCellModel(type: .withAccessory, title: "Help", iconImage: Utility.renderingIcon("questionmark.circle")),
-            SettingsCellModel(type: .withAccessory, title: "About", iconImage: Utility.renderingIcon("info.circle")),
+            SettingsCellModel(type: .withAccessory, title: "Account Settings", iconImage: Utility.renderingIcon("person.circle"),options: [], selectedValue: ""),
+            SettingsCellModel(type: .withAccessory, title: "Privacy", iconImage: Utility.renderingIcon("lock.shield"),options: [], selectedValue: ""),
+            SettingsCellModel(type: .withAccessory, title: "Help", iconImage: Utility.renderingIcon("questionmark.circle"),options: [], selectedValue: ""),
+            SettingsCellModel(type: .withAccessory, title: "About", iconImage: Utility.renderingIcon("info.circle"),options: [], selectedValue: ""),
         ] ]
     
 

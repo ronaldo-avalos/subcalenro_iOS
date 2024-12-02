@@ -12,6 +12,8 @@ struct SettingsCellModel {
     let type: SettingsCellType
     let title: String
     let iconImage: UIImage?
+    let options: [String]?
+    let selectedValue: String?
 }
 
 enum SettingsCellType {

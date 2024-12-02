@@ -44,16 +44,17 @@ class EditSubViewController: UIViewController, UITextFieldDelegate, UITableViewD
     
     let tableOptionsView = UITableView(frame: .zero, style: .insetGrouped)
     let options: [SettingsCellModel] = [
-        SettingsCellModel(type: .withAccessory, title: "Period", iconImage: Utility.renderingIcon("repeat.circle")),
-        SettingsCellModel(type: .withAccessory, title: "Remind me", iconImage: Utility.renderingIcon("bell.circle")),
-        SettingsCellModel(type: .withAccessory, title: "Plan detail", iconImage: Utility.renderingIcon("arrow.trianglehead.counterclockwise")),
-        SettingsCellModel(type: .withAccessory, title: "Next bill", iconImage: Utility.renderingIcon("calendar.circle")),
+        SettingsCellModel(type: .withAccessory, title: "Period", iconImage: nil, options: ["Option 1", "Option 2", "Option 3"],
+                          selectedValue: "Option 1"),
+        SettingsCellModel(type: .withAccessory, title: "Remind me", iconImage: nil,options: [], selectedValue: ""),
+        SettingsCellModel(type: .withAccessory, title: "Plan detail", iconImage: nil, options: [], selectedValue: ""),
+        SettingsCellModel(type: .withAccessory, title: "Next bill", iconImage: nil,options: [], selectedValue: ""),
         
     ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = ThemeManager.color(for: .primaryBackground)
+        view.backgroundColor = ThemeManager.color(for: .editBackgroud)
         let tap = UITapGestureRecognizer(target: self, action: #selector(endEditing))
         view.addGestureRecognizer(tap)
         priceTextField.delegate = self

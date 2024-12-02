@@ -15,7 +15,7 @@
       "scale" : "1x"
     },
     {
-      "filename" : "AppIconLight.png",
+      "filename" : "subsyBear.jpg",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -26,7 +26,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "AppIconDark.png",
+      "filename" : "subsyBearDark.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
