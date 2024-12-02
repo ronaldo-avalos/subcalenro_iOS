@@ -3,12 +3,14 @@ PODS:
   - DGCharts (5.1.0):
     - DGCharts/Core (= 5.1.0)
   - DGCharts/Core (5.1.0)
+  - Eureka (5.5.0)
   - FSCalendar (2.8.4)
   - ToastViewSwift (2.1.2)
 
 DEPENDENCIES:
   - CalendarKit
   - DGCharts
+  - Eureka
   - FSCalendar
   - ToastViewSwift
 
@@ -16,15 +18,17 @@ SPEC REPOS:
   trunk:
     - CalendarKit
     - DGCharts
+    - Eureka
     - FSCalendar
     - ToastViewSwift
 
 SPEC CHECKSUMS:
   CalendarKit: fc3228a9e797e1970c6b9370ee0763cf88a1da9a
   DGCharts: 1c6daf585b6cfc78807af44ea690d357c410627f
+  Eureka: 1c18c7fcd8f772cc2ca42d6be36292dffa77eecb
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   ToastViewSwift: 62e4c54cd482dd1106c2b2224103a8b171763cf3
 
-PODFILE CHECKSUM: f05c12aa2a705fe6fe2d1e0c57aa603d7ad2655e
+PODFILE CHECKSUM: a09481682456539813e8e4c68ef668ae5f270f4f
 
 COCOAPODS: 1.15.2

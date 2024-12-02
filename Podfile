@@ -10,6 +10,7 @@ target 'subcalenro' do
   pod 'CalendarKit'
   pod 'DGCharts'
   pod "ToastViewSwift"
+  pod 'Eureka'
   
 end
 

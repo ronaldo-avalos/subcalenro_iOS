@@ -286,9 +286,7 @@ extension SubscriptionsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let comapany = companysNames[indexPath.row]
         let subImage = logos[indexPath.row]
-        let vc = EditSubViewController()
-        vc.imgURL = subImage
-        vc.companyName = comapany
+        let vc = FormNewSubController(imgURL: subImage, companyName: comapany)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

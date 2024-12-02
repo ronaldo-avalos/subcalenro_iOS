@@ -10,6 +10,7 @@
 		14D730B4F063CDC67E989B72 /* Pods_subcalenro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */; };
 		CE2355312CF970B400CD7ED1 /* EditSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2355302CF970B400CD7ED1 /* EditSubViewController.swift */; };
 		CE333DE72CC3210000DC6481 /* AnalyticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE333DE62CC3210000DC6481 /* AnalyticsViewController.swift */; };
+		CE4261802CFE48B60048533E /* FormNewSubController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42617F2CFE48B60048533E /* FormNewSubController.swift */; };
 		CEC1EF332CC4A9B6008F7A9F /* NotificationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */; };
 		D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */; };
 		D310DE222CB34184008A6F39 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE212CB34184008A6F39 /* Subscription.swift */; };
@@ -65,6 +66,7 @@
 		BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_subcalenro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE2355302CF970B400CD7ED1 /* EditSubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubViewController.swift; sourceTree = "<group>"; };
 		CE333DE62CC3210000DC6481 /* AnalyticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewController.swift; sourceTree = "<group>"; };
+		CE42617F2CFE48B60048533E /* FormNewSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormNewSubController.swift; sourceTree = "<group>"; };
 		CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionViewController.swift; sourceTree = "<group>"; };
 		D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		D310DE212CB34184008A6F39 /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 				D375084A2CBA210400FDFBB4 /* SubListViewController.swift */,
 				D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */,
 				CE2355302CF970B400CD7ED1 /* EditSubViewController.swift */,
+				CE42617F2CFE48B60048533E /* FormNewSubController.swift */,
 			);
 			path = subcalenro;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 				D3B649742CAE3B1000ADD119 /* SceneDelegate.swift in Sources */,
 				D351D99B2CB762D6005B4CF0 /* SubscriptionCell.swift in Sources */,
 				D387D1542CAFA0CC00F0BCD6 /* CalendarDataSource.swift in Sources */,
+				CE4261802CFE48B60048533E /* FormNewSubController.swift in Sources */,
 				D387D18F2CAFA50700F0BCD6 /* SettingsViewController.swift in Sources */,
 				D387D1902CAFA50700F0BCD6 /* SettingsCellModel.swift in Sources */,
 				D387D1912CAFA50700F0BCD6 /* SettingsUITableViewCell.swift in Sources */,
