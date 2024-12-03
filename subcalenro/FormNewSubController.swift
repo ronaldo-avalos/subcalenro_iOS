@@ -10,7 +10,7 @@ import Eureka
 
 
 class FormNewSubController: FormViewController {
-
+    
     var imgURL: String?
     var companyName: String?
     
@@ -24,14 +24,6 @@ class FormNewSubController: FormViewController {
         super.init(coder: coder)
     }
     
-    let imageContainer : UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 20
-        view.layer.cornerCurve = .continuous
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     
     let saveButton: UIButton = {
         let button = UIButton(type: .system)
@@ -44,67 +36,34 @@ class FormNewSubController: FormViewController {
         return button
     }()
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // Asegúrate de que el índice 0 corresponde a la celda de la imagen
+        if indexPath.section == 0 && indexPath.row == 0 {
+            return 136 // Altura para la celda de la imagen
+        }
+        return 54 // Altura para las demás celdas
+    }
+  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Añadir el gesto tap al fondo para cerrar el teclado
-        let tap = UITapGestureRecognizer(target: self, action: #selector(endEditing))
-        view.addGestureRecognizer(tap)
-        
         view.backgroundColor = ThemeManager.color(for: .editBackgroud)
         self.navigationController?.navigationBar.tintColor = .label
-
-        // Configurar la vista y agregar los elementos
-        view.addSubview(imageContainer)
-        view.addSubview(saveButton)
+        
+        //        view.addSubview(saveButton)
         
         tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.isScrollEnabled = false  // No permitir desplazamiento
-        tableView.rowHeight = 54  // Establecer una altura para las celdas
         
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: imgURL ?? "")
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 12
-        imageView.layer.masksToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageContainer.addSubview(imageView)
         
-        NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: imageContainer.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: imageContainer.centerYAnchor),
-            imageView.widthAnchor.constraint(equalTo: imageContainer.widthAnchor, multiplier: 0.8),
-            imageView.heightAnchor.constraint(equalTo: imageContainer.heightAnchor, multiplier: 0.8),
-        ])
         
-        let nameField = UITextField()
-        nameField.text = companyName ?? ""
-        nameField.font = UIFont.boldSystemFont(ofSize: 32)
-        nameField.backgroundColor = .clear
-        nameField.placeholder = "Name"
-        nameField.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(nameField)
-        
-        NSLayoutConstraint.activate([
-            imageContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
-            imageContainer.widthAnchor.constraint(equalToConstant: 120),  // Ancho del contenedor
-            imageContainer.heightAnchor.constraint(equalToConstant: 120),  // Altura del contenedor
-            
-            nameField.topAnchor.constraint(equalTo: imageContainer.bottomAnchor, constant: 14),
-            nameField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            tableView.topAnchor.constraint(equalTo: nameField.bottomAnchor, constant: 24),  // Ajustar la tabla debajo del campo
-            tableView.heightAnchor.constraint(equalToConstant: 400),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            saveButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -54),
-            saveButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
-            saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            saveButton.heightAnchor.constraint(equalToConstant: 54)
-        ])
+        form +++
+        Section()
+        <<< CompanyRow() { row in
+            row.cell.imageV.image = UIImage(named: imgURL ?? "") // Cargar la imagen
+            row.title = ""
+            row.cell.backgroundColor = .clear
+        }
         
         form +++
         Section()
@@ -113,7 +72,7 @@ class FormNewSubController: FormViewController {
             $0.cell.backgroundColor = .clear
             $0.value = $0.options?[1]
         }
-
+        
         +++ Section()
         <<< IntRow() {
             $0.title = "Subscription cost"
@@ -122,12 +81,28 @@ class FormNewSubController: FormViewController {
             $0.useFormatterOnDidBeginEditing = true
         }.cellSetup { cell, _ in
             cell.textField.keyboardType = .decimalPad
+            cell.imageView?.image = UIImage(systemName: "dollarsign.circle")?.withTintColor(.label, renderingMode: .alwaysOriginal)
         }
         
         <<< PickerInputRow<String>("Billing cycle") {
-            $0.title = "Options"
+            $0.title = "Period"
             $0.options = ["Weekly","Monthly","6 months","Yearly"]
             $0.value = $0.options[1]
+        }.cellSetup { cell, _ in
+            cell.imageView?.image = UIImage(systemName: "arrow.clockwise")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            
+        }
+        
+        <<< PickerInputRow<String>("Picker Input Row") {
+            $0.title = "Reminder"
+            $0.options = ["Never", "Same day"]
+            for i in 1...7{
+                $0.options.append("\(i) day(s) before")
+            }
+            $0.value = $0.options[2]
+        }.cellSetup { cell, _ in
+            cell.imageView?.image = UIImage(systemName: "bell")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            
         }
         
         <<< DateRow("dateRow") {
@@ -135,10 +110,84 @@ class FormNewSubController: FormViewController {
             $0.value = Date() // Fecha inicial
             $0.minimumDate = Date().addingTimeInterval(-31556926) // Máximo hace 1 año
             $0.maximumDate = Date().addingTimeInterval(31556926) // Máximo en 1 año
+        }.cellSetup { cell, _ in
+            cell.imageView?.image = UIImage(systemName: "calendar")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            
+        }
+        +++ Section("")
+        <<< PickerInputRow<String>("Billing cycle") {
+            $0.title = "Period"
+            $0.options = ["Weekly","Monthly","6 months","Yearly"]
+            $0.value = $0.options[1]
+        }.cellSetup { cell, _ in
+            cell.imageView?.image = UIImage(systemName: "arrow.clockwise")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            
         }
     }
     
-    @objc func endEditing() {
-        view.endEditing(true)
+}
+
+
+final class CompanyRow: Row<CompanyRowCell>, RowType {
+    required init(tag: String?) {
+        super.init(tag: tag)
+        cellProvider = CellProvider<CompanyRowCell>()
+    }
+}
+
+
+
+class CompanyRowCell: Cell<String>, CellType {
+    
+    let imageContainer = UIView()
+    let imageV = UIImageView()
+    
+    required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupViews()
+    }
+    
+    private func setupViews() {
+        // Configurar imagen
+        imageContainer.backgroundColor = .white
+        imageContainer.layer.cornerRadius = 20  // Radio del borde del contenedor
+        imageContainer.layer.cornerCurve = .continuous
+        imageContainer.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(imageContainer)
+        
+        imageV.contentMode = .scaleAspectFit
+        imageV.layer.cornerRadius = 12
+        imageV.layer.masksToBounds = true  // Para que los bordes redondeados se apliquen correctamente
+        imageV.translatesAutoresizingMaskIntoConstraints = false
+        imageContainer.addSubview(imageV)
+        
+        //        // Configurar etiqueta
+        //        nameLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        //        nameLabel.backgroundColor = .clear
+        //        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        //        contentView.addSubview(nameLabel)
+        
+        // Añadir restricciones
+        NSLayoutConstraint.activate([
+            imageContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            imageContainer.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            imageContainer.widthAnchor.constraint(equalToConstant: 120),  // Ancho del contenedor
+            imageContainer.heightAnchor.constraint(equalToConstant: 120),  // Altura del contenedor
+            
+            imageV.centerXAnchor.constraint(equalTo: imageContainer.centerXAnchor),
+            imageV.centerYAnchor.constraint(equalTo: imageContainer.centerYAnchor),
+            imageV.widthAnchor.constraint(equalTo: imageContainer.widthAnchor, multiplier: 0.8),
+            imageV.heightAnchor.constraint(equalTo: imageContainer.heightAnchor, multiplier: 0.8),
+            
+            
+            //            nameLabel.topAnchor.constraint(equalTo: imageV.bottomAnchor, constant: 8),
+            //            nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            //            nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: 8)
+        ])
     }
 }

@@ -101,16 +101,6 @@ class EditSubViewController: UIViewController, UITextFieldDelegate {
             // Configurar restricciones
             NSLayoutConstraint.activate([
                 
-                imageContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                imageContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
-                imageContainer.widthAnchor.constraint(equalToConstant: 120),  // Ancho del contenedor
-                imageContainer.heightAnchor.constraint(equalToConstant: 120),  // Altura del contenedor
-                
-                imageView.centerXAnchor.constraint(equalTo: imageContainer.centerXAnchor),
-                imageView.centerYAnchor.constraint(equalTo: imageContainer.centerYAnchor),
-                imageView.widthAnchor.constraint(equalTo: imageContainer.widthAnchor, multiplier: 0.8),
-                imageView.heightAnchor.constraint(equalTo: imageContainer.heightAnchor, multiplier: 0.8),
-                
                 nameLabel.topAnchor.constraint(equalTo: imageContainer.bottomAnchor, constant: 14),
                 nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 
