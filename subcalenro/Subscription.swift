@@ -15,7 +15,7 @@ struct Subscription: Codable {
     var nextPaymentDate: Date
     var period: SubscriptionPeriod
     var reminderTime: ReminderOption
-    var category: CategoryType
+    var category: SubscriptionCategory
     
     var hasReminder: Bool {
         return reminderTime != .none
@@ -33,7 +33,7 @@ struct Subscription: Codable {
 
 }
 
-enum CategoryType: Int, CaseIterable, Codable {
+enum SubscriptionCategory: Int, CaseIterable, Codable {
     case other = 0
     case fitness = 1
     case hobby = 2
@@ -128,8 +128,12 @@ enum SubscriptionPeriod: Int, CaseIterable, Codable {
 enum ReminderOption: Int, Codable, CaseIterable {
     case sameDay = 0
     case oneDayBefore = 1
+    case twoDaysBefore = 2
     case threeDaysBefore = 3
-    case oneWeekBefore = 7
+    case fourDaysBefore = 4
+    case fiveDaysBefore = 5
+    case sixDaysBefore = 6
+    case sevenDaysBefore = 7
     case none = -1
 
     var name: String {
@@ -138,15 +142,24 @@ enum ReminderOption: Int, Codable, CaseIterable {
             return "Same Day"
         case .oneDayBefore:
             return "1 Day Before"
+        case .twoDaysBefore:
+            return "2 Days Before"
         case .threeDaysBefore:
             return "3 Days Before"
-        case .oneWeekBefore:
-            return "1 Week Before"
+        case .fourDaysBefore:
+            return "4 Days Before"
+        case .fiveDaysBefore:
+            return "5 Days Before"
+        case .sixDaysBefore:
+            return "6 Days Before"
+        case .sevenDaysBefore:
+            return "7 Days Before"
         case .none:
             return "None"
         }
     }
 }
+
 
 
 

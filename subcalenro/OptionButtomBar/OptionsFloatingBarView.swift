@@ -24,8 +24,8 @@ class OptionsFloatingBarView : UIView {
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0)
         button.configuration = configuration
-        let symbolName = "chart.bar"
-        let boldConfig = UIImage.SymbolConfiguration(weight: .light)
+        let symbolName = "chart.pie.fill"
+        let boldConfig = UIImage.SymbolConfiguration(weight: .regular)
         let boldImage = UIImage(systemName: symbolName)?.withConfiguration(boldConfig)
         button.setImage(boldImage, for: .normal)
         button.tintColor = ThemeManager.color(for: .primaryBackground)
@@ -37,7 +37,7 @@ class OptionsFloatingBarView : UIView {
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 6, bottom: 12, trailing: 12)
         button.configuration = configuration
-        let symbolName = "gearshape"
+        let symbolName = "gearshape.fill"
         let boldConfig = UIImage.SymbolConfiguration(weight: .regular)
         let boldImage = UIImage(systemName: symbolName)?.withConfiguration(boldConfig)
         button.setImage(boldImage, for: .normal)
@@ -51,7 +51,7 @@ class OptionsFloatingBarView : UIView {
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
         button.configuration = configuration
         let symbolName = "list.dash"
-        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
+        let boldConfig = UIImage.SymbolConfiguration(weight: .semibold)
         let boldImage = UIImage(systemName: symbolName)?.withConfiguration(boldConfig)
         button.setImage(boldImage, for: .normal)
         button.tintColor = ThemeManager.color(for: .primaryBackground)
@@ -64,7 +64,7 @@ class OptionsFloatingBarView : UIView {
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 6)
         button.configuration = configuration
         let symbolName = "plus"
-        let boldConfig = UIImage.SymbolConfiguration(weight: .regular)
+        let boldConfig = UIImage.SymbolConfiguration(weight: .medium)
         let boldImage = UIImage(systemName: symbolName)?.withConfiguration(boldConfig)
         button.setImage(boldImage, for: .normal)
         button.tintColor = ThemeManager.color(for: .primaryBackground)
