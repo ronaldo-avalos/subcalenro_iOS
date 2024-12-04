@@ -206,7 +206,7 @@ class CalendarViewController: UIViewController {
         bottomContainer.translatesAutoresizingMaskIntoConstraints = false
         bottomContainer.tableView.separatorStyle = .none
         bottomContainer.tableView.backgroundColor = .clear
-        bottomContainerHeightConstraint = bottomContainer.heightAnchor.constraint(equalToConstant: 100 )
+        bottomContainerHeightConstraint = bottomContainer.heightAnchor.constraint(equalToConstant:300 )
         
         contentView.addSubview(calendarView)
         contentView.addSubview(bottomContainer)

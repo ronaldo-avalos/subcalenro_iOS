@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		14D730B4F063CDC67E989B72 /* Pods_subcalenro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */; };
-		CE2355312CF970B400CD7ED1 /* EditSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2355302CF970B400CD7ED1 /* EditSubViewController.swift */; };
 		CE333DE72CC3210000DC6481 /* AnalyticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE333DE62CC3210000DC6481 /* AnalyticsViewController.swift */; };
 		CE4261802CFE48B60048533E /* FormNewSubController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42617F2CFE48B60048533E /* FormNewSubController.swift */; };
 		CEC1EF332CC4A9B6008F7A9F /* NotificationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */; };
+		CEF3FC832D00D7B000D9ECF7 /* IconSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */; };
 		D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */; };
 		D310DE222CB34184008A6F39 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE212CB34184008A6F39 /* Subscription.swift */; };
 		D310DE242CB37663008A6F39 /* SubscriptionsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */; };
@@ -64,10 +64,10 @@
 		2CBD348774C22723D806D30E /* Pods-subcalenro.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-subcalenro.release.xcconfig"; path = "Target Support Files/Pods-subcalenro/Pods-subcalenro.release.xcconfig"; sourceTree = "<group>"; };
 		B5A14581D6C13DFA917E4532 /* Pods-subcalenro.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-subcalenro.debug.xcconfig"; path = "Target Support Files/Pods-subcalenro/Pods-subcalenro.debug.xcconfig"; sourceTree = "<group>"; };
 		BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_subcalenro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE2355302CF970B400CD7ED1 /* EditSubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubViewController.swift; sourceTree = "<group>"; };
 		CE333DE62CC3210000DC6481 /* AnalyticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewController.swift; sourceTree = "<group>"; };
 		CE42617F2CFE48B60048533E /* FormNewSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormNewSubController.swift; sourceTree = "<group>"; };
 		CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionViewController.swift; sourceTree = "<group>"; };
+		CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionViewController.swift; sourceTree = "<group>"; };
 		D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		D310DE212CB34184008A6F39 /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsLoader.swift; sourceTree = "<group>"; };
@@ -305,8 +305,8 @@
 				D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */,
 				D375084A2CBA210400FDFBB4 /* SubListViewController.swift */,
 				D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */,
-				CE2355302CF970B400CD7ED1 /* EditSubViewController.swift */,
 				CE42617F2CFE48B60048533E /* FormNewSubController.swift */,
+				CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */,
 			);
 			path = subcalenro;
 			sourceTree = "<group>";
@@ -463,6 +463,7 @@
 				D387D1902CAFA50700F0BCD6 /* SettingsCellModel.swift in Sources */,
 				D387D1912CAFA50700F0BCD6 /* SettingsUITableViewCell.swift in Sources */,
 				D387D1922CAFA50700F0BCD6 /* AppearanceViewController.swift in Sources */,
+				CEF3FC832D00D7B000D9ECF7 /* IconSelectionViewController.swift in Sources */,
 				D310DE242CB37663008A6F39 /* SubscriptionsLoader.swift in Sources */,
 				D375084D2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift in Sources */,
 				D3B649752CAE3B1000ADD119 /* subcalenro.xcdatamodeld in Sources */,
@@ -472,7 +473,6 @@
 				D387D1882CAFA37700F0BCD6 /* OptionsFloatingBarView.swift in Sources */,
 				D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */,
 				D310DE262CB38C25008A6F39 /* SubViewBuilder.swift in Sources */,
-				CE2355312CF970B400CD7ED1 /* EditSubViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -284,9 +284,14 @@ class SubscriptionViewCell: UICollectionViewCell {
 
 extension SubscriptionsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let comapany = companysNames[indexPath.row]
-        let subImage = logos[indexPath.row]
-        let vc = FormNewSubController(imgURL: subImage, companyName: comapany)
-        self.navigationController?.pushViewController(vc, animated: true)
+        if indexPath.row == 0 {
+            let vc = IconSelectionViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            let comapany = companysNames[indexPath.row]
+            let subImage = logos[indexPath.row]
+            let vc = FormNewSubController(imgURL: subImage, companyName: comapany)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

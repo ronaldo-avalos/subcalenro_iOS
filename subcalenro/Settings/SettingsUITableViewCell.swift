@@ -112,7 +112,6 @@ class SettingsUITableViewCell: UITableViewCell {
         case .withAccessory:
             switchControl.isHidden = true
             accessoryButton.isHidden = false
-            accessoryButton.setTitle("Title", for: .normal)
             accessoryType = .disclosureIndicator
         case .withPopUp:
             switchControl.isHidden = true

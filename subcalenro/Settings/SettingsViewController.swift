@@ -13,17 +13,16 @@ class SettingsViewController: UIViewController {
     let sections: [[SettingsCellModel]] = [
         // GENERAL
         [
-        SettingsCellModel(type: .withAccessory, title: "Calenro Pro", iconImage: Utility.renderingIcon("sparkles"),options: [], selectedValue: ""),
-        SettingsCellModel(type: .withAccessory, title: "Apariencia", iconImage: Utility.renderingIcon("eyeglasses"),options: [], selectedValue: ""),
-        SettingsCellModel(type: .withAccessory, title: "Notifications", iconImage: Utility.renderingIcon("bell"),options: [], selectedValue: ""),
-        SettingsCellModel(type: .withAccessory, title: "Edit Event", iconImage: Utility.renderingIcon("calendar"),options: [], selectedValue: ""),
+        SettingsCellModel(type: .withAccessory, title: "Calenro Pro", iconImage: Utility.renderingIcon("sparkles")),
+        SettingsCellModel(type: .withAccessory, title: "Apariencia", iconImage: Utility.renderingIcon("eyeglasses")),
+        SettingsCellModel(type: .withAccessory, title: "Notifications", iconImage: Utility.renderingIcon("bell")),
+        SettingsCellModel(type: .withAccessory, title: "Edit Event", iconImage: Utility.renderingIcon("calendar")),
         ],
         // ACCOUNT
         [
-            SettingsCellModel(type: .withAccessory, title: "Account Settings", iconImage: Utility.renderingIcon("person.circle"),options: [], selectedValue: ""),
-            SettingsCellModel(type: .withAccessory, title: "Privacy", iconImage: Utility.renderingIcon("lock.shield"),options: [], selectedValue: ""),
-            SettingsCellModel(type: .withAccessory, title: "Help", iconImage: Utility.renderingIcon("questionmark.circle"),options: [], selectedValue: ""),
-            SettingsCellModel(type: .withAccessory, title: "About", iconImage: Utility.renderingIcon("info.circle"),options: [], selectedValue: ""),
+            SettingsCellModel(type: .withAccessory, title: "Share App", iconImage: Utility.renderingIcon("square.and.arrow.up")),
+            SettingsCellModel(type: .withAccessory, title: "Privacy", iconImage: Utility.renderingIcon("lock.shield")),
+            SettingsCellModel(type: .withAccessory, title: "About", iconImage: Utility.renderingIcon("info.circle")),
         ] ]
     
 
@@ -43,8 +42,8 @@ class SettingsViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
         self.navigationController?.navigationBar.largeTitleTextAttributes = [
-               NSAttributedString.Key.foregroundColor: ThemeManager.color(for: .primaryText)
-           ]
+            NSAttributedString.Key.foregroundColor: ThemeManager.color(for: .primaryText)
+        ]
         self.navigationController?.navigationBar.tintColor = ThemeManager.color(for: .primaryText)
         
         let closeIcon = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeModal))
@@ -54,7 +53,10 @@ class SettingsViewController: UIViewController {
         tableSettingsView.register(SettingsUITableViewCell.self, forCellReuseIdentifier: "cell")
         tableSettingsView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableSettingsView)
-        
+
+        // Crear y asignar el footerView
+        tableSettingsView.tableFooterView = createFooterView()
+
         NSLayoutConstraint.activate([
             tableSettingsView.topAnchor.constraint(equalTo: view.topAnchor),
             tableSettingsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -62,10 +64,89 @@ class SettingsViewController: UIViewController {
             tableSettingsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+
     
     @objc func closeModal() {
         self.dismiss(animated: true)
     }
+    
+    func createFooterView() -> UIView {
+        // Creamos un footerView con un tamaño flexible
+        let footerView = UIView()
+        footerView.backgroundColor = .clear
+
+        
+        // Icono de la app
+        let appIcon = UIImageView()
+        appIcon.image = .appicon // Asegúrate de usar el nombre correcto del asset
+        appIcon.contentMode = .scaleAspectFit
+        appIcon.layer.cornerRadius = 8
+        appIcon.clipsToBounds = true
+        appIcon.translatesAutoresizingMaskIntoConstraints = false
+        
+        let nameApp = UILabel()
+        nameApp.text = "Subcalenro"
+        nameApp.font = UIFont(name: "SFProRounded-Semibold", size: 22)
+        nameApp.textAlignment = .center
+        nameApp.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Versión de la app
+        let versionLabel = UILabel()
+        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            versionLabel.text = "Version \(appVersion)"
+        } else {
+            versionLabel.text = "Version Unknown"
+        }
+        versionLabel.numberOfLines = 0
+        versionLabel.font = UIFont(name: "SFProText-Regular", size: 12)
+        versionLabel.textAlignment = .center
+        versionLabel.textColor = .secondaryLabel
+        versionLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        // Texto adicional
+        let disclaimerLabel = UILabel()
+        disclaimerLabel.text = """
+    Subcalenro is an independent app and is not affiliated
+    with or endorsed by any of the listed services.
+    All product names, logos, and brands are property of 
+    their respective owners.
+    """
+        disclaimerLabel.numberOfLines = 0
+        disclaimerLabel.textAlignment = .center
+        disclaimerLabel.textColor = .tertiaryLabel
+        disclaimerLabel.font = UIFont.systemFont(ofSize: 9)
+        disclaimerLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        // Agregamos los elementos al footerView
+        footerView.addSubview(appIcon)
+        footerView.addSubview(nameApp)
+        footerView.addSubview(versionLabel)
+        footerView.addSubview(disclaimerLabel)
+
+        // Configuramos las constraints
+        NSLayoutConstraint.activate([
+            // Icono
+            appIcon.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+            appIcon.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 20),
+            appIcon.widthAnchor.constraint(equalToConstant: 60),
+            appIcon.heightAnchor.constraint(equalToConstant: 60),
+
+            nameApp.topAnchor.constraint(equalTo: appIcon.bottomAnchor,constant: 12),
+            nameApp.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+            
+            // Versión
+            versionLabel.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+            versionLabel.topAnchor.constraint(equalTo: nameApp.bottomAnchor, constant: 4),
+
+            // Disclaimer
+            disclaimerLabel.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+            disclaimerLabel.topAnchor.constraint(equalTo: versionLabel.bottomAnchor, constant: 6),
+        ])
+        
+        return footerView
+    }
+
+
 }
 
 // MARK: - UITableViewDataSource

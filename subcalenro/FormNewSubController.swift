@@ -142,7 +142,7 @@ class FormNewSubController: FormViewController {
         }
         
         <<< PickerInputRow<String>("PlanDetail") {
-            $0.title = "Plan categorie"
+            $0.title = "Categorie"
             $0.options = SubscriptionCategory.allCases.map { $0.displayName() }
             $0.value = $0.options[1]
         }.cellSetup { cell, _ in
