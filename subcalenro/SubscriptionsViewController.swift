@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 class SubscriptionsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
 
-    
-    
     let companysNames = [
         "Custom","Spotify",  "Netflix", "Apple Music","Disney+",
         "HBO Max", "SmartFit",  "Apple TV+", "Amazon Prime", "Figma","Adobe",
@@ -25,7 +23,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     ]
     
     let logos = [
-        "addIconCustom","spotify_logo",  "netflix_logo", "apple_music_logo","disney_logo",
+        "icon2","spotify_logo",  "netflix_logo", "apple_music_logo","disney_logo",
         "hbo_max_logo", "smartfit_logo",  "apple_tv_logo", "amazon_prime_logo",  "figma_logo","adobe_logo",
         "icloud_logo", "xbox_gamepass_logo", "megacable_logo", "youtube_premium_logo", "playstation_plus_logo",
         "dropbox_logo", "google_drive_logo", "slack_logo", "duolingo_logo","notion_logo", "zoom_logo", "vix_logo",
@@ -284,6 +282,7 @@ class SubscriptionViewCell: UICollectionViewCell {
 
 extension SubscriptionsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        Utility.feedbackGenerator(style: .soft)
         if indexPath.row == 0 {
             let vc = IconSelectionViewController()
             self.navigationController?.pushViewController(vc, animated: true)

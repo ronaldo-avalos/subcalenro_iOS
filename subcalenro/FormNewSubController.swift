@@ -14,7 +14,7 @@ class FormNewSubController: FormViewController {
     var imgURL: String?
     var companyName: String?
     private var saveButton: UIBarButtonItem!
-
+    
     
     init(imgURL: String, companyName: String) {
         self.imgURL = imgURL
@@ -26,7 +26,7 @@ class FormNewSubController: FormViewController {
         super.init(coder: coder)
     }
     
-      
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // Asegúrate de que el índice 0 corresponde a la celda de la imagen
         if indexPath.section == 0 && indexPath.row == 0 {
@@ -36,7 +36,7 @@ class FormNewSubController: FormViewController {
         }
         return 54 // Altura para las demás celdas
     }
-  
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +61,10 @@ class FormNewSubController: FormViewController {
             row.cell.imageV.image = UIImage(named: imgURL ?? "") // Cargar la imagen
             row.title = ""
             row.cell.backgroundColor = .clear
+        }.onCellSelection { [weak self] _, _ in
+            guard let self = self else { return }
+            let detailVC = IconSelectionViewController()
+            self.navigationController?.pushViewController(detailVC, animated: true)
         }
         
         <<< CenteredTextFieldRow() { row in
@@ -69,26 +73,28 @@ class FormNewSubController: FormViewController {
             row.cell.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
             row.cell.backgroundColor = .clear
         }
-         
+        
         form +++
         Section()
-        <<< SegmentedRow<String>() {
-            $0.options = ["Trial", "Recurring", "Lifetime"]
-            $0.value = $0.options?[1]
+        <<< SegmentedRow<String>("SubscriptionType") { row in
+            row.options = ["Trial", "Recurring", "Lifetime"]
+            row.value = "Recurring"
+        }.onChange { [weak self] row in
+            self?.updateFormBasedOnSubscriptionType(row.value)
         }
         
         <<< IntRow("SubscriptionCost") {
-                 $0.title = "SubscriptionCost"
-                 $0.placeholder = "$129.00"
-                 $0.useFormatterDuringInput = false
-                 $0.useFormatterOnDidBeginEditing = true
-             }.cellSetup { cell, _ in
-                 cell.textField.keyboardType = .decimalPad
-                 cell.imageView?.image = UIImage(systemName: "dollarsign.circle")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-             }.onChange { [weak self] row in
-                 // Habilitar/deshabilitar el botón de guardar basado en si hay un valor
-                 self?.saveButton.isEnabled = (row.value != nil && row.value! > 0)
-             }
+            $0.title = "SubscriptionCost"
+            $0.placeholder = "$129.00"
+            $0.useFormatterDuringInput = false
+            $0.useFormatterOnDidBeginEditing = true
+        }.cellSetup { cell, _ in
+            cell.textField.keyboardType = .decimalPad
+            cell.imageView?.image = UIImage(systemName: "dollarsign.circle")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        }.onChange { [weak self] row in
+            // Habilitar/deshabilitar el botón de guardar basado en si hay un valor
+            self?.saveButton.isEnabled = (row.value != nil && row.value! > 0)
+        }
         
         <<< PickerInputRow<String>("BillingCycle") {
             $0.title = "Period"
@@ -98,7 +104,7 @@ class FormNewSubController: FormViewController {
             cell.imageView?.image = UIImage(systemName: "arrow.clockwise")?.withTintColor(.label, renderingMode: .alwaysOriginal)
             
         }
-     
+        
         
         <<< DateRow("dateRow") {
             $0.title = "Next billing date"
@@ -115,7 +121,7 @@ class FormNewSubController: FormViewController {
         <<< PickerInputRow<String>("PickerInputRow") {
             $0.title = "Reminder"
             $0.options = ReminderOption.allCases.map { $0.name}
-            $0.value = $0.options[2]
+            $0.value = $0.options[1]
         }.cellSetup { cell, _ in
             cell.imageView?.image = UIImage(systemName: "bell")?.withTintColor(.label, renderingMode: .alwaysOriginal)
             
@@ -151,6 +157,53 @@ class FormNewSubController: FormViewController {
         }
         
     }
+    
+    // Función para actualizar el formulario según el tipo de suscripción seleccionado
+    private func updateFormBasedOnSubscriptionType(_ type: String?) {
+        let periodRow: BaseRow? = form.rowBy(tag: "BillingCycle")
+        let durationRow: BaseRow? = form.rowBy(tag: "SubDuration")
+       
+        if type == "Lifetime" {
+            durationRow?.hidden = true
+        } else if type == "Trial" {
+            periodRow?.hidden = true
+            durationRow?.hidden = true
+            
+            // Agregar footerView
+            if let footer = tableView.tableFooterView {
+                footer.isHidden = false
+            } else {
+                let footerLabel = UILabel()
+                footerLabel.text = "We will let you know before the trial period of this subscription ends."
+                footerLabel.textAlignment = .center
+                footerLabel.numberOfLines = 0
+                footerLabel.textColor = .secondaryLabel
+                footerLabel.font = UIFont.systemFont(ofSize: 12)
+                
+                let footerView = UIView()
+                footerView.addSubview(footerLabel)
+                footerLabel.translatesAutoresizingMaskIntoConstraints = false
+                
+                NSLayoutConstraint.activate([
+                    footerLabel.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 16),
+                    footerLabel.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -16),
+                    footerLabel.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 8),
+                    footerLabel.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -8),
+                ])
+                
+                footerView.frame.size = CGSize(width: tableView.frame.width, height: 60)
+                tableView.tableFooterView = footerView
+            }
+        } else {
+            periodRow?.hidden = false
+            durationRow?.hidden = false
+            tableView.tableFooterView?.isHidden = true
+        }
+        
+        periodRow?.evaluateHidden()
+        durationRow?.evaluateHidden()
+    }
+
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
         let text = textField.text ?? ""
