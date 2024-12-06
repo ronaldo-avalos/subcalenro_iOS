@@ -99,22 +99,37 @@ class FormNewSubController: FormViewController {
         <<< PickerInputRow<String>("BillingCycle") {
             $0.title = "Period"
             $0.options = SubscriptionPeriod.allCases.map { $0.name }
-            $0.value = $0.options[1]
+            $0.value = $0.options.first
         }.cellSetup { cell, _ in
             cell.imageView?.image = UIImage(systemName: "arrow.clockwise")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-            
+        }.onChange { [weak self] row in
+            guard let self = self else { return }
+            if let customDaysRow = self.form.rowBy(tag: "CustomDays") {
+                customDaysRow.hidden = Condition(booleanLiteral: row.value != "Custom")
+                customDaysRow.evaluateHidden()
+            }
         }
+
+        <<< IntRow("CustomDays") {
+            $0.hidden = Condition(booleanLiteral: true) // Inicialmente oculta
+            $0.title = "Custom period (days)"
+            $0.placeholder = "days"
+            $0.value = nil
+        }.cellSetup { cell, _ in
+            cell.imageView?.image = UIImage(systemName: "calendar.badge.plus")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        }
+
         
         
         <<< DateRow("dateRow") {
             $0.title = "Next billing date"
             $0.value = Date() // Fecha inicial
-            $0.minimumDate = Date().addingTimeInterval(-31556926) // Máximo hace 1 año
-            $0.maximumDate = Date().addingTimeInterval(31556926) // Máximo en 1 año
+            $0.minimumDate = Calendar.current.date(byAdding: .year, value: -2, to: Date())
+            $0.maximumDate = Calendar.current.date(byAdding: .year, value: 20, to: Date())
         }.cellSetup { cell, _ in
             cell.imageView?.image = UIImage(systemName: "calendar")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-            
         }
+
         
         +++ Section()
         
@@ -162,12 +177,14 @@ class FormNewSubController: FormViewController {
     private func updateFormBasedOnSubscriptionType(_ type: String?) {
         let periodRow: BaseRow? = form.rowBy(tag: "BillingCycle")
         let durationRow: BaseRow? = form.rowBy(tag: "SubDuration")
+        let customDaysRow: BaseRow? = form.rowBy(tag: "CustomDays")
        
         if type == "Lifetime" {
             durationRow?.hidden = true
         } else if type == "Trial" {
             periodRow?.hidden = true
             durationRow?.hidden = true
+            customDaysRow?.hidden = true
             
             // Agregar footerView
             if let footer = tableView.tableFooterView {
