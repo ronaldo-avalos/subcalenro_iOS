@@ -203,9 +203,9 @@ class EditSubcriptionViewController: UIViewController {
             return
         }
         
-        let subscription = Subscription(id: UUID(), logoUrl:  imgURL ?? name, name: name, amount: price, nextPaymentDate: date, period: selectedPeriod, reminderTime: .oneDayBefore, category: .tools)
+        let subscription = Subscription(id: UUID(), name:  imgURL ?? name, amount: name, logoUrl: price, nextPaymentDate: date, period: selectedPeriod, reminderTime: .oneDayBefore, category: .tools, subscriptionType: <#SubscriptionType#>)
         SubscriptionManager().save(subscription)
-        scheduleNotificationsForActiveSubscriptions(sub: subscription)
+        otificationsForActiveSubscriptions(sub: subscription)
         NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
         self.dismiss(animated: true)
     }

@@ -125,10 +125,10 @@ extension SubListViewController: UITableViewDataSource, UITableViewDelegate {
 
     private func editSubscription(at indexPath: IndexPath) {
         let  sub = subscriptions[indexPath.row]
-        let vc = EditSubcriptionViewController()
-        let nc = UINavigationController(rootViewController: vc)
-        vc.subId = sub.id
-        self.present(nc, animated: true)
+//        let vc = FormNewSubController()
+//        let nc = UINavigationController(rootViewController: vc)
+//        vc.subId = sub.id
+//        self.present(nc, animated: true)
     }
     
     

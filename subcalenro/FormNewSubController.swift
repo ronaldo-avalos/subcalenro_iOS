@@ -69,25 +69,28 @@ class FormNewSubController: FormViewController {
         
         <<< CenteredTextFieldRow() { row in
             row.cell.textField.placeholder = "Name"
-            row.cell.textField.text = companyName ?? ""
+            row.cell.textField.text = companyName
             row.cell.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
             row.cell.backgroundColor = .clear
+            row.tag = "Name" // Asignar un tag único
         }
-        
+
         form +++
         Section()
-        <<< SegmentedRow<String>("SubscriptionType") { row in
+        <<< SegmentedRow<String>() { row in
             row.options = ["Trial", "Recurring", "Lifetime"]
             row.value = "Recurring"
+            row.tag = "SubscriptionType"
         }.onChange { [weak self] row in
             self?.updateFormBasedOnSubscriptionType(row.value)
         }
         
-        <<< IntRow("SubscriptionCost") {
+        <<< IntRow() {
             $0.title = "SubscriptionCost"
             $0.placeholder = "$129.00"
             $0.useFormatterDuringInput = false
             $0.useFormatterOnDidBeginEditing = true
+            $0.tag = "SubscriptionCost"
         }.cellSetup { cell, _ in
             cell.textField.keyboardType = .decimalPad
             cell.imageView?.image = UIImage(systemName: "dollarsign.circle")?.withTintColor(.label, renderingMode: .alwaysOriginal)
@@ -96,10 +99,11 @@ class FormNewSubController: FormViewController {
             self?.saveButton.isEnabled = (row.value != nil && row.value! > 0)
         }
         
-        <<< PickerInputRow<String>("BillingCycle") {
+        <<< PickerInputRow<String>() {
             $0.title = "Period"
             $0.options = SubscriptionPeriod.allCases.map { $0.name }
             $0.value = $0.options.first
+            $0.tag = "BillingCycle"
         }.cellSetup { cell, _ in
             cell.imageView?.image = UIImage(systemName: "arrow.clockwise")?.withTintColor(.label, renderingMode: .alwaysOriginal)
         }.onChange { [weak self] row in
@@ -110,22 +114,24 @@ class FormNewSubController: FormViewController {
             }
         }
 
-        <<< IntRow("CustomDays") {
+        <<< IntRow() {
             $0.hidden = Condition(booleanLiteral: true) // Inicialmente oculta
             $0.title = "Custom period (days)"
             $0.placeholder = "days"
             $0.value = nil
+            $0.tag = "CustomDays"
         }.cellSetup { cell, _ in
             cell.imageView?.image = UIImage(systemName: "calendar.badge.plus")?.withTintColor(.label, renderingMode: .alwaysOriginal)
         }
 
         
         
-        <<< DateRow("dateRow") {
+        <<< DateRow() {
             $0.title = "Next billing date"
             $0.value = Date() // Fecha inicial
             $0.minimumDate = Calendar.current.date(byAdding: .year, value: -2, to: Date())
             $0.maximumDate = Calendar.current.date(byAdding: .year, value: 20, to: Date())
+            $0.tag = "DateRow"
         }.cellSetup { cell, _ in
             cell.imageView?.image = UIImage(systemName: "calendar")?.withTintColor(.label, renderingMode: .alwaysOriginal)
         }
@@ -133,8 +139,9 @@ class FormNewSubController: FormViewController {
         
         +++ Section()
         
-        <<< PickerInputRow<String>("PickerInputRow") {
+        <<< PickerInputRow<String>() {
             $0.title = "Reminder"
+            $0.tag = "PickerInputRow"
             $0.options = ReminderOption.allCases.map { $0.name}
             $0.value = $0.options[1]
         }.cellSetup { cell, _ in
@@ -142,8 +149,9 @@ class FormNewSubController: FormViewController {
             
         }
         
-        <<< DoublePickerInputRow<String, String>("SubDuration") {
+        <<< DoublePickerInputRow<String, String>() {
             $0.title = "Duration"
+            $0.tag = "SubDuration"
             $0.firstOptions = {return ["Forever"] + (1...180).map { "\($0)" }} // Crear array con "Forever" y números del 1 al 180
             $0.secondOptions = { _ in
                 return ["", "Day(s)", "Week(s)", "Month(s)", "Year(s)"] // Opciones para la segunda columna
@@ -162,8 +170,9 @@ class FormNewSubController: FormViewController {
             }
         }
         
-        <<< PickerInputRow<String>("PlanDetail") {
+        <<< PickerInputRow<String>() {
             $0.title = "Categorie"
+            $0.tag = "PlanDetail"
             $0.options = SubscriptionCategory.allCases.map { $0.displayName() }
             $0.value = $0.options[1]
         }.cellSetup { cell, _ in
@@ -237,30 +246,34 @@ class FormNewSubController: FormViewController {
       }
 
     private func createSubscription() -> Subscription? {
-        guard
-            let name = (form.rowBy(tag: "Name") as? CenteredTextFieldRow)?.cell.textField.text,
-            !name.isEmpty,
-            let amount = (form.rowBy(tag: "SubscriptionCost") as? IntRow)?.value,
-            let periodName = (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value,
-            let period = SubscriptionPeriod.allCases.first(where: { $0.name == periodName }),
-            let nextPaymentDate = (form.rowBy(tag: "dateRow") as? DateRow)?.value,
-            let reminderName = (form.rowBy(tag: "Reminder") as? PickerInputRow<String>)?.value,
-            let reminder = ReminderOption.allCases.first(where: { $0.name == reminderName }),
-            let categoryName = (form.rowBy(tag: "PlanDetail") as? PickerInputRow<String>)?.value,
-            let category = SubscriptionCategory.allCases.first(where: { $0.displayName() == categoryName })
+        
+        //Validamos que el nombre no este vacio
+        guard let name = (form.rowBy(tag: "Name") as? CenteredTextFieldRow)?.cell.textField.text, !name.isEmpty,
+              let amount = (form.rowBy(tag: "SubscriptionCost") as? IntRow)?.value,
+              let periodName = (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value,
+              let period = SubscriptionPeriod.allCases.first(where: { $0.name == periodName }),
+              let nextPaymentDate = (form.rowBy(tag: "DateRow") as? DateRow)?.value,
+              let reminderName = (form.rowBy(tag: "PickerInputRow") as? PickerInputRow<String>)?.value,
+              let reminder = ReminderOption.allCases.first(where: { $0.name == reminderName }),
+              let categoryName = (form.rowBy(tag: "PlanDetail") as? PickerInputRow<String>)?.value,
+              let category = SubscriptionCategory.allCases.first(where: { $0.displayName() == categoryName })
+//             let subscriptionTypeName = (form.rowBy(tag: "subscriptionType") as? SegmentedRow<String>)?.value,
+//              let subscriptionType = SubscriptionType.allCases.first(where: { $0.displayName() == subscriptionTypeName })
+                
         else {
             return nil
         }
         
         return Subscription(
             id: UUID(),
-            logoUrl: imgURL ?? "",
             name: name,
             amount: Double(amount),
+            logoUrl: imgURL ?? "",
             nextPaymentDate: nextPaymentDate,
             period: period,
             reminderTime: reminder,
-            category: category
+            category: category,
+            subscriptionType: .trial
         )
     }
     

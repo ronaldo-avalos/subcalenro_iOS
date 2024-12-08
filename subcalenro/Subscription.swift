@@ -9,13 +9,14 @@ import Foundation
 
 struct Subscription: Codable {
     let id: UUID
-    let logoUrl: String
     var name: String
     var amount: Double
+    let logoUrl: String
     var nextPaymentDate: Date
     var period: SubscriptionPeriod
     var reminderTime: ReminderOption
     var category: SubscriptionCategory
+    var subscriptionType: SubscriptionType
     
     var hasReminder: Bool {
         return reminderTime != .none
@@ -31,6 +32,24 @@ struct Subscription: Codable {
         return formatter.string(from: nextPaymentDate)
     }
 
+}
+
+enum SubscriptionType: Int, CaseIterable , Codable {
+    case trial = 1
+    case recurring = 2
+    case lifeTime = 3
+    
+    func displayName() -> String {
+        switch self {
+        case .trial:
+            return "trial"
+        case .recurring:
+            return "recurring"
+        case .lifeTime:
+            return "lifeTime"
+        }
+        
+    }
 }
 
 enum SubscriptionCategory: Int, CaseIterable, Codable {

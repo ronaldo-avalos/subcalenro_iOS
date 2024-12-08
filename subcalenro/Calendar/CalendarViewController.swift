@@ -261,10 +261,10 @@ class CalendarViewController: UIViewController {
         }
         
         bottomContainer.editSub = { id in
-            let vc = EditSubcriptionViewController()
-            let nc = UINavigationController(rootViewController: vc)
-            vc.subId = id
-            self.present(nc, animated: true)
+//            let vc = EditSubcriptionViewController()
+//            let nc = UINavigationController(rootViewController: vc)
+//            vc.subId = id
+//            self.present(nc, animated: true)
         }
         
         bottomContainer.didSelecSub = { id in
@@ -280,8 +280,8 @@ class CalendarViewController: UIViewController {
         // Cargar las suscripciones
         subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
         calendarDataSource?.set(subs: subscriptions)
-        let subs = subscriptions.filter{ Calendar.current.isDate($0.0, inSameDayAs: Date.dateSelected) }
-        let selectedSubs = SubscriptionManager().readByIds(subs.map({return $0.1.id}))
+//        let subs = subscriptions.filter{ Calendar.current.isDate($0.0, inSameDayAs: Date.dateSelected) }
+//        let selectedSubs = SubscriptionManager().readByIds(subs.map({return $0.1.id}))
         bottomContainer.loadSubscriptions(selectedSubs)
         print("Reload Calendar")
         completion()

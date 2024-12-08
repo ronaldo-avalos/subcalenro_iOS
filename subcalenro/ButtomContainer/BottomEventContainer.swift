@@ -170,7 +170,7 @@ extension BottomContainer: UITableViewDataSource, UITableViewDelegate {
         dateFormatter.locale = Locale.current
         let formattedDate = dateFormatter.string(from: date)
         dateLabel.text = formattedDate
-        Date.dateSelected = date
+//        Date.dateSelected = date
         layoutIfNeeded()
     }
 
