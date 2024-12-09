@@ -211,8 +211,8 @@ extension SettingsViewController: UITableViewDelegate {
     }
     
     func navigateToCalenroPro() {
-        // Navega a la vista de Calenro Pro o realiza la acción correspondiente
-        print("Navegar a Calenro Pro")
+        let vc = PayWallViewController()
+        self.show(vc, sender: nil)
     }
 
     func navigateToAppearanceSettings() {
@@ -221,13 +221,13 @@ extension SettingsViewController: UITableViewDelegate {
     }
 
     func navigateToNotificationSettings() {
-        // Navega a la vista de configuración de notificaciones
-        print("Navegar a Configuración de Notificaciones")
+        let vc = NotificationsSettingsViewController()
+        self.show(vc, sender: nil)
     }
 
     func navigateToChangeAppIcon() {
-        // Navega a la vista de edición de eventos
-        print("Navegar a Editar Evento")
+        let vc = AppIconChangeViewController()
+        self.show(vc, sender: nil)
     }
 
     func navigateToRateApp() {

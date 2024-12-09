@@ -13,6 +13,109 @@ class PayWallViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
-        self.navigationItem.title = "Subcalenro Pro"
+        setupViews()
+    }
+    
+    func setupViews() {
+        // Encabezado con una imagen atractiva
+        let headerImage = UIImageView(image: .appicon) // Reemplaza con tu imagen
+        headerImage.contentMode = .scaleAspectFit
+        headerImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Título
+        let titleLabel = UILabel()
+        titleLabel.text = "Subcalenro Pro"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 28)
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Descripción
+        let descriptionLabel = UILabel()
+        descriptionLabel.text = "Organiza tus suscripciones como un profesional y ahorra tiempo y dinero."
+        descriptionLabel.font = UIFont.systemFont(ofSize: 16)
+        descriptionLabel.textColor = .secondaryLabel
+        descriptionLabel.textAlignment = .center
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Lista de beneficios
+        let benefits = [
+            "✔️ Seguimiento ilimitado de suscripciones",
+            "✔️ Alertas personalizables",
+            "✔️ Sin anuncios",
+            "✔️ Soporte Premium"
+        ]
+        let benefitsLabel = UILabel()
+        benefitsLabel.text = benefits.joined(separator: "\n")
+        benefitsLabel.font = UIFont.systemFont(ofSize: 16)
+        benefitsLabel.textColor = .label
+        benefitsLabel.numberOfLines = 0
+        benefitsLabel.textAlignment = .left
+        benefitsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Botón de suscripción
+        let subscribeButton = UIButton(type: .system)
+        subscribeButton.setTitle("Suscribirse por $9.99/mes", for: .normal)
+        subscribeButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        subscribeButton.setTitleColor(.white, for: .normal)
+        subscribeButton.backgroundColor = .systemBlue
+        subscribeButton.layer.cornerRadius = 10
+        subscribeButton.translatesAutoresizingMaskIntoConstraints = false
+        subscribeButton.addTarget(self, action: #selector(subscribeTapped), for: .touchUpInside)
+        
+        // Botón de restaurar compras
+        let restoreButton = UIButton(type: .system)
+        restoreButton.setTitle("Restaurar compras", for: .normal)
+        restoreButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        restoreButton.setTitleColor(.systemBlue, for: .normal)
+        restoreButton.translatesAutoresizingMaskIntoConstraints = false
+        restoreButton.addTarget(self, action: #selector(restoreTapped), for: .touchUpInside)
+        
+        // Agregar subviews
+        view.addSubview(headerImage)
+        view.addSubview(titleLabel)
+        view.addSubview(descriptionLabel)
+        view.addSubview(benefitsLabel)
+        view.addSubview(subscribeButton)
+        view.addSubview(restoreButton)
+        
+        // Configurar constraints
+        NSLayoutConstraint.activate([
+            headerImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            headerImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            headerImage.widthAnchor.constraint(equalToConstant: 150),
+            headerImage.heightAnchor.constraint(equalToConstant: 150),
+            
+            titleLabel.topAnchor.constraint(equalTo: headerImage.bottomAnchor, constant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            benefitsLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 20),
+            benefitsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            benefitsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            
+            subscribeButton.topAnchor.constraint(equalTo: benefitsLabel.bottomAnchor, constant: 30),
+            subscribeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            subscribeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            subscribeButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            restoreButton.topAnchor.constraint(equalTo: subscribeButton.bottomAnchor, constant: 15),
+            restoreButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+    
+    // MARK: - Actions
+    @objc func subscribeTapped() {
+        print("Usuario quiere suscribirse")
+        // Implementar lógica de suscripción
+    }
+    
+    @objc func restoreTapped() {
+        print("Usuario quiere restaurar compras")
+        // Implementar lógica de restauración de compras
     }
 }
