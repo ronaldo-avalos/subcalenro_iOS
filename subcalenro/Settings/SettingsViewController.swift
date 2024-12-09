@@ -16,18 +16,19 @@ class SettingsViewController: UIViewController {
         SettingsCellModel(type: .withAccessory, title: "Calenro Pro", iconImage: Utility.renderingIcon("sparkles")),
         SettingsCellModel(type: .withAccessory, title: "Apariencia", iconImage: Utility.renderingIcon("eyeglasses")),
         SettingsCellModel(type: .withAccessory, title: "Notifications", iconImage: Utility.renderingIcon("bell")),
-        SettingsCellModel(type: .withAccessory, title: "Edit Event", iconImage: Utility.renderingIcon("calendar")),
+        SettingsCellModel(type: .withAccessory, title: "App Icon", iconImage: Utility.renderingIcon("app.badge"))
         ],
         // ACCOUNT
         [
+            SettingsCellModel(type: .withAccessory, title: "Calificar Calenro", iconImage: Utility.renderingIcon("star")),
             SettingsCellModel(type: .withAccessory, title: "Share App", iconImage: Utility.renderingIcon("square.and.arrow.up")),
-            SettingsCellModel(type: .withAccessory, title: "Privacy", iconImage: Utility.renderingIcon("lock.shield")),
+            SettingsCellModel(type: .withAccessory, title: "Comments", iconImage: Utility.renderingIcon("tray.and.arrow.down")),
             SettingsCellModel(type: .withAccessory, title: "About", iconImage: Utility.renderingIcon("info.circle")),
         ] ]
     
 
     
-    let sectionTitles: [String] = ["General", "Account"]
+    let sectionTitles: [String] = ["General", "Info"]
     var selectedOption: Int?
 
     override func viewDidLoad() {
@@ -39,30 +40,31 @@ class SettingsViewController: UIViewController {
     
     func setupViews() {
         self.title = "Settings"
+        self.view.backgroundColor = ThemeManager.color(for: .editBackgroud)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .automatic
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: ThemeManager.color(for: .primaryText)
-        ]
-        self.navigationController?.navigationBar.tintColor = ThemeManager.color(for: .primaryText)
-        
         let closeIcon = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeModal))
-        closeIcon.tintColor = .systemGray2
+//        closeIcon.tintColor = .systemGray2
         self.navigationItem.rightBarButtonItem = closeIcon
-        
+    
+        tableSettingsView.tableFooterView = createFooterView()
+        tableSettingsView.backgroundColor = .clear
+        tableSettingsView.showsVerticalScrollIndicator = false
+        tableSettingsView.contentInset = UIEdgeInsets(top: 0, left: 0,  bottom: 200, right: 0)
+        tableSettingsView.scrollIndicatorInsets = tableSettingsView.contentInset
         tableSettingsView.register(SettingsUITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableSettingsView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableSettingsView)
 
-        // Crear y asignar el footerView
-        tableSettingsView.tableFooterView = createFooterView()
-
+        tableSettingsView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableSettingsView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableSettingsView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
             tableSettingsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableSettingsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableSettingsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+
+
+     
     }
 
     
@@ -194,13 +196,13 @@ extension SettingsViewController: UITableViewDelegate {
         case (0, 2): // Notifications
             navigateToNotificationSettings()
         case (0, 3): // Edit Event
-            navigateToEditEvent()
+            navigateToChangeAppIcon()
         case (1, 0): // Account Settings
-            navigateToAccountSettings()
+            navigateToRateApp()
         case (1, 1): // Privacy
-            navigateToPrivacySettings()
+            navigateToShareApp()
         case (1, 2): // Help
-            showHelp()
+            navigateToComments()
         case (1, 3): // About
             showAbout()
         default:
@@ -214,8 +216,8 @@ extension SettingsViewController: UITableViewDelegate {
     }
 
     func navigateToAppearanceSettings() {
-        // Navega a la vista de configuración de apariencia
-        print("Navegar a Configuración de Apariencia")
+        let vc = AppearanceViewController()
+        self.show(vc, sender: nil)
     }
 
     func navigateToNotificationSettings() {
@@ -223,28 +225,79 @@ extension SettingsViewController: UITableViewDelegate {
         print("Navegar a Configuración de Notificaciones")
     }
 
-    func navigateToEditEvent() {
+    func navigateToChangeAppIcon() {
         // Navega a la vista de edición de eventos
         print("Navegar a Editar Evento")
     }
 
-    func navigateToAccountSettings() {
-        // Navega a la vista de configuración de cuenta
-        print("Navegar a Configuración de Cuenta")
+    func navigateToRateApp() {
+        guard let url = URL(string: "itms-apps://itunes.apple.com/app/id[YOUR_APP_ID]?action=write-review") else {
+            print("URL inválida para valorar la app")
+            return
+        }
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            print("No se pudo abrir la URL para valorar la app")
+        }
     }
 
-    func navigateToPrivacySettings() {
-        // Navega a la vista de privacidad
-        print("Navegar a Configuración de Privacidad")
+    func navigateToShareApp() {
+        let appURL = "https://apps.apple.com/app/id[YOUR_APP_ID]" // Reemplaza con el enlace de tu app
+        let activityViewController = UIActivityViewController(activityItems: [appURL], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view // Solo para iPad
+        self.present(activityViewController, animated: true, completion: nil)
     }
 
-    func showHelp() {
-        // Muestra la vista de ayuda
-        print("Mostrar Ayuda")
+    func navigateToComments() {
+        let email = "ronaldoadan1@icloud.com"
+        let subject = "comments and suggestions"
+        let body = """
+       App version: \(Utility.appVersion)
+       iOS version: \(Utility.iOSVersion)
+       Device info: \(Utility.deviceModel)
+       """
+        
+        if let emailURL = URL(string: "mailto:\(email)?subject=\(subject)&body=\(body)") {
+            UIApplication.shared.open(emailURL, options: [:], completionHandler: nil)
+        }
     }
 
     func showAbout() {
-        // Muestra la vista de información de la app
-        print("Mostrar Acerca de")
+        let aboutViewController = UIViewController()
+        aboutViewController.view.backgroundColor = .systemBackground
+        aboutViewController.modalPresentationStyle = .pageSheet
+        
+        // Añade contenido
+        let titleLabel = UILabel()
+        titleLabel.text = "Acerca de Subcalenro"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let descriptionLabel = UILabel()
+        descriptionLabel.text = """
+        Subcalenro es una aplicación independiente diseñada para ayudarte a gestionar tus suscripciones de manera eficiente. No estamos afiliados a ninguna de las marcas o servicios mencionados en la app.
+        """
+        descriptionLabel.font = UIFont.systemFont(ofSize: 16)
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.textAlignment = .center
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        aboutViewController.view.addSubview(titleLabel)
+        aboutViewController.view.addSubview(descriptionLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: aboutViewController.view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: aboutViewController.view.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: aboutViewController.view.trailingAnchor, constant: -16),
+            
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            descriptionLabel.leadingAnchor.constraint(equalTo: aboutViewController.view.leadingAnchor, constant: 16),
+            descriptionLabel.trailingAnchor.constraint(equalTo: aboutViewController.view.trailingAnchor, constant: -16),
+        ])
+        
+        self.show(aboutViewController, sender: nil)
     }
+
 }

@@ -123,7 +123,7 @@ class Utility {
     }
         
     static func renderingIcon(_ nameIcon: String) -> UIImage {
-        return UIImage(systemName: nameIcon)?.withTintColor(ThemeManager.color(for: .primaryText), renderingMode: .alwaysOriginal) ?? UIImage()
+        return UIImage(systemName: nameIcon) ?? UIImage()
     }
     
     

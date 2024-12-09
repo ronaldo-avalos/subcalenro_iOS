@@ -12,6 +12,8 @@
 		CE4261802CFE48B60048533E /* FormNewSubController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42617F2CFE48B60048533E /* FormNewSubController.swift */; };
 		CEC1EF332CC4A9B6008F7A9F /* NotificationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */; };
 		CEF3FC832D00D7B000D9ECF7 /* IconSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */; };
+		CEF3FCB12D077C4300D9ECF7 /* PayWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FCB02D077C4300D9ECF7 /* PayWallViewController.swift */; };
+		CEF3FCB42D077CF300D9ECF7 /* NottificationsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FCB32D077CF300D9ECF7 /* NottificationsSettingsViewController.swift */; };
 		D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */; };
 		D310DE222CB34184008A6F39 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE212CB34184008A6F39 /* Subscription.swift */; };
 		D310DE242CB37663008A6F39 /* SubscriptionsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */; };
@@ -67,6 +69,8 @@
 		CE42617F2CFE48B60048533E /* FormNewSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormNewSubController.swift; sourceTree = "<group>"; };
 		CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionViewController.swift; sourceTree = "<group>"; };
 		CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionViewController.swift; sourceTree = "<group>"; };
+		CEF3FCB02D077C4300D9ECF7 /* PayWallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayWallViewController.swift; sourceTree = "<group>"; };
+		CEF3FCB32D077CF300D9ECF7 /* NottificationsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NottificationsSettingsViewController.swift; sourceTree = "<group>"; };
 		D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		D310DE212CB34184008A6F39 /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsLoader.swift; sourceTree = "<group>"; };
@@ -153,11 +157,20 @@
 			path = Analyticals;
 			sourceTree = "<group>";
 		};
+		CEF3FCAF2D077C3400D9ECF7 /* PayWall */ = {
+			isa = PBXGroup;
+			children = (
+				CEF3FCB02D077C4300D9ECF7 /* PayWallViewController.swift */,
+			);
+			path = PayWall;
+			sourceTree = "<group>";
+		};
 		D37508202CB8952500FDFBB4 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
 				CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */,
 				D37508212CB8953300FDFBB4 /* NotificationManager.swift */,
+				CEF3FCB32D077CF300D9ECF7 /* NottificationsSettingsViewController.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -281,6 +294,7 @@
 		D3B649712CAE3B1000ADD119 /* subcalenro */ = {
 			isa = PBXGroup;
 			children = (
+				CEF3FCAF2D077C3400D9ECF7 /* PayWall */,
 				CE333DE52CC320EE00DC6481 /* Analyticals */,
 				D37508202CB8952500FDFBB4 /* Notifications */,
 				D387D1952CAFAAA000F0BCD6 /* ButtomContainer */,
@@ -442,6 +456,7 @@
 				D387D1522CAFA0BF00F0BCD6 /* CalendarDelegate.swift in Sources */,
 				D37508242CB91C9000FDFBB4 /* SubscriptionsViewController.swift in Sources */,
 				CEC1EF332CC4A9B6008F7A9F /* NotificationPermissionViewController.swift in Sources */,
+				CEF3FCB42D077CF300D9ECF7 /* NottificationsSettingsViewController.swift in Sources */,
 				D387D1862CAFA37200F0BCD6 /* BottomEventContainer.swift in Sources */,
 				D387D1562CAFA10F00F0BCD6 /* CalendarViewCell.swift in Sources */,
 				D3B649732CAE3B1000ADD119 /* AppDelegate.swift in Sources */,
@@ -467,6 +482,7 @@
 				D375081F2CB856E300FDFBB4 /* CustomFSCalendar.swift in Sources */,
 				D3B649762CAE3B1000ADD119 /* CalendarViewController.swift in Sources */,
 				D387D1882CAFA37700F0BCD6 /* OptionsFloatingBarView.swift in Sources */,
+				CEF3FCB12D077C4300D9ECF7 /* PayWallViewController.swift in Sources */,
 				D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */,
 				D310DE262CB38C25008A6F39 /* SubViewBuilder.swift in Sources */,
 			);

@@ -34,8 +34,8 @@ class CalendarViewController: UIViewController {
     private var calendarViewHeightConstraint: NSLayoutConstraint!
     private var bottomContainerHeightConstraint: NSLayoutConstraint!
 
-    let detailEvenstIcon = UIImage(systemName: "rectangle.grid.1x2")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-    let compactEventsIcon = UIImage(systemName: "ellipsis.rectangle")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+    let detailEvenstIcon = UIImage(systemName: "rectangle.grid.1x2")
+    let compactEventsIcon = UIImage(systemName: "ellipsis.rectangle")
     
     let toggleEvents: UIButton = {
         let button = UIButton(type: .system)

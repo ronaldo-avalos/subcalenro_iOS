@@ -41,7 +41,6 @@ class FormNewSubController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ThemeManager.color(for: .editBackgroud)
-        self.navigationController?.navigationBar.tintColor = .label
         
         //        view.addSubview(saveButton)
         saveButton = UIBarButtonItem(systemItem: .save)
@@ -93,7 +92,7 @@ class FormNewSubController: FormViewController {
             $0.tag = "SubscriptionCost"
         }.cellSetup { cell, _ in
             cell.textField.keyboardType = .decimalPad
-            cell.imageView?.image = UIImage(systemName: "dollarsign.circle")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            cell.imageView?.image = UIImage(systemName: "dollarsign.circle")
         }.onChange { [weak self] row in
             // Habilitar/deshabilitar el botón de guardar basado en si hay un valor
             self?.saveButton.isEnabled = (row.value != nil && row.value! > 0)
@@ -105,7 +104,7 @@ class FormNewSubController: FormViewController {
             $0.value = $0.options.first
             $0.tag = "BillingCycle"
         }.cellSetup { cell, _ in
-            cell.imageView?.image = UIImage(systemName: "arrow.clockwise")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            cell.imageView?.image = UIImage(systemName: "arrow.clockwise")
         }.onChange { [weak self] row in
             guard let self = self else { return }
             if let customDaysRow = self.form.rowBy(tag: "CustomDays") {
@@ -121,7 +120,7 @@ class FormNewSubController: FormViewController {
             $0.value = nil
             $0.tag = "CustomDays"
         }.cellSetup { cell, _ in
-            cell.imageView?.image = UIImage(systemName: "calendar.badge.plus")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            cell.imageView?.image = UIImage(systemName: "calendar.badge.plus")
         }
 
         
@@ -133,7 +132,7 @@ class FormNewSubController: FormViewController {
             $0.maximumDate = Calendar.current.date(byAdding: .year, value: 20, to: Date())
             $0.tag = "DateRow"
         }.cellSetup { cell, _ in
-            cell.imageView?.image = UIImage(systemName: "calendar")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            cell.imageView?.image = UIImage(systemName: "calendar")
         }
 
         
@@ -145,7 +144,7 @@ class FormNewSubController: FormViewController {
             $0.options = ReminderOption.allCases.map { $0.name}
             $0.value = $0.options[1]
         }.cellSetup { cell, _ in
-            cell.imageView?.image = UIImage(systemName: "bell")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            cell.imageView?.image = UIImage(systemName: "bell")
             
         }
         
@@ -158,7 +157,7 @@ class FormNewSubController: FormViewController {
             }
             $0.value = Tuple(a: "2", b: "Years(s)") // Valor por defecto
         }.cellSetup { cell, _ in
-            cell.imageView?.image = UIImage(systemName: "calendar.badge.clock")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+            cell.imageView?.image = UIImage(systemName: "calendar.badge.clock")
             
         }.onChange { row in
             guard let value = row.value else { return }
@@ -176,8 +175,7 @@ class FormNewSubController: FormViewController {
             $0.options = SubscriptionCategory.allCases.map { $0.displayName() }
             $0.value = $0.options[1]
         }.cellSetup { cell, _ in
-            cell.imageView?.image = UIImage(systemName: "square.3.layers.3d.down.backward")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-            
+            cell.imageView?.image = UIImage(systemName: "square.3.layers.3d.down.backward")
         }
         
     }
