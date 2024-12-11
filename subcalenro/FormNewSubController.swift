@@ -192,9 +192,7 @@ class FormNewSubController: FormViewController {
         switch type {
         case "Lifetime":
             // Ocultar periodo y duración para Lifetime
-            periodRow?.hidden = true
             durationRow?.hidden = true
-            customDaysRow?.hidden = true
             
         case "Trial":
             // Ocultar periodo y duración para Trial
