@@ -35,8 +35,6 @@ class SubscriptionsLoader {
                     case .biweekly:
                         intervalo = .day
                         days = 14
-                    case .custom:
-                        intervalo = .day 
                     }
                     if let newDate = calendar.date(byAdding: intervalo, value: days, to: currentDate) {
                         currentDate = newDate

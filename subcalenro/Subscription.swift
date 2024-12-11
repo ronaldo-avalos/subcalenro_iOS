@@ -126,7 +126,7 @@ enum SubscriptionPeriod: Int, CaseIterable, Codable {
     case yearly = 12
     case weekly = 7
     case biweekly = 14
-    case custom = 0
+//    case custom = 0
 
     var name: String {
         switch self {
@@ -138,8 +138,8 @@ enum SubscriptionPeriod: Int, CaseIterable, Codable {
             return "Weekly"
         case .biweekly:
             return "Biweekly"
-        case .custom:
-            return "Custom"
+//        case .custom:
+//            return "Custom"
         }
     }
 }

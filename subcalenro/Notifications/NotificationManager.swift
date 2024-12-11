@@ -129,9 +129,7 @@ class NotificationManager {
             return calendar.date(byAdding: .day, value: 7, to: currentPaymentDate) ?? currentPaymentDate
         case .biweekly:
             return calendar.date(byAdding: .day, value: 14, to: currentPaymentDate) ?? currentPaymentDate
-        case .custom:
-            // Definir la lógica personalizada según las reglas de tu aplicación
-            return currentPaymentDate
+
         }
     }
     

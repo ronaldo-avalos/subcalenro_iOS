@@ -78,27 +78,29 @@ class FormNewSubController: FormViewController {
             $0.tag = "BillingCycle"
         }.cellSetup { cell, _ in
             cell.imageView?.image = UIImage(systemName: "arrow.clockwise")
-        }.onChange { [weak self] row in
-            guard let self = self else { return }
-            if let periodRow = form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>,
-               let customDaysRow = form.rowBy(tag: "CustomDays") {
-                customDaysRow.hidden = Condition(booleanLiteral: periodRow.value != "Custom")
-                customDaysRow.evaluateHidden()
-            }
-
+        }.onChange { _ in
+            // Comentado: lógica de custom days
+            /*
+             guard let self = self else { return }
+             if let periodRow = form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>,
+             let customDaysRow = form.rowBy(tag: "CustomDays") {
+             customDaysRow.hidden = Condition(booleanLiteral: periodRow.value != "Custom")
+             customDaysRow.evaluateHidden()
+             }
+             */
         }
-
-        <<< IntRow() {
-            $0.hidden = Condition(booleanLiteral: true) // Inicialmente oculta
-            $0.title = "Custom period (days)"
-            $0.placeholder = "days"
-            $0.value = nil
-            $0.tag = "CustomDays"
-        }.cellSetup { cell, _ in
-            cell.imageView?.image = UIImage(systemName: "calendar.badge.plus")
-        }
-        
-        
+        // <<< IntRow para periodo custom (comentado)
+        /*
+         <<< IntRow() {
+         $0.hidden = Condition(booleanLiteral: true) // Inicialmente oculta
+         $0.title = "Custom period (days)"
+         $0.placeholder = "days"
+         $0.value = nil
+         $0.tag = "CustomDays"
+         }.cellSetup { cell, _ in
+         cell.imageView?.image = UIImage(systemName: "calendar.badge.plus")
+         }
+         */
         
         <<< DateRow() {
             $0.title = "Next billing date"
@@ -248,8 +250,8 @@ class FormNewSubController: FormViewController {
         // Recuperar filas por tag
         let periodRow: BaseRow? = form.rowBy(tag: "BillingCycle")
         let durationRow: BaseRow? = form.rowBy(tag: "SubDuration")
-        let customDaysRow: BaseRow? = form.rowBy(tag: "CustomDays")
-        
+        // let customDaysRow: BaseRow? = form.rowBy(tag: "CustomDays") // Comentado
+
         switch type {
         case "Lifetime":
             // Ocultar periodo y duración para Lifetime
@@ -259,7 +261,7 @@ class FormNewSubController: FormViewController {
             // Ocultar periodo y duración para Trial
             periodRow?.hidden = true
             durationRow?.hidden = true
-            customDaysRow?.hidden = true
+//            customDaysRow?.hidden = true
             
             // Agregar un mensaje de advertencia para Trial
             if let footer = tableView.tableFooterView {
@@ -292,15 +294,15 @@ class FormNewSubController: FormViewController {
             periodRow?.hidden = false
             durationRow?.hidden = false
             tableView.tableFooterView?.isHidden = true
-            if (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value == SubscriptionPeriod.custom.name {
-                customDaysRow?.hidden = false
-            }
+//            if (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value == SubscriptionPeriod.custom.name {
+//                customDaysRow?.hidden = false
+//            }
         }
         
         // Evaluar condiciones de visibilidad
         periodRow?.evaluateHidden()
         durationRow?.evaluateHidden()
-        customDaysRow?.evaluateHidden()
+//        customDaysRow?.evaluateHidden()
     }
     
     
@@ -383,7 +385,7 @@ class FormNewSubController: FormViewController {
             amount: Double(amount),
             logoUrl: logoUrl,
             nextPaymentDate: nextPaymentDate,
-            period: period ?? .custom,
+            period: period ?? .monthly,
             reminderTime: reminder,
             category: category,
             subscriptionType: subscriptionType
