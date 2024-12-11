@@ -7,7 +7,7 @@
 
 import Foundation
 import Eureka
-
+import ToastViewSwift
 
 class FormNewSubController: FormViewController {
     
@@ -265,10 +265,17 @@ class FormNewSubController: FormViewController {
         
         let manager = SubscriptionManager()
         manager.save(subscription) // Guardar la suscripción en el almacenamiento local
+        NotificationManager.shared.scheduleNotifications(for: subscription)
+        NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
         
         // Mostrar mensaje de éxito
-        showAlert(title: "Éxito", message: "La suscripción fue guardada correctamente.")
-        navigationController?.popViewController(animated: true)
+        let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        let toast = Toast.default(
+            image: icon!,
+            title: "Subscription saved",
+            subtitle: nil
+        )
+        toast.show(haptic: .success)
     }
     
     

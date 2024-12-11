@@ -87,15 +87,6 @@ class CalendarViewController: UIViewController {
     
     @objc func handleSaveNewSaub(_ notification: Notification) {
         self.reloadCalendar(completion: { })
-        Utility.executeFunctionWithDelay(delay: 1, function: {
-            let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-            let toast = Toast.default(
-                image: icon!,
-                title: "Subscription saved",
-                subtitle: nil
-            )
-            toast.show(haptic: .success)
-        })
     }
     
     
@@ -276,17 +267,21 @@ class CalendarViewController: UIViewController {
     }
     
     
-    private func reloadCalendar(completion: @escaping () -> Void) {
-        // Cargar las suscripciones
-        subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
-        calendarDataSource?.set(subs: subscriptions)
-//        let subs = subscriptions.filter{ Calendar.current.isDate($0.0, inSameDayAs: Date.dateSelected) }
-//        let selectedSubs = SubscriptionManager().readByIds(subs.map({return $0.1.id}))
-        bottomContainer.loadSubscriptions(selectedSubs)
-        print("Reload Calendar")
-        completion()
-    }
-    
+        var dateSelected: Date = Date() // Fecha seleccionada, inicializada como la fecha actual
+
+        private func reloadCalendar(completion: @escaping () -> Void) {
+            // Cargar las suscripciones
+            subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
+            calendarDataSource?.set(subs: subscriptions)
+            
+            // Filtrar suscripciones según la fecha seleccionada
+            let subs = subscriptions.filter { Calendar.current.isDate($0.0, inSameDayAs: dateSelected) }
+            let selectedSubs = SubscriptionManager().readByIds(subs.map { $0.1.id })
+            bottomContainer.loadSubscriptions(selectedSubs)
+            print("Reload Calendar")
+            completion()
+        }
+
 }
 
 
