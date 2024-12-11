@@ -16,7 +16,7 @@ class FormNewSubController: FormViewController {
     private var saveButton: UIBarButtonItem!
     
     
-    init(imgURL: String, companyName: String) {
+    init(imgURL: String?, companyName: String?) {
         self.imgURL = imgURL
         self.companyName = companyName
         super.init(style: .insetGrouped) // Configurar el estilo aquí
@@ -28,21 +28,13 @@ class FormNewSubController: FormViewController {
     
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // Asegúrate de que el índice 0 corresponde a la celda de la imagen
-        if indexPath.section == 0 && indexPath.row == 0 {
-            return 136 // Altura para la celda de la imagen
-        } else if indexPath.section == 7 && indexPath.row == 7 {
-            
-        }
-        return 54 // Altura para las demás celdas
+        return 54
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ThemeManager.color(for: .editBackgroud)
-        
-        //        view.addSubview(saveButton)
         saveButton = UIBarButtonItem(systemItem: .save)
         saveButton.isEnabled = false
         saveButton.target = self
@@ -52,30 +44,11 @@ class FormNewSubController: FormViewController {
         tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
+        setupTableHeaderView()
         
-        
-        form +++
+    form +++
         Section()
-        <<< CompanyRow() { row in
-            row.cell.imageV.image = UIImage(named: imgURL ?? "defaultImageName")
-            row.title = ""
-            row.cell.backgroundColor = .clear
-        }.onCellSelection { [weak self] _, _ in
-            guard let self = self else { return }
-            let detailNav = UINavigationController(rootViewController: IconSelectionViewController())
-            self.navigationController?.present(detailNav, animated: true)
-        }
         
-        <<< CenteredTextFieldRow() { row in
-            row.cell.textField.placeholder = "Name"
-            row.cell.textField.text = companyName
-            row.cell.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-            row.cell.backgroundColor = .clear
-            row.tag = "Name" // Asignar un tag único
-        }
-        
-        form +++
-        Section()
         <<< SegmentedRow<String>() { row in
             row.options = ["Trial", "Recurring", "Lifetime"]
             row.value = "Recurring"
@@ -182,6 +155,94 @@ class FormNewSubController: FormViewController {
         
     }
     
+    private func setupTableHeaderView() {
+        let headerView = UIView()
+        headerView.backgroundColor = .clear
+        
+        // Contenedor para la imagen
+        let imageContainer = UIView()
+        imageContainer.backgroundColor = .white
+        imageContainer.layer.cornerRadius = 20
+        imageContainer.translatesAutoresizingMaskIntoConstraints = false
+        imageContainer.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(editImageTapped)))
+        headerView.addSubview(imageContainer)
+        
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 12
+        imageView.layer.masksToBounds = true
+        imageView.image = UIImage(named: imgURL ?? "icon2") // Imagen inicial
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageContainer.addSubview(imageView)
+        
+        // Botón de editar
+        let editImageButton = UIButton(type: .system)
+        editImageButton.setTitle("Edit", for: .normal)
+        editImageButton.tintColor = .systemBlue
+        editImageButton.translatesAutoresizingMaskIntoConstraints = false
+        editImageButton.addTarget(self, action: #selector(editImageTapped), for: .touchUpInside)
+        headerView.addSubview(editImageButton)
+        
+        // Campo de texto para el nombre de la empresa
+        let companyNameTextField = UITextField()
+        companyNameTextField.placeholder = "Enter subcription name"
+        companyNameTextField.font = UIFont.systemFont(ofSize: 26, weight: .bold)
+        companyNameTextField.textAlignment = .center
+        companyNameTextField.borderStyle = .none
+        companyNameTextField.text = companyName // Texto inicial
+        companyNameTextField.addTarget(self, action: #selector(companyNameChanged(_:)), for: .editingChanged)
+        companyNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(companyNameTextField)
+        
+        // Configurar restricciones
+        NSLayoutConstraint.activate([
+            imageContainer.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+            imageContainer.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 16),
+            imageContainer.widthAnchor.constraint(equalToConstant: 120),
+            imageContainer.heightAnchor.constraint(equalToConstant: 120),
+            
+            imageView.centerXAnchor.constraint(equalTo: imageContainer.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: imageContainer.centerYAnchor),
+            imageView.widthAnchor.constraint(equalTo: imageContainer.widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: imageContainer.heightAnchor, multiplier: 0.8),
+            
+            editImageButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+            editImageButton.topAnchor.constraint(equalTo: imageContainer.bottomAnchor, constant: 2),
+            editImageButton.widthAnchor.constraint(equalToConstant: 32),
+            editImageButton.heightAnchor.constraint(equalToConstant: 32),
+            
+            companyNameTextField.topAnchor.constraint(equalTo: editImageButton.bottomAnchor, constant: 12),
+            companyNameTextField.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
+            companyNameTextField.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
+            companyNameTextField.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        // Ajusta el tamaño del header
+        let headerHeight: CGFloat = 224
+        headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight)
+        
+        tableView.tableHeaderView = headerView
+    }
+
+    @objc private func editImageTapped() {
+        let iconSelector = IconSelectionViewController()
+        iconSelector.onIconSelected = { [weak self] selectedIcon in
+            guard let self = self else { return }
+            self.imgURL = selectedIcon
+            if let headerView = self.tableView.tableHeaderView,
+               let imageView = headerView.subviews.compactMap({$0}).first?.subviews.compactMap({ $0 as? UIImageView }).first {
+                imageView.image = UIImage(named: selectedIcon)
+            }
+        }
+        
+        let navController = UINavigationController(rootViewController: iconSelector)
+        self.present(navController, animated: true)
+    }
+
+    @objc private func companyNameChanged(_ textField: UITextField) {
+        companyName = textField.text
+    }
+
     // Función para actualizar el formulario según el tipo de suscripción seleccionado
     private func updateFormBasedOnSubscriptionType(_ type: String?) {
         // Recuperar filas por tag
@@ -257,12 +318,15 @@ class FormNewSubController: FormViewController {
     
     
     @objc private func saveSubscription() {
+        // Validar que todos los datos requeridos estén presentes
         guard let subscription = createSubscription() else {
-            return // Si hay un error, el mensaje ya fue mostrado en `createSubscription`
+            showAlert(title: "Error", message: "Please complete all required fields.")
+            return
         }
         
+        // Guardar la suscripción
         let manager = SubscriptionManager()
-        manager.save(subscription) // Guardar la suscripción en el almacenamiento local
+        manager.save(subscription)
         NotificationManager.shared.scheduleNotifications(for: subscription)
         NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
         
@@ -274,13 +338,27 @@ class FormNewSubController: FormViewController {
             subtitle: nil
         )
         toast.show(haptic: .success)
+        
+        navigationController?.popViewController(animated: true)
     }
+
     
     
     private func createSubscription() -> Subscription? {
-        // Validamos el nombre y otros campos necesarios
-        guard let name = (form.rowBy(tag: "Name") as? CenteredTextFieldRow)?.cell.textField.text, !name.isEmpty,
-              let amount = (form.rowBy(tag: "SubscriptionCost") as? IntRow)?.value,
+        // Validar nombre de la empresa
+        guard let name = companyName, !name.isEmpty else {
+            showAlert(title: "Error", message: "Please enter a company name.")
+            return nil
+        }
+        
+        // Validar imagen de la empresa
+        guard let logoUrl = imgURL, !logoUrl.isEmpty else {
+            showAlert(title: "Error", message: "Please select an icon for the subscription.")
+            return nil
+        }
+        
+        // Validar campos del formulario
+        guard let amount = (form.rowBy(tag: "SubscriptionCost") as? IntRow)?.value,
               let nextPaymentDate = (form.rowBy(tag: "DateRow") as? DateRow)?.value,
               let reminderName = (form.rowBy(tag: "PickerInputRow") as? PickerInputRow<String>)?.value,
               let reminder = ReminderOption.allCases.first(where: { $0.name == reminderName }),
@@ -289,125 +367,28 @@ class FormNewSubController: FormViewController {
               let subscriptionTypeName = (form.rowBy(tag: "SubscriptionType") as? SegmentedRow<String>)?.value,
               let subscriptionType = SubscriptionType.allCases.first(where: { $0.displayName() == subscriptionTypeName })
         else {
-            showAlert(title: "Error", message: "Por favor completa todos los campos requeridos.")
+            showAlert(title: "Error", message: "Please complete all required fields.")
             return nil
         }
         
-        // Validar periodo y duración solo si no es Trial o Lifetime
-        let period: SubscriptionPeriod?
-        if subscriptionType != .trial && subscriptionType != .lifeTime {
-            guard let periodName = (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value,
-                  let resolvedPeriod = SubscriptionPeriod.allCases.first(where: { $0.name == periodName }) else {
-                showAlert(title: "Error", message: "Selecciona un periodo válido.")
-                return nil
-            }
-            period = resolvedPeriod
-        } else {
-            period = nil // No es necesario para Trial o Lifetime
-        }
-        
+        // Determinar el periodo de la suscripción (opcional para ciertos tipos)
+        let period: SubscriptionPeriod? = subscriptionType != .trial && subscriptionType != .lifeTime
+            ? SubscriptionPeriod.allCases.first(where: { $0.name == (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value })
+            : nil
+
+        // Crear la suscripción
         return Subscription(
             id: UUID(),
             name: name,
             amount: Double(amount),
-            logoUrl: imgURL ?? "",
+            logoUrl: logoUrl,
             nextPaymentDate: nextPaymentDate,
-            period: period ?? .custom, // Usamos .custom como predeterminado si no aplica
+            period: period ?? .custom,
             reminderTime: reminder,
             category: category,
             subscriptionType: subscriptionType
         )
     }
-}
 
 
-final class CompanyRow: Row<CompanyRowCell>, RowType {
-    required init(tag: String?) {
-        super.init(tag: tag)
-        cellProvider = CellProvider<CompanyRowCell>()
-    }
-}
-
-
-
-class CompanyRowCell: Cell<String>, CellType {
-    
-    let imageContainer = UIView()
-    let imageV = UIImageView()
-    
-    required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupViews()
-    }
-    
-    private func setupViews() {
-        // Configurar imagen
-        imageContainer.backgroundColor = .white
-        imageContainer.layer.cornerRadius = 20  // Radio del borde del contenedor
-        imageContainer.layer.cornerCurve = .continuous
-        imageContainer.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(imageContainer)
-        
-        imageV.contentMode = .scaleAspectFit
-        imageV.layer.cornerRadius = 12
-        imageV.layer.masksToBounds = true  
-        imageV.translatesAutoresizingMaskIntoConstraints = false
-        imageContainer.addSubview(imageV)
-  
-        NSLayoutConstraint.activate([
-            imageContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            imageContainer.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            imageContainer.widthAnchor.constraint(equalToConstant: 120),  // Ancho del contenedor
-            imageContainer.heightAnchor.constraint(equalToConstant: 120),  // Altura del contenedor
-            
-            imageV.centerXAnchor.constraint(equalTo: imageContainer.centerXAnchor),
-            imageV.centerYAnchor.constraint(equalTo: imageContainer.centerYAnchor),
-            imageV.widthAnchor.constraint(equalTo: imageContainer.widthAnchor, multiplier: 0.8),
-            imageV.heightAnchor.constraint(equalTo: imageContainer.heightAnchor, multiplier: 0.8),
-        ])
-    }
-}
-
-
-final class CenteredTextFieldRow: Row<CenteredTextFieldCell>, RowType {
-    required init(tag: String?) {
-        super.init(tag: tag)
-        cellProvider = CellProvider<CenteredTextFieldCell>()
-    }
-}
-
-class CenteredTextFieldCell: Cell<String>, CellType {
-    let textField = UITextField()
-    
-    required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupViews()
-    }
-    
-    private func setupViews() {
-        // Configurar el textField
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.font = UIFont.systemFont(ofSize: 32)
-        textField.textAlignment = .center
-        textField.placeholder = "Enter text"
-        contentView.addSubview(textField)
-        
-        // Configurar las restricciones
-        NSLayoutConstraint.activate([
-            textField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            textField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            textField.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -16)
-        ])
-    }
 }

@@ -284,7 +284,7 @@ extension SubscriptionsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         Utility.feedbackGenerator(style: .soft)
         if indexPath.row == 0 {
-            let vc = IconSelectionViewController()
+            let vc = FormNewSubController(imgURL: nil, companyName: nil)
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             let comapany = companysNames[indexPath.row]

@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 class IconSelectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+    var onIconSelected: ((String) -> Void)? // Closure para enviar el icono seleccionado
+
     // Nombres de los iconos en Assets.xcassets
     let iconNames: [String] = ["icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8","icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8","icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8","icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8","icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8","icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8","icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8","icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8","icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8","icon1", "icon2", "icon3", "icon4", "icon5", "icon6", "icon7", "icon8"]
     
@@ -43,6 +44,12 @@ class IconSelectionViewController: UIViewController, UICollectionViewDataSource,
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+          let selectedIcon = iconNames[indexPath.item] // Nombre del icono seleccionado
+          onIconSelected?(selectedIcon) // Llama al closure con el icono seleccionado
+          self.dismiss(animated: true) // Cierra el controlador
+      }
     
     // MARK: - UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
