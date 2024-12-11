@@ -12,14 +12,26 @@ class PayWallViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = ThemeManager.color(for: .primaryBackground)
+        setupGradientBackground()
         setupViews()
+    }
+    
+    // Configuración de un gradiente como fondo
+    private func setupGradientBackground() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.white.cgColor, UIColor.gray.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
+        gradientLayer.frame = view.bounds
+        view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
     func setupViews() {
         // Encabezado con una imagen atractiva
         let headerImage = UIImageView(image: .appicon) // Reemplaza con tu imagen
         headerImage.contentMode = .scaleAspectFit
+        headerImage.layer.cornerRadius = 12
+        headerImage.clipsToBounds = true
         headerImage.translatesAutoresizingMaskIntoConstraints = false
         
         // Título
@@ -33,7 +45,6 @@ class PayWallViewController: UIViewController {
         let descriptionLabel = UILabel()
         descriptionLabel.text = "Organiza tus suscripciones como un profesional y ahorra tiempo y dinero."
         descriptionLabel.font = UIFont.systemFont(ofSize: 16)
-        descriptionLabel.textColor = .secondaryLabel
         descriptionLabel.textAlignment = .center
         descriptionLabel.numberOfLines = 0
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -48,7 +59,6 @@ class PayWallViewController: UIViewController {
         let benefitsLabel = UILabel()
         benefitsLabel.text = benefits.joined(separator: "\n")
         benefitsLabel.font = UIFont.systemFont(ofSize: 16)
-        benefitsLabel.textColor = .label
         benefitsLabel.numberOfLines = 0
         benefitsLabel.textAlignment = .left
         benefitsLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -57,8 +67,8 @@ class PayWallViewController: UIViewController {
         let subscribeButton = UIButton(type: .system)
         subscribeButton.setTitle("Suscribirse por $9.99/mes", for: .normal)
         subscribeButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        subscribeButton.setTitleColor(.white, for: .normal)
-        subscribeButton.backgroundColor = .systemBlue
+        subscribeButton.setTitleColor(ThemeManager.color(for: .secondaryText), for: .normal)
+        subscribeButton.backgroundColor = ThemeManager.color(for: .secondaryBackground)
         subscribeButton.layer.cornerRadius = 10
         subscribeButton.translatesAutoresizingMaskIntoConstraints = false
         subscribeButton.addTarget(self, action: #selector(subscribeTapped), for: .touchUpInside)
@@ -67,7 +77,7 @@ class PayWallViewController: UIViewController {
         let restoreButton = UIButton(type: .system)
         restoreButton.setTitle("Restaurar compras", for: .normal)
         restoreButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        restoreButton.setTitleColor(.systemBlue, for: .normal)
+        restoreButton.setTitleColor(.white, for: .normal)
         restoreButton.translatesAutoresizingMaskIntoConstraints = false
         restoreButton.addTarget(self, action: #selector(restoreTapped), for: .touchUpInside)
         

@@ -34,7 +34,7 @@ struct Subscription: Codable {
 
 }
 
-enum SubscriptionType: Int, CaseIterable , Codable {
+enum SubscriptionType: Int, CaseIterable, Codable {
     case trial = 1
     case recurring = 2
     case lifeTime = 3
@@ -42,15 +42,15 @@ enum SubscriptionType: Int, CaseIterable , Codable {
     func displayName() -> String {
         switch self {
         case .trial:
-            return "trial"
+            return "Trial"
         case .recurring:
-            return "recurring"
+            return "Recurring"
         case .lifeTime:
-            return "lifeTime"
+            return "Lifetime"
         }
-        
     }
 }
+
 
 enum SubscriptionCategory: Int, CaseIterable, Codable {
     case other = 0

@@ -70,26 +70,31 @@ class DetailSubcriptionViewController: UIViewController {
         view.addSubview(priceLabel)
         
      
-        
         if let id = subId {
             guard let sub = SubscriptionManager().readById(id) else { return }
+            
+            // Cargar datos en los elementos visuales
             imageView.image = UIImage(named: sub.logoUrl)
             nameLabel.text = sub.name
-            priceLabel.text = "$\(String(sub.amount))"
+            priceLabel.text = "$\(String(format: "%.2f", sub.amount))"
             nextBillLabel.text = "Next bill: \(sub.nextDateFomatter)"
+            
+            // Mostrar detalles adicionales
             let periodView = createDetailView(title: "Period", value: sub.period.name)
             let reminderView = createDetailView(title: "Remind me", value: sub.reminderTime.name)
-            let planDetailsView = createDetailView(title: "Plan details", value:  "N/A")
+            let categoryView = createDetailView(title: "Category", value: sub.category.displayName())
+            let subscriptionTypeView = createDetailView(title: "Type", value: sub.subscriptionType.displayName())
+            let expirationStatus = sub.isExpired ? "Expired" : "Active"
+            let statusView = createDetailView(title: "Status", value: expirationStatus)
             
+            // Agregar las vistas al layout
             view.addSubview(periodView)
             view.addSubview(reminderView)
-            view.addSubview(planDetailsView)
+            view.addSubview(categoryView)
+            view.addSubview(subscriptionTypeView)
+            view.addSubview(statusView)
             
-            editImageButton.addAction(UIAction(handler: { [weak self] _ in
-                self?.toggleEditMode(button: editImageButton)
-            }), for: .touchUpInside)
-
-            // Configurar restricciones
+            // Configurar las restricciones
             NSLayoutConstraint.activate([
                 nextBillLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
                 nextBillLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -99,8 +104,8 @@ class DetailSubcriptionViewController: UIViewController {
                 
                 imageContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 imageContainer.topAnchor.constraint(equalTo: nextBillLabel.bottomAnchor, constant: 26),
-                imageContainer.widthAnchor.constraint(equalToConstant: 120),  // Ancho del contenedor
-                imageContainer.heightAnchor.constraint(equalToConstant: 120),  // Altura del contenedor
+                imageContainer.widthAnchor.constraint(equalToConstant: 120),
+                imageContainer.heightAnchor.constraint(equalToConstant: 120),
                 
                 imageView.centerXAnchor.constraint(equalTo: imageContainer.centerXAnchor),
                 imageView.centerYAnchor.constraint(equalTo: imageContainer.centerYAnchor),
@@ -123,18 +128,28 @@ class DetailSubcriptionViewController: UIViewController {
                 reminderView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
                 reminderView.heightAnchor.constraint(equalToConstant: 54),
                 
-                planDetailsView.topAnchor.constraint(equalTo: reminderView.bottomAnchor, constant: 4),
-                planDetailsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                planDetailsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                planDetailsView.heightAnchor.constraint(equalToConstant: 54),
+                categoryView.topAnchor.constraint(equalTo: reminderView.bottomAnchor, constant: 4),
+                categoryView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                categoryView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                categoryView.heightAnchor.constraint(equalToConstant: 54),
+                
+                subscriptionTypeView.topAnchor.constraint(equalTo: categoryView.bottomAnchor, constant: 4),
+                subscriptionTypeView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                subscriptionTypeView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                subscriptionTypeView.heightAnchor.constraint(equalToConstant: 54),
+                
+                statusView.topAnchor.constraint(equalTo: subscriptionTypeView.bottomAnchor, constant: 4),
+                statusView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                statusView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                statusView.heightAnchor.constraint(equalToConstant: 54),
                 
                 editImageButton.widthAnchor.constraint(equalToConstant: 52),
                 editImageButton.heightAnchor.constraint(equalToConstant: 52),
                 editImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                editImageButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor,constant: -40),
+                editImageButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -40),
             ])
-            
         }
+
     }
     
     private func toggleEditMode(button: UIButton) {

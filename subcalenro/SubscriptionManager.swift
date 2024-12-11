@@ -56,10 +56,14 @@ struct SubscriptionManager {
     
     // Guardar la lista actualizada de suscripciones en el archivo
     private func saveToDisk(_ subscriptions: [Subscription]) {
-        let data = try? JSONEncoder().encode(subscriptions)
-        try? data?.write(to: fileURL)
+        do {
+            let data = try JSONEncoder().encode(subscriptions)
+            try data.write(to: fileURL)
+        } catch {
+            print("Error al guardar las suscripciones: \(error)")
+        }
     }
-    
+
     func getSubscriptionTotal () -> Int {
         return readAllSubscriptions().count
     }

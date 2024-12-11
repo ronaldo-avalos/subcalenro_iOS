@@ -57,13 +57,13 @@ class FormNewSubController: FormViewController {
         form +++
         Section()
         <<< CompanyRow() { row in
-            row.cell.imageV.image = UIImage(named: imgURL ?? "") // Cargar la imagen
+            row.cell.imageV.image = UIImage(named: imgURL ?? "defaultImageName")
             row.title = ""
             row.cell.backgroundColor = .clear
         }.onCellSelection { [weak self] _, _ in
             guard let self = self else { return }
-            let detailVC = IconSelectionViewController()
-            self.navigationController?.pushViewController(detailVC, animated: true)
+            let detailNav = UINavigationController(rootViewController: IconSelectionViewController())
+            self.navigationController?.present(detailNav, animated: true)
         }
         
         <<< CenteredTextFieldRow() { row in
@@ -73,7 +73,7 @@ class FormNewSubController: FormViewController {
             row.cell.backgroundColor = .clear
             row.tag = "Name" // Asignar un tag único
         }
-
+        
         form +++
         Section()
         <<< SegmentedRow<String>() { row in
@@ -107,10 +107,12 @@ class FormNewSubController: FormViewController {
             cell.imageView?.image = UIImage(systemName: "arrow.clockwise")
         }.onChange { [weak self] row in
             guard let self = self else { return }
-            if let customDaysRow = self.form.rowBy(tag: "CustomDays") {
-                customDaysRow.hidden = Condition(booleanLiteral: row.value != "Custom")
+            if let periodRow = form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>,
+               let customDaysRow = form.rowBy(tag: "CustomDays") {
+                customDaysRow.hidden = Condition(booleanLiteral: periodRow.value != "Custom")
                 customDaysRow.evaluateHidden()
             }
+
         }
 
         <<< IntRow() {
@@ -122,7 +124,7 @@ class FormNewSubController: FormViewController {
         }.cellSetup { cell, _ in
             cell.imageView?.image = UIImage(systemName: "calendar.badge.plus")
         }
-
+        
         
         
         <<< DateRow() {
@@ -134,7 +136,7 @@ class FormNewSubController: FormViewController {
         }.cellSetup { cell, _ in
             cell.imageView?.image = UIImage(systemName: "calendar")
         }
-
+        
         
         +++ Section()
         
@@ -182,23 +184,30 @@ class FormNewSubController: FormViewController {
     
     // Función para actualizar el formulario según el tipo de suscripción seleccionado
     private func updateFormBasedOnSubscriptionType(_ type: String?) {
+        // Recuperar filas por tag
         let periodRow: BaseRow? = form.rowBy(tag: "BillingCycle")
         let durationRow: BaseRow? = form.rowBy(tag: "SubDuration")
         let customDaysRow: BaseRow? = form.rowBy(tag: "CustomDays")
-       
-        if type == "Lifetime" {
-            durationRow?.hidden = true
-        } else if type == "Trial" {
+        
+        switch type {
+        case "Lifetime":
+            // Ocultar periodo y duración para Lifetime
             periodRow?.hidden = true
             durationRow?.hidden = true
             customDaysRow?.hidden = true
             
-            // Agregar footerView
+        case "Trial":
+            // Ocultar periodo y duración para Trial
+            periodRow?.hidden = true
+            durationRow?.hidden = true
+            customDaysRow?.hidden = true
+            
+            // Agregar un mensaje de advertencia para Trial
             if let footer = tableView.tableFooterView {
                 footer.isHidden = false
             } else {
                 let footerLabel = UILabel()
-                footerLabel.text = "We will let you know before the trial period of this subscription ends."
+                footerLabel.text = "Se te notificará antes de que termine el periodo de prueba."
                 footerLabel.textAlignment = .center
                 footerLabel.numberOfLines = 0
                 footerLabel.textColor = .secondaryLabel
@@ -218,61 +227,27 @@ class FormNewSubController: FormViewController {
                 footerView.frame.size = CGSize(width: tableView.frame.width, height: 60)
                 tableView.tableFooterView = footerView
             }
-        } else {
+            
+        default:
+            // Mostrar periodo y duración para otros tipos
             periodRow?.hidden = false
             durationRow?.hidden = false
             tableView.tableFooterView?.isHidden = true
+            if (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value == SubscriptionPeriod.custom.name {
+                customDaysRow?.hidden = false
+            }
         }
         
+        // Evaluar condiciones de visibilidad
         periodRow?.evaluateHidden()
         durationRow?.evaluateHidden()
+        customDaysRow?.evaluateHidden()
     }
-
+    
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
         let text = textField.text ?? ""
-        saveButton.isEnabled = !text.isEmpty // Habilitar el botón si el campo no está vacío
-    }
-    
-    @objc private func saveSubscription() {
-          guard let subscription = createSubscription() else {
-              showAlert(title: "Error", message: "Please complete all fields.")
-              return
-          }
-          
-        print("Subscription saved: \(subscription)")
-      }
-
-    private func createSubscription() -> Subscription? {
-        
-        //Validamos que el nombre no este vacio
-        guard let name = (form.rowBy(tag: "Name") as? CenteredTextFieldRow)?.cell.textField.text, !name.isEmpty,
-              let amount = (form.rowBy(tag: "SubscriptionCost") as? IntRow)?.value,
-              let periodName = (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value,
-              let period = SubscriptionPeriod.allCases.first(where: { $0.name == periodName }),
-              let nextPaymentDate = (form.rowBy(tag: "DateRow") as? DateRow)?.value,
-              let reminderName = (form.rowBy(tag: "PickerInputRow") as? PickerInputRow<String>)?.value,
-              let reminder = ReminderOption.allCases.first(where: { $0.name == reminderName }),
-              let categoryName = (form.rowBy(tag: "PlanDetail") as? PickerInputRow<String>)?.value,
-              let category = SubscriptionCategory.allCases.first(where: { $0.displayName() == categoryName })
-//             let subscriptionTypeName = (form.rowBy(tag: "subscriptionType") as? SegmentedRow<String>)?.value,
-//              let subscriptionType = SubscriptionType.allCases.first(where: { $0.displayName() == subscriptionTypeName })
-                
-        else {
-            return nil
-        }
-        
-        return Subscription(
-            id: UUID(),
-            name: name,
-            amount: Double(amount),
-            logoUrl: imgURL ?? "",
-            nextPaymentDate: nextPaymentDate,
-            period: period,
-            reminderTime: reminder,
-            category: category,
-            subscriptionType: .trial
-        )
+        saveButton.isEnabled = !text.isEmpty // Habilitar botón si el texto no está vacío
     }
     
     private func showAlert(title: String, message: String) {
@@ -281,6 +256,63 @@ class FormNewSubController: FormViewController {
         present(alert, animated: true)
     }
     
+    
+    
+    @objc private func saveSubscription() {
+        guard let subscription = createSubscription() else {
+            return // Si hay un error, el mensaje ya fue mostrado en `createSubscription`
+        }
+        
+        let manager = SubscriptionManager()
+        manager.save(subscription) // Guardar la suscripción en el almacenamiento local
+        
+        // Mostrar mensaje de éxito
+        showAlert(title: "Éxito", message: "La suscripción fue guardada correctamente.")
+        navigationController?.popViewController(animated: true)
+    }
+    
+    
+    private func createSubscription() -> Subscription? {
+        // Validamos el nombre y otros campos necesarios
+        guard let name = (form.rowBy(tag: "Name") as? CenteredTextFieldRow)?.cell.textField.text, !name.isEmpty,
+              let amount = (form.rowBy(tag: "SubscriptionCost") as? IntRow)?.value,
+              let nextPaymentDate = (form.rowBy(tag: "DateRow") as? DateRow)?.value,
+              let reminderName = (form.rowBy(tag: "PickerInputRow") as? PickerInputRow<String>)?.value,
+              let reminder = ReminderOption.allCases.first(where: { $0.name == reminderName }),
+              let categoryName = (form.rowBy(tag: "PlanDetail") as? PickerInputRow<String>)?.value,
+              let category = SubscriptionCategory.allCases.first(where: { $0.displayName() == categoryName }),
+              let subscriptionTypeName = (form.rowBy(tag: "SubscriptionType") as? SegmentedRow<String>)?.value,
+              let subscriptionType = SubscriptionType.allCases.first(where: { $0.displayName() == subscriptionTypeName })
+        else {
+            showAlert(title: "Error", message: "Por favor completa todos los campos requeridos.")
+            return nil
+        }
+        
+        // Validar periodo y duración solo si no es Trial o Lifetime
+        let period: SubscriptionPeriod?
+        if subscriptionType != .trial && subscriptionType != .lifeTime {
+            guard let periodName = (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value,
+                  let resolvedPeriod = SubscriptionPeriod.allCases.first(where: { $0.name == periodName }) else {
+                showAlert(title: "Error", message: "Selecciona un periodo válido.")
+                return nil
+            }
+            period = resolvedPeriod
+        } else {
+            period = nil // No es necesario para Trial o Lifetime
+        }
+        
+        return Subscription(
+            id: UUID(),
+            name: name,
+            amount: Double(amount),
+            logoUrl: imgURL ?? "",
+            nextPaymentDate: nextPaymentDate,
+            period: period ?? .custom, // Usamos .custom como predeterminado si no aplica
+            reminderTime: reminder,
+            category: category,
+            subscriptionType: subscriptionType
+        )
+    }
 }
 
 
