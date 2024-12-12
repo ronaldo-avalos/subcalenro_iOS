@@ -11,6 +11,9 @@ target 'subcalenro' do
   pod 'DGCharts'
   pod "ToastViewSwift"
   pod 'Eureka'
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
   
 end
 
