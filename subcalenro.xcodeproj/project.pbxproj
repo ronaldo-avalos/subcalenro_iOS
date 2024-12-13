@@ -7,14 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14D730B4F063CDC67E989B72 /* Pods_subcalenro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */; };
+		79ED5569347A006F0EEB3561 /* Pods_subcalenro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83AC744487864FF7D4555DF9 /* Pods_subcalenro.framework */; };
 		CE333DE72CC3210000DC6481 /* AnalyticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE333DE62CC3210000DC6481 /* AnalyticsViewController.swift */; };
+		CE3C61AB2D0B8413001385E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE3C61AA2D0B8413001385E6 /* GoogleService-Info.plist */; };
+		CE3C61AF2D0BAEBA001385E6 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C61AE2D0BAEBA001385E6 /* Company.swift */; };
+		CE3C61B12D0BAEEA001385E6 /* FirebaseStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C61B02D0BAEEA001385E6 /* FirebaseStoreManager.swift */; };
 		CE4261802CFE48B60048533E /* FormNewSubController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42617F2CFE48B60048533E /* FormNewSubController.swift */; };
 		CEC1EF332CC4A9B6008F7A9F /* NotificationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */; };
 		CEF3FC832D00D7B000D9ECF7 /* IconSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */; };
 		CEF3FCB12D077C4300D9ECF7 /* PayWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FCB02D077C4300D9ECF7 /* PayWallViewController.swift */; };
 		CEF3FCB42D077CF300D9ECF7 /* NotificationsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FCB32D077CF300D9ECF7 /* NotificationsSettingsViewController.swift */; };
 		CEF3FCB62D077E3200D9ECF7 /* AppIconChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FCB52D077E3200D9ECF7 /* AppIconChangeViewController.swift */; };
+		CEF7F0222D0BD3D500C19D3C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = CEF7F0212D0BD3D500C19D3C /* FirebaseFirestore */; };
+		CEF7F0242D0BD3E900C19D3C /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CEF7F0232D0BD3E900C19D3C /* FirebaseAuth */; };
+		CEF7F0262D0BD3EE00C19D3C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEF7F0252D0BD3EE00C19D3C /* FirebaseCrashlytics */; };
 		D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */; };
 		D310DE222CB34184008A6F39 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE212CB34184008A6F39 /* Subscription.swift */; };
 		D310DE242CB37663008A6F39 /* SubscriptionsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */; };
@@ -63,10 +69,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2CBD348774C22723D806D30E /* Pods-subcalenro.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-subcalenro.release.xcconfig"; path = "Target Support Files/Pods-subcalenro/Pods-subcalenro.release.xcconfig"; sourceTree = "<group>"; };
-		B5A14581D6C13DFA917E4532 /* Pods-subcalenro.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-subcalenro.debug.xcconfig"; path = "Target Support Files/Pods-subcalenro/Pods-subcalenro.debug.xcconfig"; sourceTree = "<group>"; };
-		BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_subcalenro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		025ECA6624BF622FD32A59C6 /* Pods-subcalenro.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-subcalenro.debug.xcconfig"; path = "Target Support Files/Pods-subcalenro/Pods-subcalenro.debug.xcconfig"; sourceTree = "<group>"; };
+		83AC744487864FF7D4555DF9 /* Pods_subcalenro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_subcalenro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAB605CD67659E78C102B654 /* Pods-subcalenro.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-subcalenro.release.xcconfig"; path = "Target Support Files/Pods-subcalenro/Pods-subcalenro.release.xcconfig"; sourceTree = "<group>"; };
 		CE333DE62CC3210000DC6481 /* AnalyticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsViewController.swift; sourceTree = "<group>"; };
+		CE3C61AA2D0B8413001385E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CE3C61AE2D0BAEBA001385E6 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
+		CE3C61B02D0BAEEA001385E6 /* FirebaseStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStoreManager.swift; sourceTree = "<group>"; };
 		CE42617F2CFE48B60048533E /* FormNewSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormNewSubController.swift; sourceTree = "<group>"; };
 		CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionViewController.swift; sourceTree = "<group>"; };
 		CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionViewController.swift; sourceTree = "<group>"; };
@@ -127,7 +136,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14D730B4F063CDC67E989B72 /* Pods_subcalenro.framework in Frameworks */,
+				79ED5569347A006F0EEB3561 /* Pods_subcalenro.framework in Frameworks */,
+				CEF7F0262D0BD3EE00C19D3C /* FirebaseCrashlytics in Frameworks */,
+				CEF7F0242D0BD3E900C19D3C /* FirebaseAuth in Frameworks */,
+				CEF7F0222D0BD3D500C19D3C /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,18 +149,10 @@
 		5609230F9A1AD0A8528ACB0E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B5A14581D6C13DFA917E4532 /* Pods-subcalenro.debug.xcconfig */,
-				2CBD348774C22723D806D30E /* Pods-subcalenro.release.xcconfig */,
+				025ECA6624BF622FD32A59C6 /* Pods-subcalenro.debug.xcconfig */,
+				CAB605CD67659E78C102B654 /* Pods-subcalenro.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		569B11092DE7ED7DBF56ABD9 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				BE9BA6038E4E34A5D57879E0 /* Pods_subcalenro.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CE333DE52CC320EE00DC6481 /* Analyticals */ = {
@@ -281,7 +285,7 @@
 				D3B649712CAE3B1000ADD119 /* subcalenro */,
 				D3B6494D2CAE2E4700ADD119 /* Products */,
 				5609230F9A1AD0A8528ACB0E /* Pods */,
-				569B11092DE7ED7DBF56ABD9 /* Frameworks */,
+				EB9E00D5691B4D452C05E6DB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -296,6 +300,7 @@
 		D3B649712CAE3B1000ADD119 /* subcalenro */ = {
 			isa = PBXGroup;
 			children = (
+				CE3C61AA2D0B8413001385E6 /* GoogleService-Info.plist */,
 				D387D18A2CAFA50700F0BCD6 /* Appearance */,
 				CEF3FCAF2D077C3400D9ECF7 /* PayWall */,
 				CE333DE52CC320EE00DC6481 /* Analyticals */,
@@ -321,8 +326,18 @@
 				D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */,
 				CE42617F2CFE48B60048533E /* FormNewSubController.swift */,
 				CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */,
+				CE3C61AE2D0BAEBA001385E6 /* Company.swift */,
+				CE3C61B02D0BAEEA001385E6 /* FirebaseStoreManager.swift */,
 			);
 			path = subcalenro;
+			sourceTree = "<group>";
+		};
+		EB9E00D5691B4D452C05E6DB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				83AC744487864FF7D4555DF9 /* Pods_subcalenro.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,11 +347,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D3B649622CAE2E4B00ADD119 /* Build configuration list for PBXNativeTarget "subcalenro" */;
 			buildPhases = (
-				7416EB9D40E340371B0ECC0A /* [CP] Check Pods Manifest.lock */,
+				A618C164D052F599AC62E225 /* [CP] Check Pods Manifest.lock */,
 				D3B649482CAE2E4700ADD119 /* Sources */,
 				D3B649492CAE2E4700ADD119 /* Frameworks */,
 				D3B6494A2CAE2E4700ADD119 /* Resources */,
-				63FF86A4FCC6CE52415685AD /* [CP] Embed Pods Frameworks */,
+				07B02A2FD40AAF65D94BB6F1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -371,6 +386,9 @@
 				Base,
 			);
 			mainGroup = D3B649432CAE2E4700ADD119;
+			packageReferences = (
+				CE3C61B22D0BB5E1001385E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = D3B6494D2CAE2E4700ADD119 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -402,6 +420,7 @@
 				D387D17C2CAFA1C900F0BCD6 /* Assets.xcassets in Resources */,
 				D387D17D2CAFA1C900F0BCD6 /* SF-Pro-Text-Semibold.otf in Resources */,
 				D387D17E2CAFA1C900F0BCD6 /* SF-Pro-Text-Regular.otf in Resources */,
+				CE3C61AB2D0B8413001385E6 /* GoogleService-Info.plist in Resources */,
 				D387D17F2CAFA1C900F0BCD6 /* SF-Pro-Text-Medium.otf in Resources */,
 				D3B6497A2CAE3B1000ADD119 /* Main.storyboard in Resources */,
 			);
@@ -410,7 +429,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		63FF86A4FCC6CE52415685AD /* [CP] Embed Pods Frameworks */ = {
+		07B02A2FD40AAF65D94BB6F1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -427,7 +446,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-subcalenro/Pods-subcalenro-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7416EB9D40E340371B0ECC0A /* [CP] Check Pods Manifest.lock */ = {
+		A618C164D052F599AC62E225 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -485,6 +504,8 @@
 				CE333DE72CC3210000DC6481 /* AnalyticsViewController.swift in Sources */,
 				D375081F2CB856E300FDFBB4 /* CustomFSCalendar.swift in Sources */,
 				D3B649762CAE3B1000ADD119 /* CalendarViewController.swift in Sources */,
+				CE3C61AF2D0BAEBA001385E6 /* Company.swift in Sources */,
+				CE3C61B12D0BAEEA001385E6 /* FirebaseStoreManager.swift in Sources */,
 				D387D1882CAFA37700F0BCD6 /* OptionsFloatingBarView.swift in Sources */,
 				CEF3FCB12D077C4300D9ECF7 /* PayWallViewController.swift in Sources */,
 				D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */,
@@ -516,7 +537,7 @@
 /* Begin XCBuildConfiguration section */
 		D3B649632CAE2E4B00ADD119 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5A14581D6C13DFA917E4532 /* Pods-subcalenro.debug.xcconfig */;
+			baseConfigurationReference = 025ECA6624BF622FD32A59C6 /* Pods-subcalenro.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -531,12 +552,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = con.coppertec.subcalenro;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coppertec.subcalenro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -546,7 +568,7 @@
 		};
 		D3B649642CAE2E4B00ADD119 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2CBD348774C22723D806D30E /* Pods-subcalenro.release.xcconfig */;
+			baseConfigurationReference = CAB605CD67659E78C102B654 /* Pods-subcalenro.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -561,12 +583,13 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = con.coppertec.subcalenro;
+				PRODUCT_BUNDLE_IDENTIFIER = com.coppertec.subcalenro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -715,6 +738,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CE3C61B22D0BB5E1001385E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CEF7F0212D0BD3D500C19D3C /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE3C61B22D0BB5E1001385E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		CEF7F0232D0BD3E900C19D3C /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE3C61B22D0BB5E1001385E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		CEF7F0252D0BD3EE00C19D3C /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE3C61B22D0BB5E1001385E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		D3B6496F2CAE3B1000ADD119 /* subcalenro.xcdatamodeld */ = {

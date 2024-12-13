@@ -7,34 +7,12 @@
 
 import Foundation
 import UIKit
+import Kingfisher
+
 class SubscriptionsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
 
-    let companysNames = [
-        "Custom","Spotify",  "Netflix", "Apple Music","Disney+",
-        "HBO Max", "SmartFit",  "Apple TV+", "Amazon Prime", "Figma","Adobe",
-        "iCloud", "Xbox Game Pass", "Megacable", "YouTube Premium", "PlayStation Plus",
-        "Dropbox", "Google Drive", "Slack","Duolingo Plus", "Notion", "Zoom", "Vix",
-        "Claro video", "Comisión federal de electricidad", "Telmex", "Vodafone", "AT&T", "Telefónica", "Movistar","Telcel", "Deezer",
-        "Canva Pro", "Nintendo Switch Online", "Walmart+", "Google Workspace", "Kindle Unlimited", "Audible",
-        "Scribd", "The New York Times", "JetBrains", "Chat GPT+", "Platzi", "Coursera", "Skillshare",
-        "EA Play", "Twitch Turbo", "Patreon", "OnlyFans", "OneDrive", "Starbucks Rewards", "Birchbox",
-        "GitHub Copilot", "Midjourney", "Apple Fitness+", "Discord Nitro", "Roblox Premium", "Azure DevOps Services",
-        "AWS (Amazon Web Services)", "Google Cloud", "Docker", "Vercel"
-    ]
-    
-    let logos = [
-        "icon2","spotify_logo",  "netflix_logo", "apple_music_logo","disney_logo",
-        "hbo_max_logo", "smartfit_logo",  "apple_tv_logo", "amazon_prime_logo",  "figma_logo","adobe_logo",
-        "icloud_logo", "xbox_gamepass_logo", "megacable_logo", "youtube_premium_logo", "playstation_plus_logo",
-        "dropbox_logo", "google_drive_logo", "slack_logo", "duolingo_logo","notion_logo", "zoom_logo", "vix_logo",
-        "claro_video_logo", "cfe_logo", "telmex_logo", "vodafone_logo", "att_logo", "telefonica_logo", "movistar_logo","telcel_logo","deezer_logo",
-        "canva_pro_logo", "nintendo_switch_online_logo", "walmart_plus_logo", "google_workspace_logo", "kindle_unlimited_logo", "audible_logo",
-        "scribd_logo", "nyt_logo", "jetbrains_logo", "chatgpt_logo", "platzi_logo", "coursera_logo", "skillshare_logo",
-        "ea_play_logo", "twitch_turbo_logo", "patreon_logo", "onlyfans_logo", "onedrive_logo", "starbucks_rewards_logo", "birchbox_logo",
-        "github_copilot_logo", "midjourney_logo", "apple_fitness_logo", "discord_nitro_logo", "roblox_premium_logo", "azure_devops_logo",
-        "aws_logo", "google_cloud_logo", "docker_logo", "vercel_logo"
-    ]
-    
+    var subscriptions: [Company] = []
+
     var filteredSubscriptions: [String] = []
     var filteredLogos: [String] = []
     
@@ -51,9 +29,18 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
         closeIcon.tintColor = .systemGray2
         self.navigationItem.rightBarButtonItem = closeIcon
     
-        
+        FirebaseStoreManager().fetchSubscriptions { [weak self] fetchedSubscriptions in
+               guard let self = self else { return }
+               self.subscriptions = fetchedSubscriptions
+               self.filteredSubscriptions = fetchedSubscriptions.map { $0.name }
+               self.filteredLogos = fetchedSubscriptions.map { $0.imageUrl }
+               
+               DispatchQueue.main.async {
+                   self.collectionView.reloadData()
+                   self.tableView.reloadData()
+               }
+           }
         // Configuración del Search Controller
-        showAllSubscriptions()
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search by company"
@@ -118,12 +105,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
-    // Método para mostrar todas las suscripciones por defecto
-    private func showAllSubscriptions() {
-        filteredSubscriptions = companysNames
-        filteredLogos = logos
-    }
+
     
     @objc func closeModal() {
         self.dismiss(animated: true)
@@ -136,11 +118,12 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SubscriptionViewCell
-        cell.label.text = filteredSubscriptions[indexPath.row]
-        cell.imageView.image = UIImage(named: filteredLogos[indexPath.row])
+        let subscription = subscriptions[indexPath.row]
+        cell.label.text = subscription.name
+        // Carga la imagen desde la URL usando una librería como Kingfisher o SDWebImage
+        cell.imageView.kf.setImage(with: URL(string: subscription.imageUrl))
         return cell
     }
-    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredSubscriptions.count
@@ -148,8 +131,10 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath)
-        cell.textLabel?.text = filteredSubscriptions[indexPath.row]
-        cell.imageView?.image = UIImage(named: filteredLogos[indexPath.row])
+        let subscription = subscriptions[indexPath.row]
+        cell.textLabel?.text = subscription.name
+        // Carga la imagen desde la URL usando una librería como Kingfisher o SDWebImage
+        cell.imageView?.kf.setImage(with: URL(string: subscription.imageUrl))
         return cell
     }
     
@@ -175,16 +160,15 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     func updateSearchResults(for searchController: UISearchController) {
            guard let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty else {
                // Si la búsqueda está vacía, mostrar todas las suscripciones
-               showAllSubscriptions()
                collectionView.reloadData()
                tableView.reloadData()
                return
            }
            
-           // Filtrar las suscripciones y logos basados en el texto ingresado
-           filteredSubscriptions = companysNames.filter { $0.lowercased().contains(searchText) }
-           filteredLogos = zip(companysNames, logos).filter { $0.0.lowercased().contains(searchText) }.map { $0.1 }
-           
+//           // Filtrar las suscripciones y logos basados en el texto ingresado
+//           filteredSubscriptions = su.filter { $0.lowercased().contains(searchText) }
+//           filteredLogos = zip(companysNames, logos).filter { $0.0.lowercased().contains(searchText) }.map { $0.1 }
+//           
            collectionView.reloadData()
            tableView.reloadData()
        }
@@ -284,12 +268,11 @@ extension SubscriptionsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         Utility.feedbackGenerator(style: .soft)
         if indexPath.row == 0 {
-            let vc = FormNewSubController(imgURL: nil, companyName: nil)
+            let vc = FormNewSubController(company: nil)
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            let comapany = companysNames[indexPath.row]
-            let subImage = logos[indexPath.row]
-            let vc = FormNewSubController(imgURL: subImage, companyName: comapany)
+            let comapany = subscriptions[indexPath.row]
+            let vc = FormNewSubController(company: comapany)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

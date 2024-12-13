@@ -11,14 +11,14 @@ import ToastViewSwift
 
 class FormNewSubController: FormViewController {
     
-    var imgURL: String?
-    var companyName: String?
+    var company: Company?
+    var companyName: String = ""
     private var saveButton: UIBarButtonItem!
     
     
-    init(imgURL: String?, companyName: String?) {
-        self.imgURL = imgURL
-        self.companyName = companyName
+    init(company: Company?) {
+        self.company = company
+        self.companyName = company?.name ?? ""
         super.init(style: .insetGrouped) // Configurar el estilo aquí
     }
     
@@ -173,7 +173,7 @@ class FormNewSubController: FormViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 12
         imageView.layer.masksToBounds = true
-        imageView.image = UIImage(named: imgURL ?? "icon2") // Imagen inicial
+        imageView.image = UIImage(named: company?.imageUrl ?? "icon2") // Imagen inicial
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageContainer.addSubview(imageView)
         
@@ -191,7 +191,7 @@ class FormNewSubController: FormViewController {
         companyNameTextField.font = UIFont.systemFont(ofSize: 26, weight: .bold)
         companyNameTextField.textAlignment = .center
         companyNameTextField.borderStyle = .none
-        companyNameTextField.text = companyName // Texto inicial
+        companyNameTextField.text = company?.name ?? companyName// Texto inicial
         companyNameTextField.addTarget(self, action: #selector(companyNameChanged(_:)), for: .editingChanged)
         companyNameTextField.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(companyNameTextField)
@@ -230,7 +230,6 @@ class FormNewSubController: FormViewController {
         let iconSelector = IconSelectionViewController()
         iconSelector.onIconSelected = { [weak self] selectedIcon in
             guard let self = self else { return }
-            self.imgURL = selectedIcon
             if let headerView = self.tableView.tableHeaderView,
                let imageView = headerView.subviews.compactMap({$0}).first?.subviews.compactMap({ $0 as? UIImageView }).first {
                 imageView.image = UIImage(named: selectedIcon)
@@ -242,7 +241,7 @@ class FormNewSubController: FormViewController {
     }
 
     @objc private func companyNameChanged(_ textField: UITextField) {
-        companyName = textField.text
+//        companyName = textField.text
     }
 
     // Función para actualizar el formulario según el tipo de suscripción seleccionado
@@ -348,13 +347,13 @@ class FormNewSubController: FormViewController {
     
     private func createSubscription() -> Subscription? {
         // Validar nombre de la empresa
-        guard let name = companyName, !name.isEmpty else {
+        guard let name = company?.name, !name.isEmpty else {
             showAlert(title: "Error", message: "Please enter a company name.")
             return nil
         }
         
         // Validar imagen de la empresa
-        guard let logoUrl = imgURL, !logoUrl.isEmpty else {
+        guard let logoUrl = company?.imageUrl, !logoUrl.isEmpty else {
             showAlert(title: "Error", message: "Please select an icon for the subscription.")
             return nil
         }
