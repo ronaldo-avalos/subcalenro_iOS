@@ -22,7 +22,7 @@ class NotificationPermissionViewController: UIViewController {
         
         let titleLabel = UILabel()
         titleLabel.text = "Let me remind you of their paid days"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.font = UIFont(name: "SFCompactDisplay-Semibold", size: 34)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +30,7 @@ class NotificationPermissionViewController: UIViewController {
         
         let descriptionLabel = UILabel()
         descriptionLabel.text = "Receive notifications for billing reminders, upcoming renewals, and subscription updates to manage your services better."
-        descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        descriptionLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         descriptionLabel.numberOfLines = 0
         descriptionLabel.textAlignment = .center
         descriptionLabel.textColor = .secondaryLabel
@@ -39,13 +39,15 @@ class NotificationPermissionViewController: UIViewController {
         
         let continueButton = UIButton(type: .system)
         continueButton.setTitle("Continue", for: .normal)
+        continueButton.titleLabel?.font = UIFont(name: "SFCompactDisplay-Semibold", size: 21)
         continueButton.backgroundColor = ThemeManager.color(for: .secondaryBackground)
         continueButton.setTitleColor(ThemeManager.color(for: .secondaryText), for: .normal)
-        continueButton.layer.cornerRadius = 10
+        continueButton.layer.cornerRadius = 20
         continueButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(continueButton)
         
         let notNowButton = UIButton(type: .system)
+        notNowButton.titleLabel?.font = UIFont(name: "SFCompactDisplay-Semibold", size: 16)
         notNowButton.setTitle("Not Now", for: .normal)
         notNowButton.setTitleColor(.gray, for: .normal)
         notNowButton.translatesAutoresizingMaskIntoConstraints = false
@@ -60,11 +62,11 @@ class NotificationPermissionViewController: UIViewController {
         // Constraints
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             imageView.widthAnchor.constraint(equalToConstant: 304),
             imageView.heightAnchor.constraint(equalToConstant: 416),
             
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
@@ -72,10 +74,10 @@ class NotificationPermissionViewController: UIViewController {
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            continueButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 40),
-            continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            continueButton.heightAnchor.constraint(equalToConstant: 50),
+            continueButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 28),
+            continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            continueButton.widthAnchor.constraint(equalToConstant: CGFloat(view.frame.width - 64)),
+            continueButton.heightAnchor.constraint(equalToConstant: 74),
             
             notNowButton.topAnchor.constraint(equalTo: continueButton.bottomAnchor, constant: 10),
             notNowButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
