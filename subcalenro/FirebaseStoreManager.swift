@@ -9,7 +9,6 @@ import Foundation
 import FirebaseFirestore
 
 
-
 struct FirebaseStoreManager {
     
     func fetchSubscriptions(completion: @escaping ([Company]) -> Void) {
@@ -26,5 +25,4 @@ struct FirebaseStoreManager {
             }
         }
     }
-
 }

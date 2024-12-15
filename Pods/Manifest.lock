@@ -5,6 +5,7 @@ PODS:
   - Eureka (5.5.0)
   - FSCalendar (2.8.4)
   - Kingfisher (8.1.2)
+  - Shimmer (1.0.2)
   - ToastViewSwift (2.1.2)
 
 DEPENDENCIES:
@@ -12,6 +13,7 @@ DEPENDENCIES:
   - Eureka (~> 5.0)
   - FSCalendar (~> 2.8)
   - Kingfisher
+  - Shimmer
   - ToastViewSwift (~> 2.1)
 
 SPEC REPOS:
@@ -20,6 +22,7 @@ SPEC REPOS:
     - Eureka
     - FSCalendar
     - Kingfisher
+    - Shimmer
     - ToastViewSwift
 
 SPEC CHECKSUMS:
@@ -27,8 +30,9 @@ SPEC CHECKSUMS:
   Eureka: 1c18c7fcd8f772cc2ca42d6be36292dffa77eecb
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   Kingfisher: dc989619594e24713c83e5a98f89f08850e0c529
+  Shimmer: c5374be1c2b0c9e292fb05b339a513cf291cac86
   ToastViewSwift: 62e4c54cd482dd1106c2b2224103a8b171763cf3
 
-PODFILE CHECKSUM: 40c3461bfd52f3681859c145606e4e87c17e60d6
+PODFILE CHECKSUM: 2dd495275208849f956b720e81c0e190a9d38cb7
 
 COCOAPODS: 1.15.2

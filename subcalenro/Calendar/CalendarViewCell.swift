@@ -16,7 +16,7 @@ class CalendarViewCell: FSCalendarCell {
     private let dayLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont(name: "SFProRounded-Regular", size: Utility.isIpad ? 18 : 16)
+        label.font = FontManager.sfProRounded(size: 16, weight: .medium)
         return label
     }()
     

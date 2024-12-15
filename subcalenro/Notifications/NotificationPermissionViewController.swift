@@ -22,7 +22,7 @@ class NotificationPermissionViewController: UIViewController {
         
         let titleLabel = UILabel()
         titleLabel.text = "Let me remind you of their paid days"
-        titleLabel.font = UIFont(name: "SFCompactDisplay-Semibold", size: 34)
+        titleLabel.font = FontManager.sfCompactDisplay(size: 34, weight: .semibold)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +39,7 @@ class NotificationPermissionViewController: UIViewController {
         
         let continueButton = UIButton(type: .system)
         continueButton.setTitle("Continue", for: .normal)
-        continueButton.titleLabel?.font = UIFont(name: "SFCompactDisplay-Semibold", size: 21)
+        continueButton.titleLabel?.font = FontManager.sfCompactDisplay(size: 21, weight: .semibold)
         continueButton.backgroundColor = ThemeManager.color(for: .secondaryBackground)
         continueButton.setTitleColor(ThemeManager.color(for: .secondaryText), for: .normal)
         continueButton.layer.cornerRadius = 20
@@ -47,7 +47,7 @@ class NotificationPermissionViewController: UIViewController {
         view.addSubview(continueButton)
         
         let notNowButton = UIButton(type: .system)
-        notNowButton.titleLabel?.font = UIFont(name: "SFCompactDisplay-Semibold", size: 16)
+        notNowButton.titleLabel?.font = FontManager.sfCompactDisplay(size: 16, weight: .semibold)
         notNowButton.setTitle("Not Now", for: .normal)
         notNowButton.setTitleColor(.gray, for: .normal)
         notNowButton.translatesAutoresizingMaskIntoConstraints = false

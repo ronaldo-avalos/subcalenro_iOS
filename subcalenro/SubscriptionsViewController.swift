@@ -40,6 +40,8 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
                    self.tableView.reloadData()
                }
            }
+
+
         // Configuración del Search Controller
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false

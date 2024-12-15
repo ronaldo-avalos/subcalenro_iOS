@@ -34,14 +34,14 @@ class BottomContainer: UIView {
         topBorder.translatesAutoresizingMaskIntoConstraints = false
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.font = UIFont(name: "SFProRounded-Semibold", size: 18)
+        dateLabel.font = FontManager.sfProRounded(size: 18, weight: .semibold)
         setDateLabel(Date())
         
         thereNotSubLabel.translatesAutoresizingMaskIntoConstraints = false
         thereNotSubLabel.text = "No subscription on this day \nadd a new sub for this date"
         thereNotSubLabel.numberOfLines = 2
         thereNotSubLabel.textAlignment = .center
-        thereNotSubLabel.font = UIFont(name: "SFProDisplay-Regular", size: 14)
+        thereNotSubLabel.font = FontManager.sfProDisplay(size: 14, weight: .regular)
         thereNotSubLabel.textColor = .tertiaryLabel
         
         tableView.register(SubscriptionCell.self, forCellReuseIdentifier: "SubscriptionCell")

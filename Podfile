@@ -10,6 +10,7 @@ target 'subcalenro' do
   pod 'ToastViewSwift', '~> 2.1'
   pod 'Eureka', '~> 5.0'
   pod 'Kingfisher'
+  pod 'Shimmer'
 
 end
 

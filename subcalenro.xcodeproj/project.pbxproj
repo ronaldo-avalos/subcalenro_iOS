@@ -14,6 +14,8 @@
 		CE3C61B12D0BAEEA001385E6 /* FirebaseStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C61B02D0BAEEA001385E6 /* FirebaseStoreManager.swift */; };
 		CE4261802CFE48B60048533E /* FormNewSubController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42617F2CFE48B60048533E /* FormNewSubController.swift */; };
 		CE8171652D0BDE4F00D8FA55 /* SF-Compact-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CE8171642D0BDE4F00D8FA55 /* SF-Compact-Display-Semibold.otf */; };
+		CE8171672D0DEE0800D8FA55 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CE8171662D0DEE0800D8FA55 /* FirebaseStorage */; };
+		CEBB3F0E2D0E7FA600806CFA /* FontsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBB3F0D2D0E7FA600806CFA /* FontsManager.swift */; };
 		CEC1EF332CC4A9B6008F7A9F /* NotificationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */; };
 		CEF3FC832D00D7B000D9ECF7 /* IconSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */; };
 		CEF3FCB12D077C4300D9ECF7 /* PayWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FCB02D077C4300D9ECF7 /* PayWallViewController.swift */; };
@@ -79,6 +81,7 @@
 		CE3C61B02D0BAEEA001385E6 /* FirebaseStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStoreManager.swift; sourceTree = "<group>"; };
 		CE42617F2CFE48B60048533E /* FormNewSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormNewSubController.swift; sourceTree = "<group>"; };
 		CE8171642D0BDE4F00D8FA55 /* SF-Compact-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Display-Semibold.otf"; sourceTree = "<group>"; };
+		CEBB3F0D2D0E7FA600806CFA /* FontsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsManager.swift; sourceTree = "<group>"; };
 		CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionViewController.swift; sourceTree = "<group>"; };
 		CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionViewController.swift; sourceTree = "<group>"; };
 		CEF3FCB02D077C4300D9ECF7 /* PayWallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayWallViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +144,7 @@
 				79ED5569347A006F0EEB3561 /* Pods_subcalenro.framework in Frameworks */,
 				CEF7F0262D0BD3EE00C19D3C /* FirebaseCrashlytics in Frameworks */,
 				CEF7F0242D0BD3E900C19D3C /* FirebaseAuth in Frameworks */,
+				CE8171672D0DEE0800D8FA55 /* FirebaseStorage in Frameworks */,
 				CEF7F0222D0BD3D500C19D3C /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -187,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				D387D1592CAFA1C900F0BCD6 /* ThemeManager.swift */,
+				CEBB3F0D2D0E7FA600806CFA /* FontsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -485,6 +490,7 @@
 				CEF3FCB42D077CF300D9ECF7 /* NotificationsSettingsViewController.swift in Sources */,
 				D387D1862CAFA37200F0BCD6 /* BottomEventContainer.swift in Sources */,
 				D387D1562CAFA10F00F0BCD6 /* CalendarViewCell.swift in Sources */,
+				CEBB3F0E2D0E7FA600806CFA /* FontsManager.swift in Sources */,
 				D3B649732CAE3B1000ADD119 /* AppDelegate.swift in Sources */,
 				D310DE222CB34184008A6F39 /* Subscription.swift in Sources */,
 				D387D1832CAFA1D200F0BCD6 /* Utility.swift in Sources */,
@@ -755,6 +761,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CE8171662D0DEE0800D8FA55 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE3C61B22D0BB5E1001385E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		CEF7F0212D0BD3D500C19D3C /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CE3C61B22D0BB5E1001385E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

@@ -40,7 +40,7 @@ class CalendarViewController: UIViewController {
     let toggleEvents: UIButton = {
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 12
-        button.titleLabel?.font = UIFont(name: "SFProRounded-Semibold", size: 14)
+        button.titleLabel?.font = FontManager.sfProRounded(size: 14, weight: .semibold)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
