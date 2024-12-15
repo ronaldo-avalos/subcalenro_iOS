@@ -102,7 +102,10 @@ class SettingsViewController: UIViewController {
         descriptionLabel.textColor = ThemeManager.color(for: .secondaryText).withAlphaComponent(0.8)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(descriptionLabel)
-        
+    
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(navigateToCalenroPro))
+           containerView.addGestureRecognizer(gesture)
+           
         let shimmeringUpgradeButton = createShimmeringUpgradeButton()
         containerView.addSubview(shimmeringUpgradeButton)
         shimmeringUpgradeButton.shimmeringSpeed = 70 // Velocidad de desplazamiento
@@ -147,7 +150,9 @@ class SettingsViewController: UIViewController {
         // Ajusta el tamaño del header
         let headerHeight: CGFloat = 100
         headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: headerHeight)
+        headerView.layoutIfNeeded()
         tableSettingsView.tableHeaderView = headerView
+
     }
     
 
@@ -162,7 +167,6 @@ class SettingsViewController: UIViewController {
         upgradeButton.translatesAutoresizingMaskIntoConstraints = false
         
         upgradeButton.addAction(UIAction(handler: { _ in
-            Utility.feedbackGenerator(style: .light)
             self.navigateToCalenroPro()
         }), for: .touchUpInside)
         
@@ -299,13 +303,13 @@ extension SettingsViewController: UITableViewDelegate {
             navigateToNotificationSettings()
         case (0, 2): // Notifications
             navigateToChangeAppIcon()
-        case (0, 3): // Edit Event
+        case (1, 0): // Edit Event
             navigateToRateApp()
-        case (1, 0): // Account Settings
+        case (1, 1): // Account Settings
             navigateToShareApp()
-        case (1, 1): // Privacy
+        case (1, 2): // Privacy
             navigateToComments()
-        case (1, 2): // Help
+        case (1, 3): // Help
             showAbout()
         default:
             break
@@ -313,6 +317,7 @@ extension SettingsViewController: UITableViewDelegate {
     }
     
    @objc func navigateToCalenroPro() {
+       Utility.feedbackGenerator(style: .light)
         let vc = PayWallViewController()
         self.show(vc, sender: nil)
     }
@@ -345,6 +350,7 @@ extension SettingsViewController: UITableViewDelegate {
     }
     
     func navigateToShareApp() {
+        Utility.feedbackGenerator(style: .light)
         let appURL = "https://apps.apple.com/app/id[YOUR_APP_ID]" // Reemplaza con el enlace de tu app
         let activityViewController = UIActivityViewController(activityItems: [appURL], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view // Solo para iPad
@@ -352,6 +358,7 @@ extension SettingsViewController: UITableViewDelegate {
     }
     
     func navigateToComments() {
+        Utility.feedbackGenerator(style: .light)
         let email = "ronaldoadan1@icloud.com"
         let subject = "comments and suggestions"
         let body = """
@@ -366,6 +373,7 @@ extension SettingsViewController: UITableViewDelegate {
     }
     
     func showAbout() {
+        Utility.feedbackGenerator(style: .light)
         let aboutViewController = UIViewController()
         aboutViewController.view.backgroundColor = .systemBackground
         aboutViewController.modalPresentationStyle = .pageSheet
