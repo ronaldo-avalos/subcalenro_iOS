@@ -8,6 +8,7 @@
 import Foundation
 import Eureka
 import ToastViewSwift
+import Kingfisher
 
 class FormNewSubController: FormViewController {
     
@@ -173,7 +174,7 @@ class FormNewSubController: FormViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 12
         imageView.layer.masksToBounds = true
-        imageView.image = UIImage(named: company?.imageUrl ?? "icon2") // Imagen inicial
+        imageView.kf.setImage(with: URL(string: company?.imageUrl ?? ""))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageContainer.addSubview(imageView)
         
