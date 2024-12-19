@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 class SubViewBuilder {
     
@@ -22,7 +23,10 @@ class SubViewBuilder {
         let eventsToShow = subs.filter { Calendar.current.isDate($0.0, inSameDayAs: date) }.prefix(maxEventsToShow)
         
         eventsToShow.forEach { event in
-            let imageView = UIImageView(image: UIImage(named:event.1.logoUrl))
+            let imageView = UIImageView()
+            DispatchQueue.main.async {
+                imageView.kf.setImage(with: URL(string: event.1.logoUrl))
+            }
             imageView.layer.cornerRadius = 10
             imageView.clipsToBounds = true
             imageView.layer.masksToBounds = true
@@ -32,6 +36,7 @@ class SubViewBuilder {
             imageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
             view.addArrangedSubview(imageView)
         }
+
         
         if eventsToShow.count < subs.filter({ Calendar.current.isDate($0.0, inSameDayAs: date) }).count {
             let plusImageView = UIImageView(image: UIImage(systemName: "plus"))

@@ -199,6 +199,21 @@ class CalendarViewController: UIViewController {
         bottomContainer.tableView.backgroundColor = .clear
         bottomContainerHeightConstraint = bottomContainer.heightAnchor.constraint(equalToConstant:300 )
         
+        let todayButton = UIImageView()
+        todayButton.image = UIImage(systemName: "chevron.up")
+        todayButton.tintColor = ThemeManager.color(for: .secondaryBackground)
+        todayButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(todayButton)
+        
+//        let todayLabel = UILabel()
+//        todayLabel.text = "Today"
+//        todayLabel.textColor = ThemeManager.color(for: .secondaryText)
+//        todayLabel.font = FontManager.sfProDisplay(size: 12, weight: .bold)
+//        todayLabel.translatesAutoresizingMaskIntoConstraints = false
+//        todayButton.addSubview(todayLabel)
+        
+        
+        
         contentView.addSubview(calendarView)
         contentView.addSubview(bottomContainer)
         
@@ -237,6 +252,12 @@ class CalendarViewController: UIViewController {
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             floatingBar.widthAnchor.constraint(equalToConstant: floatingBarWidth),
             floatingBar.heightAnchor.constraint(equalToConstant: floatingBarHeight),
+//            
+//            todayLabel.centerXAnchor.constraint(equalTo: todayButton.centerXAnchor),
+//            todayLabel.centerYAnchor.constraint(equalTo: todayButton.centerYAnchor),
+            
+            todayButton.leadingAnchor.constraint(equalTo: floatingBar.trailingAnchor, constant: 16),
+            todayButton.centerYAnchor.constraint(equalTo: floatingBar.centerYAnchor)
         ])
         
         bottomContainer.deleteSub = { id in

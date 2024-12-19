@@ -11,6 +11,7 @@ import Kingfisher
 class SubscriptionCell: UITableViewCell {
     
     let logoImageView = UIImageView()
+    let logoContentView = UIView()
     let titleLabel = UILabel()
     let priceLabel = UILabel()
     let periodLabel = UILabel()
@@ -30,11 +31,21 @@ class SubscriptionCell: UITableViewCell {
     func setupCell() {
         contentView.backgroundColor = ThemeManager.color(for: .primaryBackground)
         // Configuración del logo
+        logoContentView.translatesAutoresizingMaskIntoConstraints = false
+        logoContentView.layer.cornerRadius = 8
+        logoContentView.backgroundColor = .white
+        logoContentView.clipsToBounds = true
+        
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.contentMode = .center
-        logoImageView.layer.cornerRadius = 8
-        logoImageView.backgroundColor = .white
-        logoImageView.clipsToBounds = true
+        logoImageView.contentMode = .scaleAspectFit
+        logoContentView.addSubview(logoImageView)
+        NSLayoutConstraint.activate([
+            logoImageView.centerXAnchor.constraint(equalTo: logoContentView.centerXAnchor),
+            logoImageView.centerYAnchor.constraint(equalTo: logoContentView.centerYAnchor),
+            logoImageView.widthAnchor.constraint(equalToConstant: 50),
+            logoImageView.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
         
         // Configuración del título
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -61,7 +72,7 @@ class SubscriptionCell: UITableViewCell {
         statusIndicatorView.layer.cornerRadius = 3
         statusIndicatorView.clipsToBounds = true
         
-        let subViews = [logoImageView,titleLabel,priceLabel,periodLabel,reminderLabel,statusIndicatorView]
+        let subViews = [logoContentView,titleLabel,priceLabel,periodLabel,reminderLabel,statusIndicatorView]
         subViews.forEach(contentCellView.addSubview(_:))
         
         contentCellView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,10 +87,10 @@ class SubscriptionCell: UITableViewCell {
             contentCellView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             contentCellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
             
-            logoImageView.leadingAnchor.constraint(equalTo: contentCellView.leadingAnchor, constant: 16),
-            logoImageView.centerYAnchor.constraint(equalTo: contentCellView.centerYAnchor),
-            logoImageView.widthAnchor.constraint(equalToConstant: 55),
-            logoImageView.heightAnchor.constraint(equalToConstant: 55),
+            logoContentView.leadingAnchor.constraint(equalTo: contentCellView.leadingAnchor, constant: 16),
+            logoContentView.centerYAnchor.constraint(equalTo: contentCellView.centerYAnchor),
+            logoContentView.widthAnchor.constraint(equalToConstant: 56),
+            logoContentView.heightAnchor.constraint(equalToConstant: 56),
             
             titleLabel.topAnchor.constraint(equalTo: contentCellView.topAnchor, constant: 16),
             titleLabel.leadingAnchor.constraint(equalTo: logoImageView.trailingAnchor, constant: 12),

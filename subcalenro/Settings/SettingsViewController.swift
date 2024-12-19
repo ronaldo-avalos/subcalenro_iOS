@@ -137,7 +137,7 @@ class SettingsViewController: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             
             descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: shimmeringUpgradeButton.leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: shimmeringUpgradeButton.leadingAnchor,constant: -6),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
             
             shimmeringUpgradeButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
