@@ -79,6 +79,7 @@ class SettingsViewController: UIViewController {
         let containerView = UIView()
         containerView.backgroundColor = ThemeManager.color(for: .secondaryBackground)
         containerView.layer.cornerRadius = 22
+      containerView.layer.cornerCurve = .continuous
         containerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(containerView)
         
@@ -89,7 +90,7 @@ class SettingsViewController: UIViewController {
         
         let titleLabel = UILabel()
         titleLabel.text = "Joi Subcalenro Pro"
-        titleLabel.font = FontManager.sfCompactDisplay(size: 20, weight: .semibold)
+        titleLabel.font = FontManager.sfCompactDisplay(size: 16, weight: .semibold)
         titleLabel.textColor = ThemeManager.color(for: .secondaryText)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(titleLabel)
@@ -98,7 +99,7 @@ class SettingsViewController: UIViewController {
         let descriptionLabel = UILabel()
         descriptionLabel.text = "Subscription or one-time purchase"
         descriptionLabel.numberOfLines = 2
-        descriptionLabel.font = UIFont.systemFont(ofSize: 14)
+        descriptionLabel.font = UIFont.systemFont(ofSize: 12)
         descriptionLabel.textColor = ThemeManager.color(for: .secondaryText).withAlphaComponent(0.8)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(descriptionLabel)
@@ -126,8 +127,8 @@ class SettingsViewController: UIViewController {
             containerView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
             containerView.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 16),
             containerView.widthAnchor.constraint(equalToConstant: view.bounds.width - 32),
-            containerView.heightAnchor.constraint(equalToConstant: 90),
-            
+            containerView.heightAnchor.constraint(equalToConstant: 74),
+
             starIcon.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             starIcon.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             starIcon.widthAnchor.constraint(equalToConstant: 24),
@@ -148,7 +149,7 @@ class SettingsViewController: UIViewController {
         ])
         
         // Ajusta el tamaño del header
-        let headerHeight: CGFloat = 100
+        let headerHeight: CGFloat = 80
         headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: headerHeight)
         headerView.layoutIfNeeded()
         tableSettingsView.tableHeaderView = headerView
@@ -161,7 +162,7 @@ class SettingsViewController: UIViewController {
         let upgradeButton = UIButton(type: .system)
         upgradeButton.setTitle("Upgrade", for: .normal)
         upgradeButton.setTitleColor(ThemeManager.color(for: .secondaryText), for: .normal)
-        upgradeButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        upgradeButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         upgradeButton.backgroundColor = ThemeManager.color(for: .primaryBackground).withAlphaComponent(0.2)
         upgradeButton.layer.cornerRadius = 16
         upgradeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -319,7 +320,7 @@ extension SettingsViewController: UITableViewDelegate {
    @objc func navigateToCalenroPro() {
        Utility.feedbackGenerator(style: .light)
         let vc = PayWallViewController()
-        self.show(vc, sender: nil)
+     self.present(vc, animated: true)
     }
     
     func navigateToAppearanceSettings() {

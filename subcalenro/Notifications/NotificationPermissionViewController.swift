@@ -45,7 +45,7 @@ class NotificationPermissionViewController: UIViewController {
         continueButton.layer.cornerRadius = 20
         continueButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(continueButton)
-        
+
         let notNowButton = UIButton(type: .system)
         notNowButton.titleLabel?.font = FontManager.sfCompactDisplay(size: 16, weight: .semibold)
         notNowButton.setTitle("Not Now", for: .normal)
