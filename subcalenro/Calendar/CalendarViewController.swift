@@ -20,6 +20,7 @@ class CalendarViewController: UIViewController {
     private var calendarHeight: CGFloat = 0
     private var lastCalendarHeight: CGFloat = 500
     private var bottomContainer : BottomContainer!
+    private let todayButton = UIButton(type: .system)
     private var subscriptions: [(Date, Subscription)] = []
     private var selectedSubs: [Subscription] = []  {
         didSet {
@@ -33,7 +34,7 @@ class CalendarViewController: UIViewController {
     
     private var calendarViewHeightConstraint: NSLayoutConstraint!
     private var bottomContainerHeightConstraint: NSLayoutConstraint!
-
+    
     let detailEvenstIcon = UIImage(systemName: "rectangle.grid.1x2")
     let compactEventsIcon = UIImage(systemName: "ellipsis.rectangle")
     
@@ -145,8 +146,8 @@ class CalendarViewController: UIViewController {
     // MARK: - Page Change Handling
     private func handlePageChange(_ calendar: FSCalendar) {
         UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
-              self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-          }, completion: nil)
+            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+        }, completion: nil)
         let currentPageComponents = Calendar.current.dateComponents([.year, .month], from: calendar.currentPage)
         var todayComponents = Calendar.current.dateComponents([.year, .month], from: Date())
         todayComponents.day = 1
@@ -154,10 +155,13 @@ class CalendarViewController: UIViewController {
         if let currentPageDate = Calendar.current.date(from: currentPageComponents),
            let todayDate = Calendar.current.date(from: todayComponents) {
             if currentPageDate > todayDate {
+                todayButton.isHidden = false
                 //                showTodayButton(false, .up)
             } else if currentPageDate == todayDate {
+                todayButton.isHidden = true
                 //               showTodayButton(true, .up)
             } else {
+                todayButton.isHidden = false
                 //                showTodayButton(false, .down)
             }
         }
@@ -192,25 +196,23 @@ class CalendarViewController: UIViewController {
         calendarView?.delegate = calendarDelegate
         let calendarHeight: CGFloat = Utility.isIphoneWithSmallScreen() ? 450 : Utility.isIpad ? 700 : 500
         calendarViewHeightConstraint = calendarView?.heightAnchor.constraint(equalToConstant: calendarHeight)
-     
+        
         bottomContainer = BottomContainer()
         bottomContainer.translatesAutoresizingMaskIntoConstraints = false
         bottomContainer.tableView.separatorStyle = .none
         bottomContainer.tableView.backgroundColor = .clear
         bottomContainerHeightConstraint = bottomContainer.heightAnchor.constraint(equalToConstant:300 )
         
-        let todayButton = UIImageView()
-        todayButton.image = UIImage(systemName: "chevron.up")
-        todayButton.tintColor = ThemeManager.color(for: .secondaryBackground)
+        todayButton.isHidden = true
+        todayButton.setTitle("Today", for: .normal)
+        todayButton.titleLabel?.font = FontManager.sfProDisplay(size: 18)
+        todayButton.tintColor = ThemeManager.color(for: .primaryText)
+        todayButton.backgroundColor = .clear
+        todayButton.addAction(UIAction(handler: { _ in
+            self.calendarView.setCurrentPage(Date(), animated: true)
+        }), for: .touchUpInside)
         todayButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(todayButton)
-        
-//        let todayLabel = UILabel()
-//        todayLabel.text = "Today"
-//        todayLabel.textColor = ThemeManager.color(for: .secondaryText)
-//        todayLabel.font = FontManager.sfProDisplay(size: 12, weight: .bold)
-//        todayLabel.translatesAutoresizingMaskIntoConstraints = false
-//        todayButton.addSubview(todayLabel)
         
         
         
@@ -238,7 +240,7 @@ class CalendarViewController: UIViewController {
             calendarView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             calendarView.heightAnchor.constraint(equalToConstant: calendarHeight),
             calendarViewHeightConstraint!,
-
+            
             bottomContainer.topAnchor.constraint(equalTo: calendarView.bottomAnchor, constant: 16),
             bottomContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             bottomContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -252,12 +254,9 @@ class CalendarViewController: UIViewController {
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             floatingBar.widthAnchor.constraint(equalToConstant: floatingBarWidth),
             floatingBar.heightAnchor.constraint(equalToConstant: floatingBarHeight),
-//            
-//            todayLabel.centerXAnchor.constraint(equalTo: todayButton.centerXAnchor),
-//            todayLabel.centerYAnchor.constraint(equalTo: todayButton.centerYAnchor),
             
-            todayButton.leadingAnchor.constraint(equalTo: floatingBar.trailingAnchor, constant: 16),
-            todayButton.centerYAnchor.constraint(equalTo: floatingBar.centerYAnchor)
+            todayButton.centerXAnchor.constraint(equalTo: view.leadingAnchor, constant: (view.frame.width/3)/2),
+            todayButton.centerYAnchor.constraint(equalTo: floatingBar.centerYAnchor),
         ])
         
         bottomContainer.deleteSub = { id in
@@ -273,10 +272,10 @@ class CalendarViewController: UIViewController {
         }
         
         bottomContainer.editSub = { id in
-//            let vc = EditSubcriptionViewController()
-//            let nc = UINavigationController(rootViewController: vc)
-//            vc.subId = id
-//            self.present(nc, animated: true)
+            //            let vc = EditSubcriptionViewController()
+            //            let nc = UINavigationController(rootViewController: vc)
+            //            vc.subId = id
+            //            self.present(nc, animated: true)
         }
         
         bottomContainer.didSelecSub = { id in
@@ -288,21 +287,21 @@ class CalendarViewController: UIViewController {
     }
     
     
-        var dateSelected: Date = Date() // Fecha seleccionada, inicializada como la fecha actual
-
-        private func reloadCalendar(completion: @escaping () -> Void) {
-            // Cargar las suscripciones
-            subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
-            calendarDataSource?.set(subs: subscriptions)
-            
-            // Filtrar suscripciones según la fecha seleccionada
-            let subs = subscriptions.filter { Calendar.current.isDate($0.0, inSameDayAs: dateSelected) }
-            let selectedSubs = SubscriptionManager().readByIds(subs.map { $0.1.id })
-            bottomContainer.loadSubscriptions(selectedSubs)
-            print("Reload Calendar")
-            completion()
-        }
-
+    var dateSelected: Date = Date() // Fecha seleccionada, inicializada como la fecha actual
+    
+    private func reloadCalendar(completion: @escaping () -> Void) {
+        // Cargar las suscripciones
+        subscriptions = SubscriptionsLoader.shared.loadSubscriptionsDate()
+        calendarDataSource?.set(subs: subscriptions)
+        
+        // Filtrar suscripciones según la fecha seleccionada
+        let subs = subscriptions.filter { Calendar.current.isDate($0.0, inSameDayAs: dateSelected) }
+        let selectedSubs = SubscriptionManager().readByIds(subs.map { $0.1.id })
+        bottomContainer.loadSubscriptions(selectedSubs)
+        print("Reload Calendar")
+        completion()
+    }
+    
 }
 
 

@@ -105,7 +105,7 @@ class CalendarViewCell: FSCalendarCell {
             }
         
         if NSCalendar.current.isDate(date, inSameDayAs: Date()) {
-            self.contentCell.backgroundColor = .systemRed.withAlphaComponent(0.7)
+          self.contentCell.backgroundColor = .systemBlue.withAlphaComponent(0.7)
             self.dayLabel.textColor = .white
         }
     }

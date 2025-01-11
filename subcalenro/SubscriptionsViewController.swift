@@ -57,10 +57,10 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
         view.backgroundColor = ThemeManager.color(for: .primaryBackground)
         
         // Configuración del SegmentedControl
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
-        self.navigationItem.titleView = segmentedControl
-        
+//        segmentedControl.selectedSegmentIndex = 0
+//        segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
+//        self.navigationItem.titleView = segmentedControl
+//        
         setupCollectionView()
         setupTableView()
     }

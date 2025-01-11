@@ -37,7 +37,7 @@ class CustomFSCalendar: FSCalendar {
         appearance.headerTitleFont = UIFont(name: "SFProRounded-Regular", size: 30)
         appearance.headerTitleAlignment = .left
         appearance.headerTitleOffset = CGPoint(x: 12, y: 0)
-        appearance.headerDateFormat = "MMMM"
+        appearance.headerDateFormat = "MMMM yyyy"
         appearance.headerTitleColor = ThemeManager.color(for: .primaryText)
         appearance.titleSelectionColor = .clear
         appearance.weekdayTextColor =  ThemeManager.color(for: .primaryText)
