@@ -74,7 +74,7 @@ class DetailSubcriptionViewController: UIViewController {
             guard let sub = SubscriptionManager().readById(id) else { return }
             
             // Cargar datos en los elementos visuales
-            imageView.image = UIImage(named: sub.logoUrl)
+            imageView.kf.setImage(with: URL(string: sub.logoUrl))
             nameLabel.text = sub.name
             priceLabel.text = "$\(String(format: "%.2f", sub.amount))"
             nextBillLabel.text = "Next bill: \(sub.nextDateFomatter)"

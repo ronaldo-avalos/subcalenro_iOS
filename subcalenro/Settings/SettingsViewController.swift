@@ -319,8 +319,11 @@ extension SettingsViewController: UITableViewDelegate {
     
    @objc func navigateToCalenroPro() {
        Utility.feedbackGenerator(style: .light)
-        let vc = PayWallViewController()
-     self.present(vc, animated: true)
+     let controller = PaywallViewController()
+             controller.delegate = self
+
+             present(controller, animated: true, completion: nil)
+
     }
     
     func navigateToAppearanceSettings() {

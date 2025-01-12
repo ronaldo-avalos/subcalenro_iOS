@@ -11,6 +11,8 @@ target 'subcalenro' do
   pod 'Eureka', '~> 5.0'
   pod 'Kingfisher'
   pod 'Shimmer'
+  pod 'RevenueCat'
+  pod 'RevenueCatUI'
 
 end
 

@@ -180,6 +180,8 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/RevenueCat/RevenueCat.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/RevenueCatUI/RevenueCatUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Shimmer/Shimmer.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ToastViewSwift/ToastViewSwift.framework"
 fi
@@ -188,6 +190,8 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/RevenueCat/RevenueCat.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/RevenueCatUI/RevenueCatUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Shimmer/Shimmer.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ToastViewSwift/ToastViewSwift.framework"
 fi

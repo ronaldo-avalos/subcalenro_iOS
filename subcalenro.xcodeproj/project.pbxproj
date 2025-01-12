@@ -164,6 +164,7 @@
 		CE333DE52CC320EE00DC6481 /* Analyticals */ = {
 			isa = PBXGroup;
 			children = (
+				D375084A2CBA210400FDFBB4 /* SubListViewController.swift */,
 				CE333DE62CC3210000DC6481 /* AnalyticsViewController.swift */,
 			);
 			path = Analyticals;
@@ -330,7 +331,6 @@
 				D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */,
 				D310DE252CB38C25008A6F39 /* SubViewBuilder.swift */,
 				D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */,
-				D375084A2CBA210400FDFBB4 /* SubListViewController.swift */,
 				D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */,
 				CE42617F2CFE48B60048533E /* FormNewSubController.swift */,
 				CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */,

@@ -19,7 +19,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         view.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
         view.layer.cornerRadius = 16
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.isHidden = true // Oculto por defecto
+//        view.isHidden = true // Oculto por defecto
         return view
     }()
     
@@ -121,6 +121,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         ])
         
         // Agregar titleLabel y tableView al tableViewContainer
+      
         tableViewContainer.addSubview(tableViewTitleLabel)
         tableViewContainer.addSubview(tableView)
         
@@ -236,7 +237,7 @@ class AnalyticsViewController: UIViewController, UITableViewDelegate, UITableVie
         }
 
 
-        let dataSet = PieChartDataSet(entries: entries, label: "Suscripciones por Categoría")
+        let dataSet = PieChartDataSet(entries: entries, label: "Subscriptions")
         dataSet.colors = ChartColorTemplates.material()
         
         let data = PieChartData(dataSet: dataSet)
