@@ -12,6 +12,7 @@ struct Subscription: Codable {
     var name: String
     var amount: Double
     let logoUrl: String
+    let iconName: String
     var nextPaymentDate: Date
     var period: SubscriptionPeriod
     var reminderTime: ReminderOption
@@ -73,7 +74,8 @@ enum SubscriptionCategory: Int, CaseIterable, Codable {
     case health = 17
     case sports = 18
     case socialMedia = 19
-    
+    case Music = 20
+
     func displayName() -> String {
         switch self {
         case .other:
@@ -116,6 +118,8 @@ enum SubscriptionCategory: Int, CaseIterable, Codable {
             return "Sports"
         case .socialMedia:
             return "Social Media"
+        case .Music:
+            return "Music"
         }
     }
 }
