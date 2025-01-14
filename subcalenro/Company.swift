@@ -11,7 +11,7 @@ struct Company {
     let name: String
     let category: String
     let imageUrl: String
-
+    
     // Inicializador desde un diccionario
     init?(dictionary: [String: Any], id: String) {
         guard let name = dictionary["name"] as? String,

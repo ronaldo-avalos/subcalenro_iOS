@@ -15,12 +15,14 @@ class FormNewSubController: FormViewController {
   var company: Company?
   var companyName: String = ""
   var companyIcon: String =  "icon2"
+  var subEdit : Subscription?
   private var saveButton: UIBarButtonItem!
 
 
-  init(company: Company?) {
+  init(company: Company?, sub: Subscription?) {
     self.company = company
     self.companyName = company?.name ?? ""
+    self.subEdit = sub
     super.init(style: .insetGrouped) // Configurar el estilo aquí
   }
 
@@ -36,6 +38,9 @@ class FormNewSubController: FormViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    navigationItem.title = subEdit == nil ? "New Subscription" : "Edit Subscription"
+
     view.backgroundColor = ThemeManager.color(for: .editBackgroud)
     saveButton = UIBarButtonItem(systemItem: .save)
     saveButton.isEnabled = false
@@ -81,6 +86,7 @@ class FormNewSubController: FormViewController {
     }.cellSetup { cell, _ in
       cell.imageView?.image = UIImage(systemName: "arrow.clockwise")
     }.onChange { _ in
+      
       // Comentado: lógica de custom days
       /*
        guard let self = self else { return }
@@ -157,6 +163,17 @@ class FormNewSubController: FormViewController {
       cell.imageView?.image = UIImage(systemName: "square.3.layers.3d.down.backward")
     }
 
+    if let subscription = subEdit {
+        companyName = subscription.name
+        form.rowBy(tag: "SubscriptionCost")?.baseValue = subscription.amount
+        form.rowBy(tag: "DateRow")?.baseValue = subscription.nextPaymentDate
+        form.rowBy(tag: "PickerInputRow")?.baseValue = subscription.reminderTime.name
+        form.rowBy(tag: "PlanDetail")?.baseValue = subscription.category.displayName()
+        form.rowBy(tag: "SubscriptionType")?.baseValue = subscription.subscriptionType.displayName()
+      form.rowBy(tag: "BillingCycle")?.baseValue = subscription.period.name
+
+    }
+
   }
 
   private func setupTableHeaderView() {
@@ -228,6 +245,11 @@ class FormNewSubController: FormViewController {
     // Ajusta el tamaño del header
     let headerHeight: CGFloat = 224
     headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight)
+
+    if let subscription = subEdit {
+        imageView.image = UIImage(named: subscription.iconName)
+        companyNameTextField.text = subscription.name
+    }
 
     tableView.tableHeaderView = headerView
   }
@@ -326,26 +348,40 @@ class FormNewSubController: FormViewController {
 
 
   @objc private func saveSubscription() {
-    guard let subscription = createSubscription() else {
-      showAlert(title: "Error", message: "Please complete all required fields.")
-      return
-    }
+      guard let subscription = createSubscription() else {
+          showAlert(title: "Error", message: "Please complete all required fields.")
+          return
+      }
 
-    let manager = SubscriptionManager()
-    manager.save(subscription)
-    NotificationManager.shared.scheduleNotifications(for: subscription)
-    NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
+      if var existingSub = subEdit {
+          existingSub.name = subscription.name
+          existingSub.amount = subscription.amount
+          existingSub.nextPaymentDate = subscription.nextPaymentDate
+          existingSub.reminderTime = subscription.reminderTime
+          existingSub.category = subscription.category
+          existingSub.subscriptionType = subscription.subscriptionType
+          existingSub.period = subscription.period
 
-    let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-    let toast = Toast.default(
-      image: icon!,
-      title: "Subscription saved",
-      subtitle: nil
-    )
-    toast.show(haptic: .success)
+          SubscriptionManager().update(existingSub)
+          NotificationManager.shared.scheduleNotifications(for: existingSub)
+      } else {
+          SubscriptionManager().save(subscription)
+          NotificationManager.shared.scheduleNotifications(for: subscription)
+      }
 
-    navigationController?.popViewController(animated: true)
+      NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
+
+      let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+      let toast = Toast.default(
+          image: icon!,
+          title: subEdit == nil ? "Subscription saved" : "Subscription updated",
+          subtitle: nil
+      )
+      toast.show(haptic: .success)
+
+      navigationController?.popViewController(animated: true)
   }
+
 
 
 
@@ -359,6 +395,8 @@ class FormNewSubController: FormViewController {
 //      showAlert(title: "Error", message: "Please select an icon for the subscription.")
 //      return nil
 //    }
+
+    
 
     guard let amount = (form.rowBy(tag: "SubscriptionCost") as? IntRow)?.value,
           let nextPaymentDate = (form.rowBy(tag: "DateRow") as? DateRow)?.value,

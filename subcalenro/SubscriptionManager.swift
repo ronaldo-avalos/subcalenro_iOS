@@ -45,8 +45,20 @@ struct SubscriptionManager {
         let subscriptions = readAllSubscriptions()
           return subscriptions.filter { ids.contains($0.id) }
       }
-      
-    
+
+
+  func update(_ updatedSubscription: Subscription) {
+      var subscriptions = readAllSubscriptions()
+      if let index = subscriptions.firstIndex(where: { $0.id == updatedSubscription.id }) {
+          subscriptions[index] = updatedSubscription
+          saveToDisk(subscriptions)
+          print("Subscription updated: \(updatedSubscription)")
+      } else {
+          print("Subscription with ID \(updatedSubscription.id) not found.")
+      }
+  }
+
+
     // Eliminar una suscripción por ID
     func deleteById(_ id: UUID) {
         var subscriptions = readAllSubscriptions()

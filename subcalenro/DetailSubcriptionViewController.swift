@@ -12,6 +12,7 @@ class DetailSubcriptionViewController: UIViewController {
   var subId: UUID?
   var imgURL: String?
   var companyName: String?
+  var subEdit: Subscription?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -55,6 +56,7 @@ class DetailSubcriptionViewController: UIViewController {
     editImageButton.clipsToBounds = true
     editImageButton.backgroundColor = ThemeManager.color(for: .tableViewCellColor)
     editImageButton.translatesAutoresizingMaskIntoConstraints = false
+    editImageButton.addTarget(self, action: #selector(toggleEditMode), for: .touchUpInside)
     view.addSubview(editImageButton)
 
 
@@ -72,7 +74,7 @@ class DetailSubcriptionViewController: UIViewController {
 
     if let id = subId {
       guard let sub = SubscriptionManager().readById(id) else { return }
-
+      self.subEdit = sub
       // Cargar datos en los elementos visuales
       if sub.logoUrl.isEmpty {
         imageView.image = UIImage(named:sub.iconName)
@@ -157,20 +159,10 @@ class DetailSubcriptionViewController: UIViewController {
 
   }
 
-  private func toggleEditMode(button: UIButton) {
-    // Verificamos si ya está en modo "Save"
-    if button.currentImage == UIImage(systemName: "checkmark") {
-      // Regresar al modo de edición
-      UIView.transition(with: button, duration: 0.3, options: .transitionCrossDissolve, animations: {
-        button.setImage(UIImage(systemName: "pencil")?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
-        button.setTitle(nil, for: .normal)
-      }, completion: nil)
-    } else {
-      // Cambiar al modo "Save"
-      UIView.transition(with: button, duration: 0.3, options: .transitionCrossDissolve, animations: {
-        button.setImage(UIImage(systemName: "checkmark")?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
-      }, completion: nil)
-    }
+  @objc func toggleEditMode() {
+    let vc = FormNewSubController(company: nil, sub: subEdit)
+    self.navigationController?.pushViewController(vc, animated: true)
+
   }
 
   private func createDetailView(title: String, value: String) -> UIView {

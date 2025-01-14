@@ -179,7 +179,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
   }
 
   @objc func customButtonTapped() {
-    let vc = FormNewSubController(company: nil)
+    let vc = FormNewSubController(company: nil,sub: nil)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -209,7 +209,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     let selectedCompany = subscriptions.first { $0.name == selectedName }
 
     if let company = selectedCompany {
-      let vc = FormNewSubController(company: company)
+      let vc = FormNewSubController(company: company, sub: nil)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
@@ -349,7 +349,7 @@ extension SubscriptionsViewController: UICollectionViewDelegate {
     let selectedName = filteredSubscriptions[indexPath.row]
     let selectedCompany = subscriptions.first { $0.name == selectedName }
     if let company = selectedCompany {
-      let vc = FormNewSubController(company: company)
+      let vc = FormNewSubController(company: company,sub: nil)
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }
