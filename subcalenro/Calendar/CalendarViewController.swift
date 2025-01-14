@@ -279,7 +279,7 @@ class CalendarViewController: UIViewController {
         }
         
         bottomContainer.didSelecSub = { id in
-            let vc = DetailSubcriptionViewController()
+            let vc = DetailSubscriptionViewController()
             let nv = UINavigationController(rootViewController: vc)
             vc.subId = id
             self.present(nv, animated: true)

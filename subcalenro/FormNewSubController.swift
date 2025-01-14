@@ -23,7 +23,7 @@ class FormNewSubController: FormViewController {
     self.company = company
     self.companyName = company?.name ?? ""
     self.subEdit = sub
-    super.init(style: .insetGrouped) // Configurar el estilo aquí
+    super.init(style: .insetGrouped)
   }
 
   required init?(coder: NSCoder) {
@@ -51,8 +51,14 @@ class FormNewSubController: FormViewController {
     tableView.backgroundColor = .clear
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.separatorStyle = .none
-    setupTableHeaderView()
 
+    setupTableHeaderView()
+    setupForm()
+  }
+
+
+
+  private func setupForm() {
     form +++
     Section()
 
@@ -64,7 +70,7 @@ class FormNewSubController: FormViewController {
       self?.updateFormBasedOnSubscriptionType(row.value)
     }
 
-    <<< IntRow() {
+    <<< DecimalRow() {
       $0.title = "SubscriptionCost"
       $0.placeholder = "$129.00"
       $0.useFormatterDuringInput = false
@@ -86,38 +92,23 @@ class FormNewSubController: FormViewController {
     }.cellSetup { cell, _ in
       cell.imageView?.image = UIImage(systemName: "arrow.clockwise")
     }.onChange { _ in
-      
-      // Comentado: lógica de custom days
-      /*
-       guard let self = self else { return }
-       if let periodRow = form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>,
-       let customDaysRow = form.rowBy(tag: "CustomDays") {
-       customDaysRow.hidden = Condition(booleanLiteral: periodRow.value != "Custom")
-       customDaysRow.evaluateHidden()
-       }
-       */
+
     }
-    // <<< IntRow para periodo custom (comentado)
-    /*
-     <<< IntRow() {
-     $0.hidden = Condition(booleanLiteral: true) // Inicialmente oculta
-     $0.title = "Custom period (days)"
-     $0.placeholder = "days"
-     $0.value = nil
-     $0.tag = "CustomDays"
-     }.cellSetup { cell, _ in
-     cell.imageView?.image = UIImage(systemName: "calendar.badge.plus")
-     }
-     */
 
     <<< DateRow() {
-      $0.title = "Next billing date"
-      $0.value = Date() // Fecha inicial
-      $0.minimumDate = Calendar.current.date(byAdding: .year, value: -2, to: Date())
-      $0.maximumDate = Calendar.current.date(byAdding: .year, value: 20, to: Date())
-      $0.tag = "DateRow"
+        $0.title = "Next billing date"
+        $0.value = Date() // Fecha inicial
+        $0.minimumDate = Date() // Establece la fecha actual como mínimo
+        $0.maximumDate = Calendar.current.date(byAdding: .year, value: 20, to: Date()) // Hasta 20 años en el futuro
+        $0.tag = "DateRow"
     }.cellSetup { cell, _ in
-      cell.imageView?.image = UIImage(systemName: "calendar")
+        cell.imageView?.image = UIImage(systemName: "calendar")
+    }.onChange { row in
+        // Verifica si la fecha seleccionada es válida
+        if let selectedDate = row.value, selectedDate < Date() {
+            row.value = Date()
+            row.updateCell()
+        }
     }
 
 
@@ -164,16 +155,14 @@ class FormNewSubController: FormViewController {
     }
 
     if let subscription = subEdit {
-        companyName = subscription.name
-        form.rowBy(tag: "SubscriptionCost")?.baseValue = subscription.amount
-        form.rowBy(tag: "DateRow")?.baseValue = subscription.nextPaymentDate
-        form.rowBy(tag: "PickerInputRow")?.baseValue = subscription.reminderTime.name
-        form.rowBy(tag: "PlanDetail")?.baseValue = subscription.category.displayName()
-        form.rowBy(tag: "SubscriptionType")?.baseValue = subscription.subscriptionType.displayName()
+      companyName = subscription.name
+      form.rowBy(tag: "SubscriptionCost")?.baseValue = subscription.amount
+      form.rowBy(tag: "DateRow")?.baseValue = subscription.nextPaymentDate
+      form.rowBy(tag: "PickerInputRow")?.baseValue = subscription.reminderTime.name
+      form.rowBy(tag: "PlanDetail")?.baseValue = subscription.category.displayName()
+      form.rowBy(tag: "SubscriptionType")?.baseValue = subscription.subscriptionType.displayName()
       form.rowBy(tag: "BillingCycle")?.baseValue = subscription.period.name
-
     }
-
   }
 
   private func setupTableHeaderView() {
@@ -247,8 +236,12 @@ class FormNewSubController: FormViewController {
     headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight)
 
     if let subscription = subEdit {
+      if subscription.logoUrl.isEmpty {
         imageView.image = UIImage(named: subscription.iconName)
-        companyNameTextField.text = subscription.name
+      } else {
+        imageView.kf.setImage(with: URL(string: subscription.logoUrl))
+      }
+      companyNameTextField.text = subscription.name
     }
 
     tableView.tableHeaderView = headerView
@@ -327,10 +320,8 @@ class FormNewSubController: FormViewController {
       //            }
     }
 
-    // Evaluar condiciones de visibilidad
     periodRow?.evaluateHidden()
     durationRow?.evaluateHidden()
-    //        customDaysRow?.evaluateHidden()
   }
 
 
@@ -364,12 +355,14 @@ class FormNewSubController: FormViewController {
 
           SubscriptionManager().update(existingSub)
           NotificationManager.shared.scheduleNotifications(for: existingSub)
+        NotificationCenter.default.post(name: Notification.Name("updateSub"), object: nil)
+
       } else {
           SubscriptionManager().save(subscription)
           NotificationManager.shared.scheduleNotifications(for: subscription)
       }
 
-      NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
+    NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
 
       let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
       let toast = Toast.default(
@@ -390,15 +383,8 @@ class FormNewSubController: FormViewController {
       showAlert(title: "Error", message: "Please enter a company name.")
       return nil
     }
-//
-//    guard let logoUrl = company?.imageUrl, !logoUrl.isEmpty else {
-//      showAlert(title: "Error", message: "Please select an icon for the subscription.")
-//      return nil
-//    }
 
-    
-
-    guard let amount = (form.rowBy(tag: "SubscriptionCost") as? IntRow)?.value,
+    guard let amount = (form.rowBy(tag: "SubscriptionCost") as? DecimalRow)?.value,
           let nextPaymentDate = (form.rowBy(tag: "DateRow") as? DateRow)?.value,
           let reminderName = (form.rowBy(tag: "PickerInputRow") as? PickerInputRow<String>)?.value,
           let reminder = ReminderOption.allCases.first(where: { $0.name == reminderName }),

@@ -33,7 +33,7 @@
 		D37508222CB8953300FDFBB4 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37508212CB8953300FDFBB4 /* NotificationManager.swift */; };
 		D37508242CB91C9000FDFBB4 /* SubscriptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */; };
 		D375084B2CBA210400FDFBB4 /* SubListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D375084A2CBA210400FDFBB4 /* SubListViewController.swift */; };
-		D375084D2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */; };
+		D375084D2CBA5E5A00FDFBB4 /* DetailSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D375084C2CBA5E5A00FDFBB4 /* DetailSubscriptionViewController.swift */; };
 		D387D1522CAFA0BF00F0BCD6 /* CalendarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */; };
 		D387D1542CAFA0CC00F0BCD6 /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */; };
 		D387D1562CAFA10F00F0BCD6 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */; };
@@ -97,7 +97,7 @@
 		D37508212CB8953300FDFBB4 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsViewController.swift; sourceTree = "<group>"; };
 		D375084A2CBA210400FDFBB4 /* SubListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubListViewController.swift; sourceTree = "<group>"; };
-		D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSubcriptionViewController.swift; sourceTree = "<group>"; };
+		D375084C2CBA5E5A00FDFBB4 /* DetailSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSubscriptionViewController.swift; sourceTree = "<group>"; };
 		D387D1512CAFA0BF00F0BCD6 /* CalendarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDelegate.swift; sourceTree = "<group>"; };
 		D387D1532CAFA0CC00F0BCD6 /* CalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
 		D387D1552CAFA10F00F0BCD6 /* CalendarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
@@ -333,7 +333,7 @@
 				D310DE232CB37663008A6F39 /* SubscriptionsLoader.swift */,
 				D310DE252CB38C25008A6F39 /* SubViewBuilder.swift */,
 				D37508232CB91C9000FDFBB4 /* SubscriptionsViewController.swift */,
-				D375084C2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift */,
+				D375084C2CBA5E5A00FDFBB4 /* DetailSubscriptionViewController.swift */,
 				CE42617F2CFE48B60048533E /* FormNewSubController.swift */,
 				CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */,
 				CE3C61AE2D0BAEBA001385E6 /* Company.swift */,
@@ -512,7 +512,7 @@
 				D387D1922CAFA50700F0BCD6 /* AppearanceViewController.swift in Sources */,
 				CEF3FC832D00D7B000D9ECF7 /* IconSelectionViewController.swift in Sources */,
 				D310DE242CB37663008A6F39 /* SubscriptionsLoader.swift in Sources */,
-				D375084D2CBA5E5A00FDFBB4 /* DetailSubcriptionViewController.swift in Sources */,
+				D375084D2CBA5E5A00FDFBB4 /* DetailSubscriptionViewController.swift in Sources */,
 				D3B649752CAE3B1000ADD119 /* subcalenro.xcdatamodeld in Sources */,
 				CE333DE72CC3210000DC6481 /* AnalyticsViewController.swift in Sources */,
 				D375081F2CB856E300FDFBB4 /* CustomFSCalendar.swift in Sources */,
