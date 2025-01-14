@@ -15,10 +15,10 @@
 		CE4261802CFE48B60048533E /* FormNewSubController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE42617F2CFE48B60048533E /* FormNewSubController.swift */; };
 		CE8171652D0BDE4F00D8FA55 /* SF-Compact-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CE8171642D0BDE4F00D8FA55 /* SF-Compact-Display-Semibold.otf */; };
 		CE8171672D0DEE0800D8FA55 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CE8171662D0DEE0800D8FA55 /* FirebaseStorage */; };
+		CEB3A4D02D35CFC6004C662E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEB3A4CF2D35CFC6004C662E /* StoreKit.framework */; };
 		CEBB3F0E2D0E7FA600806CFA /* FontsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBB3F0D2D0E7FA600806CFA /* FontsManager.swift */; };
 		CEC1EF332CC4A9B6008F7A9F /* NotificationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */; };
 		CEF3FC832D00D7B000D9ECF7 /* IconSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */; };
-		CEF3FCB12D077C4300D9ECF7 /* PayWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FCB02D077C4300D9ECF7 /* PayWallViewController.swift */; };
 		CEF3FCB42D077CF300D9ECF7 /* NotificationsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FCB32D077CF300D9ECF7 /* NotificationsSettingsViewController.swift */; };
 		CEF3FCB62D077E3200D9ECF7 /* AppIconChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3FCB52D077E3200D9ECF7 /* AppIconChangeViewController.swift */; };
 		CEF7F0222D0BD3D500C19D3C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = CEF7F0212D0BD3D500C19D3C /* FirebaseFirestore */; };
@@ -81,10 +81,11 @@
 		CE3C61B02D0BAEEA001385E6 /* FirebaseStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStoreManager.swift; sourceTree = "<group>"; };
 		CE42617F2CFE48B60048533E /* FormNewSubController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormNewSubController.swift; sourceTree = "<group>"; };
 		CE8171642D0BDE4F00D8FA55 /* SF-Compact-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Compact-Display-Semibold.otf"; sourceTree = "<group>"; };
+		CEB3A4CF2D35CFC6004C662E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		CEB3A4D12D35D03A004C662E /* subcalenro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = subcalenro.entitlements; sourceTree = "<group>"; };
 		CEBB3F0D2D0E7FA600806CFA /* FontsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsManager.swift; sourceTree = "<group>"; };
 		CEC1EF322CC4A9B6008F7A9F /* NotificationPermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionViewController.swift; sourceTree = "<group>"; };
 		CEF3FC822D00D7B000D9ECF7 /* IconSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionViewController.swift; sourceTree = "<group>"; };
-		CEF3FCB02D077C4300D9ECF7 /* PayWallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayWallViewController.swift; sourceTree = "<group>"; };
 		CEF3FCB32D077CF300D9ECF7 /* NotificationsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsViewController.swift; sourceTree = "<group>"; };
 		CEF3FCB52D077E3200D9ECF7 /* AppIconChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconChangeViewController.swift; sourceTree = "<group>"; };
 		D310DDEB2CB21B5D008A6F39 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
@@ -144,6 +145,7 @@
 				79ED5569347A006F0EEB3561 /* Pods_subcalenro.framework in Frameworks */,
 				CEF7F0262D0BD3EE00C19D3C /* FirebaseCrashlytics in Frameworks */,
 				CEF7F0242D0BD3E900C19D3C /* FirebaseAuth in Frameworks */,
+				CEB3A4D02D35CFC6004C662E /* StoreKit.framework in Frameworks */,
 				CE8171672D0DEE0800D8FA55 /* FirebaseStorage in Frameworks */,
 				CEF7F0222D0BD3D500C19D3C /* FirebaseFirestore in Frameworks */,
 			);
@@ -173,7 +175,6 @@
 		CEF3FCAF2D077C3400D9ECF7 /* PayWall */ = {
 			isa = PBXGroup;
 			children = (
-				CEF3FCB02D077C4300D9ECF7 /* PayWallViewController.swift */,
 			);
 			path = PayWall;
 			sourceTree = "<group>";
@@ -309,6 +310,7 @@
 		D3B649712CAE3B1000ADD119 /* subcalenro */ = {
 			isa = PBXGroup;
 			children = (
+				CEB3A4D12D35D03A004C662E /* subcalenro.entitlements */,
 				CE3C61AA2D0B8413001385E6 /* GoogleService-Info.plist */,
 				D387D18A2CAFA50700F0BCD6 /* Appearance */,
 				CEF3FCAF2D077C3400D9ECF7 /* PayWall */,
@@ -343,6 +345,7 @@
 		EB9E00D5691B4D452C05E6DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CEB3A4CF2D35CFC6004C662E /* StoreKit.framework */,
 				83AC744487864FF7D4555DF9 /* Pods_subcalenro.framework */,
 			);
 			name = Frameworks;
@@ -378,7 +381,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					D3B6494B2CAE2E4700ADD119 = {
 						CreatedOnToolsVersion = 16.0;
@@ -517,7 +520,6 @@
 				CE3C61AF2D0BAEBA001385E6 /* Company.swift in Sources */,
 				CE3C61B12D0BAEEA001385E6 /* FirebaseStoreManager.swift in Sources */,
 				D387D1882CAFA37700F0BCD6 /* OptionsFloatingBarView.swift in Sources */,
-				CEF3FCB12D077C4300D9ECF7 /* PayWallViewController.swift in Sources */,
 				D310DDEC2CB21B5D008A6F39 /* SubscriptionManager.swift in Sources */,
 				D310DE262CB38C25008A6F39 /* SubViewBuilder.swift in Sources */,
 			);
@@ -551,9 +553,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = subcalenro/subcalenro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 4W9XHUWSFR;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = subcalenro/Info.plist;
@@ -582,9 +586,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = subcalenro/subcalenro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 4W9XHUWSFR;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = subcalenro/Info.plist;

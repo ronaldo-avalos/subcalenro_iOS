@@ -118,62 +118,75 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
         return filteredSubscriptions.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SubscriptionViewCell
-        let subscription = subscriptions[indexPath.row]
-        cell.label.text = subscription.name
-        // Carga la imagen desde la URL usando una librería como Kingfisher o SDWebImage
-        cell.imageView.kf.setImage(with: URL(string: subscription.imageUrl))
-        return cell
-    }
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SubscriptionViewCell
+      cell.label.text = filteredSubscriptions[indexPath.row]
+      cell.imageView.kf.setImage(with: URL(string: filteredLogos[indexPath.row]))
+      return cell
+  }
+
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredSubscriptions.count
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath)
-        let subscription = subscriptions[indexPath.row]
-        cell.textLabel?.text = subscription.name
-        // Carga la imagen desde la URL usando una librería como Kingfisher o SDWebImage
-        cell.imageView?.kf.setImage(with: URL(string: subscription.imageUrl))
-        return cell
-    }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      // Usar filteredSubscriptions para determinar la selección
+      let selectedName = filteredSubscriptions[indexPath.row]
+      let selectedCompany = subscriptions.first { $0.name == selectedName }
+
+      if let company = selectedCompany {
+          let vc = FormNewSubController(company: company)
+          self.navigationController?.pushViewController(vc, animated: true)
+      }
+  }
+
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+      let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath)
+      cell.textLabel?.text = filteredSubscriptions[indexPath.row]
+      cell.imageView?.kf.setImage(with: URL(string: filteredLogos[indexPath.row]))
+      return cell
+  }
+
     
     // MARK: - UISegmentedControl
     @objc func segmentChanged(_ sender: UISegmentedControl) {
-           if sender.selectedSegmentIndex == 0 {
-               // Mostrar colección de "Populars"
-               collectionView.isHidden = false
-               tableView.isHidden = true
-               
-           } else {
+//           if sender.selectedSegmentIndex == 0 {
+//               // Mostrar colección de "Populars"
+//               collectionView.isHidden = false
+//               tableView.isHidden = true
+//               
+//           } else {
                
                // Mostrar lista de "Alls"
                collectionView.isHidden = true
                tableView.isHidden = false
-           }
+//           }
     
         updateSearchResults(for: searchController)
     }
     
     // MARK: - UISearchResultsUpdating
     
-    func updateSearchResults(for searchController: UISearchController) {
-           guard let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty else {
-               // Si la búsqueda está vacía, mostrar todas las suscripciones
-               collectionView.reloadData()
-               tableView.reloadData()
-               return
-           }
-           
-//           // Filtrar las suscripciones y logos basados en el texto ingresado
-//           filteredSubscriptions = su.filter { $0.lowercased().contains(searchText) }
-//           filteredLogos = zip(companysNames, logos).filter { $0.0.lowercased().contains(searchText) }.map { $0.1 }
-//           
-           collectionView.reloadData()
-           tableView.reloadData()
-       }
+  func updateSearchResults(for searchController: UISearchController) {
+      guard let searchText = searchController.searchBar.text?.lowercased(), !searchText.isEmpty else {
+          // Si la búsqueda está vacía, mostrar todas las suscripciones
+          filteredSubscriptions = subscriptions.map { $0.name }
+          filteredLogos = subscriptions.map { $0.imageUrl }
+          collectionView.reloadData()
+          tableView.reloadData()
+          return
+      }
+
+      // Filtrar las suscripciones y logos basados en el texto ingresado
+      filteredSubscriptions = subscriptions.filter { $0.name.lowercased().contains(searchText) }.map { $0.name }
+      filteredLogos = subscriptions.filter { $0.name.lowercased().contains(searchText) }.map { $0.imageUrl }
+
+      collectionView.reloadData()
+      tableView.reloadData()
+  }
+
 }
 
 class SubscriptionViewCell: UICollectionViewCell {
@@ -267,15 +280,21 @@ class SubscriptionViewCell: UICollectionViewCell {
 
 
 extension SubscriptionsViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        Utility.feedbackGenerator(style: .soft)
-        if indexPath.row == 0 {
-            let vc = FormNewSubController(company: nil)
-            self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let comapany = subscriptions[indexPath.row]
-            let vc = FormNewSubController(company: comapany)
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-    }
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+      Utility.feedbackGenerator(style: .soft)
+
+      // Usar filteredSubscriptions para determinar la selección
+      let selectedName = filteredSubscriptions[indexPath.row]
+      let selectedCompany = subscriptions.first { $0.name == selectedName }
+//
+//      if indexPath.row == 0 {
+//          let vc = FormNewSubController(company: nil)
+//          self.navigationController?.pushViewController(vc, animated: true)
+//      } else
+    if let company = selectedCompany {
+          let vc = FormNewSubController(company: company)
+          self.navigationController?.pushViewController(vc, animated: true)
+      }
+  }
+
 }
