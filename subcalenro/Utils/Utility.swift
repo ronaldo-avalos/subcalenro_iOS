@@ -89,7 +89,7 @@ class Utility {
     }
     
     
-    static func showInputAlert(on viewController: UIViewController, title: String, message: String?, completion: @escaping (String?) -> Void) {
+  static func showInputAlert(on viewController: UIViewController, cancelString: String = "Cancel", okString: String = "OK", title: String, message: String?, completion: @escaping (String?) -> Void) {
           let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
           
         alertController.addTextField { textField in

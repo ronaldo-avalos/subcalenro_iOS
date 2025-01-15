@@ -61,7 +61,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
 
     let customButton = UIBarButtonItem(title: "Custom", style: .plain, target: self, action: #selector(customButtonTapped))
     self.navigationItem.leftBarButtonItem = customButton
-    // Configuración del Search Controller
+
     searchController.searchResultsUpdater = self
     searchController.obscuresBackgroundDuringPresentation = false
     searchController.searchBar.placeholder = "Search by company"
@@ -160,7 +160,7 @@ class SubscriptionsViewController: UIViewController, UICollectionViewDataSource,
     ])
   }
 
-  // Método para configurar la UITableView
+
   private func setupTableView() {
     tableView = UITableView(frame:.zero,  style: .plain)
     tableView.dataSource = self

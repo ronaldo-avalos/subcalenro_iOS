@@ -42,13 +42,16 @@ class FormNewSubController: FormViewController {
     navigationItem.title = subEdit == nil ? "New Subscription" : "Edit Subscription"
 
     view.backgroundColor = ThemeManager.color(for: .editBackgroud)
-    saveButton = UIBarButtonItem(systemItem: .save)
+    saveButton = UIBarButtonItem(title: "Save")
     saveButton.isEnabled = false
     saveButton.target = self
     saveButton.action = #selector(saveSubscription)
     navigationItem.rightBarButtonItem = saveButton
 
-    tableView.backgroundColor = .clear
+    let cancelButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(cancelEdit))
+    navigationItem.leftBarButtonItem = subEdit != nil ? cancelButton : nil
+
+//    tableView.backgroundColor = .clear
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.separatorStyle = .none
 
@@ -80,7 +83,6 @@ class FormNewSubController: FormViewController {
       cell.textField.keyboardType = .decimalPad
       cell.imageView?.image = UIImage(systemName: "dollarsign.circle")
     }.onChange { [weak self] row in
-      // Habilitar/deshabilitar el botón de guardar basado en si hay un valor
       self?.saveButton.isEnabled = (row.value != nil && row.value! > 0)
     }
 
@@ -96,19 +98,18 @@ class FormNewSubController: FormViewController {
     }
 
     <<< DateRow() {
-        $0.title = "Next billing date"
-        $0.value = Date() // Fecha inicial
-        $0.minimumDate = Date() // Establece la fecha actual como mínimo
-        $0.maximumDate = Calendar.current.date(byAdding: .year, value: 20, to: Date()) // Hasta 20 años en el futuro
-        $0.tag = "DateRow"
+      $0.title = "Next billing date"
+      $0.value = Date()
+      $0.minimumDate = Date()
+      $0.maximumDate = Calendar.current.date(byAdding: .year, value: 20, to: Date())
+      $0.tag = "DateRow"
     }.cellSetup { cell, _ in
-        cell.imageView?.image = UIImage(systemName: "calendar")
+      cell.imageView?.image = UIImage(systemName: "calendar")
     }.onChange { row in
-        // Verifica si la fecha seleccionada es válida
-        if let selectedDate = row.value, selectedDate < Date() {
-            row.value = Date()
-            row.updateCell()
-        }
+      if let selectedDate = row.value, selectedDate < Date() {
+        row.value = Date()
+        row.updateCell()
+      }
     }
 
 
@@ -127,11 +128,11 @@ class FormNewSubController: FormViewController {
     <<< DoublePickerInputRow<String, String>() {
       $0.title = "Duration"
       $0.tag = "SubDuration"
-      $0.firstOptions = {return ["Forever"] + (1...180).map { "\($0)" }} // Crear array con "Forever" y números del 1 al 180
+      $0.firstOptions = {return ["Forever"] + (1...180).map { "\($0)" }}
       $0.secondOptions = { _ in
-        return ["", "Day(s)", "Week(s)", "Month(s)", "Year(s)"] // Opciones para la segunda columna
+        return ["", "Day(s)", "Week(s)", "Month(s)", "Year(s)"]
       }
-      $0.value = Tuple(a: "2", b: "Years(s)") // Valor por defecto
+      $0.value = Tuple(a: "2", b: "Years(s)")
     }.cellSetup { cell, _ in
       cell.imageView?.image = UIImage(systemName: "calendar.badge.clock")
 
@@ -169,7 +170,6 @@ class FormNewSubController: FormViewController {
     let headerView = UIView()
     headerView.backgroundColor = .clear
 
-    // Contenedor para la imagen
     let imageContainer = UIView()
     imageContainer.backgroundColor = .white
     imageContainer.layer.cornerRadius = 20
@@ -197,7 +197,6 @@ class FormNewSubController: FormViewController {
     editImageButton.addTarget(self, action: #selector(editImageTapped), for: .touchUpInside)
     headerView.addSubview(editImageButton)
 
-    // Campo de texto para el nombre de la empresa
     let companyNameTextField = UITextField()
     companyNameTextField.placeholder = "Enter subcription name"
     companyNameTextField.font = UIFont.systemFont(ofSize: 26, weight: .bold)
@@ -208,7 +207,6 @@ class FormNewSubController: FormViewController {
     companyNameTextField.translatesAutoresizingMaskIntoConstraints = false
     headerView.addSubview(companyNameTextField)
 
-    // Configurar restricciones
     NSLayoutConstraint.activate([
       imageContainer.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
       imageContainer.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 16),
@@ -231,7 +229,6 @@ class FormNewSubController: FormViewController {
       companyNameTextField.heightAnchor.constraint(equalToConstant: 40)
     ])
 
-    // Ajusta el tamaño del header
     let headerHeight: CGFloat = 224
     headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: headerHeight)
 
@@ -266,25 +263,18 @@ class FormNewSubController: FormViewController {
     companyName = textField.text ?? ""
   }
 
-  // Función para actualizar el formulario según el tipo de suscripción seleccionado
   private func updateFormBasedOnSubscriptionType(_ type: String?) {
-    // Recuperar filas por tag
     let periodRow: BaseRow? = form.rowBy(tag: "BillingCycle")
     let durationRow: BaseRow? = form.rowBy(tag: "SubDuration")
-    // let customDaysRow: BaseRow? = form.rowBy(tag: "CustomDays") // Comentado
 
     switch type {
     case "Lifetime":
-      // Ocultar periodo y duración para Lifetime
       durationRow?.hidden = true
 
     case "Trial":
-      // Ocultar periodo y duración para Trial
       periodRow?.hidden = true
       durationRow?.hidden = true
-      //            customDaysRow?.hidden = true
 
-      // Agregar un mensaje de advertencia para Trial
       if let footer = tableView.tableFooterView {
         footer.isHidden = false
       } else {
@@ -311,15 +301,10 @@ class FormNewSubController: FormViewController {
       }
 
     default:
-      // Mostrar periodo y duración para otros tipos
       periodRow?.hidden = false
       durationRow?.hidden = false
       tableView.tableFooterView?.isHidden = true
-      //            if (form.rowBy(tag: "BillingCycle") as? PickerInputRow<String>)?.value == SubscriptionPeriod.custom.name {
-      //                customDaysRow?.hidden = false
-      //            }
     }
-
     periodRow?.evaluateHidden()
     durationRow?.evaluateHidden()
   }
@@ -339,40 +324,35 @@ class FormNewSubController: FormViewController {
 
 
   @objc private func saveSubscription() {
-      guard let subscription = createSubscription() else {
-          showAlert(title: "Error", message: "Please complete all required fields.")
-          return
-      }
+    guard let subscription = createSubscription() else {
+      showAlert(title: "Error", message: "Please complete all required fields.")
+      return
+    }
 
-      if var existingSub = subEdit {
-          existingSub.name = subscription.name
-          existingSub.amount = subscription.amount
-          existingSub.nextPaymentDate = subscription.nextPaymentDate
-          existingSub.reminderTime = subscription.reminderTime
-          existingSub.category = subscription.category
-          existingSub.subscriptionType = subscription.subscriptionType
-          existingSub.period = subscription.period
+    if var existingSub = subEdit {
+      existingSub.name = subscription.name
+      existingSub.amount = subscription.amount
+      existingSub.nextPaymentDate = subscription.nextPaymentDate
+      existingSub.reminderTime = subscription.reminderTime
+      existingSub.category = subscription.category
+      existingSub.subscriptionType = subscription.subscriptionType
+      existingSub.period = subscription.period
 
-          SubscriptionManager().update(existingSub)
-          NotificationManager.shared.scheduleNotifications(for: existingSub)
-        NotificationCenter.default.post(name: Notification.Name("updateSub"), object: nil)
+      SubscriptionManager().update(existingSub)
+      NotificationManager.shared.scheduleNotifications(for: existingSub)
+      NotificationCenter.default.post(name: Notification.Name("updateSub"), object: nil)
+      NotificationCenter.default.post(name: Notification.Name("updateSub2"), object: nil)
 
-      } else {
-          SubscriptionManager().save(subscription)
-          NotificationManager.shared.scheduleNotifications(for: subscription)
-      }
+    } else {
+      SubscriptionManager().save(subscription)
+      NotificationManager.shared.scheduleNotifications(for: subscription)
+    }
 
     NotificationCenter.default.post(name: Notification.Name("SaveNewSubObserver"), object: nil)
 
-      let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
-      let toast = Toast.default(
-          image: icon!,
-          title: subEdit == nil ? "Subscription saved" : "Subscription updated",
-          subtitle: nil
-      )
-      toast.show(haptic: .success)
+  
 
-      navigationController?.popViewController(animated: true)
+    self.dismiss(animated: true)
   }
 
 
@@ -415,5 +395,23 @@ class FormNewSubController: FormViewController {
     )
   }
 
+  @objc func cancelEdit() {
+      let alertController = UIAlertController(
+          title: "Cancel Editing?",
+          message: "If you cancel, your changes will not be saved. Are you sure you want to continue?",
+          preferredStyle: .alert
+      )
+
+      let cancelAction = UIAlertAction(title: "Cancel Editing", style: .destructive) { _ in
+          self.dismiss(animated: true) // Close the current view
+      }
+
+      let continueAction = UIAlertAction(title: "Keep Editing", style: .default)
+
+      alertController.addAction(cancelAction)
+      alertController.addAction(continueAction)
+
+      present(alertController, animated: true)
+  }
 
 }

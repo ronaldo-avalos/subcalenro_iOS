@@ -83,10 +83,26 @@ class CalendarViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleSaveNewSaub(_:)), name: Notification.Name("SaveNewSubObserver"), object: nil)
         
-        
+      NotificationCenter.default.addObserver(
+        self,
+        selector: #selector(handleUpdateSub),
+        name: Notification.Name("updateSub2"),
+        object: nil
+      )
     }
     
     @objc func handleSaveNewSaub(_ notification: Notification) {
+        self.reloadCalendar(completion: { })
+    }
+
+  @objc func handleUpdateSub(_ notification: Notification) {
+    let icon = UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+    let toast = Toast.default(
+      image: icon!,
+      title: "Subscription updated",
+      subtitle: nil
+    )
+    toast.show(haptic: .success)
         self.reloadCalendar(completion: { })
     }
     
@@ -272,18 +288,28 @@ class CalendarViewController: UIViewController {
         }
         
         bottomContainer.editSub = { id in
-            //            let vc = EditSubcriptionViewController()
-            //            let nc = UINavigationController(rootViewController: vc)
-            //            vc.subId = id
-            //            self.present(nc, animated: true)
+          let sub = SubscriptionManager().readById(id)
+          let vc = FormNewSubController(company: nil, sub: sub)
+          let nv = UINavigationController(rootViewController: vc)
+          nv.modalPresentationStyle = .fullScreen
+          self.present(nv, animated: true)
         }
         
-        bottomContainer.didSelecSub = { id in
-            let vc = DetailSubscriptionViewController()
-            let nv = UINavigationController(rootViewController: vc)
-            vc.subId = id
-            self.present(nv, animated: true)
-        }
+      bottomContainer.didSelecSub = { id in
+          let vc = DetailSubscriptionViewController()
+          let nv = UINavigationController(rootViewController: vc)
+          nv.modalPresentationStyle = .pageSheet
+          vc.subId = id
+
+          if let sheet = nv.sheetPresentationController {
+              sheet.detents = [.medium()] // Define que ocupe la mitad de la pantalla.
+              sheet.prefersGrabberVisible = true // Muestra un grabber (opcional).
+              sheet.preferredCornerRadius = 16 // Redondeo de las esquinas (opcional).
+          }
+
+          self.present(nv, animated: true)
+      }
+
     }
     
     
