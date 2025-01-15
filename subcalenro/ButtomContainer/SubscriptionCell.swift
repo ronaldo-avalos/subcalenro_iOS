@@ -69,7 +69,7 @@ class SubscriptionCell: UITableViewCell {
 
     // Indicador de estado
     statusIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-    statusIndicatorView.layer.cornerRadius = 3
+    statusIndicatorView.layer.cornerRadius = 4
     statusIndicatorView.clipsToBounds = true
 
     let subViews = [logoContentView,titleLabel,priceLabel,periodLabel,reminderLabel,statusIndicatorView]
@@ -106,8 +106,8 @@ class SubscriptionCell: UITableViewCell {
 
       statusIndicatorView.topAnchor.constraint(equalTo: contentCellView.topAnchor, constant: 10),
       statusIndicatorView.trailingAnchor.constraint(equalTo: contentCellView.trailingAnchor, constant: -16),
-      statusIndicatorView.widthAnchor.constraint(equalToConstant: 6),
-      statusIndicatorView.heightAnchor.constraint(equalToConstant: 6),
+      statusIndicatorView.widthAnchor.constraint(equalToConstant: 8),
+      statusIndicatorView.heightAnchor.constraint(equalToConstant: 8),
     ])
   }
 
@@ -121,12 +121,13 @@ class SubscriptionCell: UITableViewCell {
     priceLabel.text = String(format: "$%.2f", subscription.amount)
     periodLabel.text = subscription.period.name
 
-    // Configurar el recordatorio (ejemplo: puedes calcular el tiempo restante para el próximo pago)
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .medium
     reminderLabel.text = subscription.reminderTime.name
 
-    // Configuración del color de estado
-    statusIndicatorView.backgroundColor = .systemGreen // Cambia según tu lógica
+    statusIndicatorView.backgroundColor = subscription.isActive ? .systemGreen : .systemOrange
+
+    contentView.alpha = subscription.isActive ? 1 : 0.5
+
   }
 }

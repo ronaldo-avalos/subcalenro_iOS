@@ -81,8 +81,12 @@ class CalendarViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(applyTheme), name: .themeChanged, object: nil)
         applyTheme()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleSaveNewSaub(_:)), name: Notification.Name("SaveNewSubObserver"), object: nil)
-        
+        NotificationCenter.default.addObserver(
+          self, selector: #selector(handleSaveNewSaub(_:)), name: Notification.Name("SaveNewSubObserver"), object: nil)
+
+      NotificationCenter.default.addObserver(
+          self, selector: #selector(handleSaveNewSaub(_:)), name: Notification.Name("changeActive"), object: nil)
+
       NotificationCenter.default.addObserver(
         self,
         selector: #selector(handleUpdateSub),

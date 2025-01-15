@@ -31,6 +31,9 @@ class SubViewBuilder {
           imageView.kf.setImage(with: URL(string: event.1.logoUrl))
         }
       }
+      if !event.1.isActive {
+        imageView.alpha = 0.4
+      }
       imageView.layer.cornerRadius = 10
       imageView.clipsToBounds = true
       imageView.layer.masksToBounds = true

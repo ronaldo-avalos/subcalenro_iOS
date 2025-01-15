@@ -18,7 +18,8 @@ struct Subscription: Codable {
     var reminderTime: ReminderOption
     var category: SubscriptionCategory
     var subscriptionType: SubscriptionType
-    
+    var isActive: Bool
+
     var hasReminder: Bool {
         return reminderTime != .none
     }

@@ -341,7 +341,6 @@ class FormNewSubController: FormViewController {
       SubscriptionManager().update(existingSub)
       NotificationManager.shared.scheduleNotifications(for: existingSub)
       NotificationCenter.default.post(name: Notification.Name("updateSub"), object: nil)
-      NotificationCenter.default.post(name: Notification.Name("updateSub2"), object: nil)
 
     } else {
       SubscriptionManager().save(subscription)
@@ -391,7 +390,8 @@ class FormNewSubController: FormViewController {
       period: period ?? .monthly,
       reminderTime: reminder,
       category: category,
-      subscriptionType: subscriptionType
+      subscriptionType: subscriptionType,
+      isActive: true
     )
   }
 
