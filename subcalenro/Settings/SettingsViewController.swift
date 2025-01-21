@@ -50,7 +50,8 @@ class SettingsViewController: UIViewController {
 
     tableSettingsView.tableFooterView = createFooterView()
 
-    setupTableHeaderView()
+    //TODO: Implementar purchases
+//    setupTableHeaderView()
 
 
     tableSettingsView.backgroundColor = .clear
@@ -158,6 +159,9 @@ class SettingsViewController: UIViewController {
     tableSettingsView.tableHeaderView = headerView
 
   }
+
+
+
 
 
   func createShimmeringUpgradeButton() -> FBShimmeringView {

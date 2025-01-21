@@ -164,30 +164,28 @@ class CalendarViewController: UIViewController {
     
     
     // MARK: - Page Change Handling
-    private func handlePageChange(_ calendar: FSCalendar) {
-        UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
-            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-        }, completion: nil)
-        let currentPageComponents = Calendar.current.dateComponents([.year, .month], from: calendar.currentPage)
-        var todayComponents = Calendar.current.dateComponents([.year, .month], from: Date())
-        todayComponents.day = 1
-        
-        if let currentPageDate = Calendar.current.date(from: currentPageComponents),
-           let todayDate = Calendar.current.date(from: todayComponents) {
-            if currentPageDate > todayDate {
-                todayButton.isHidden = false
-                //                showTodayButton(false, .up)
-            } else if currentPageDate == todayDate {
-                todayButton.isHidden = true
-                //               showTodayButton(true, .up)
-            } else {
-                todayButton.isHidden = false
-                //                showTodayButton(false, .down)
-            }
-        }
-    }
-    
-    
+  private func handlePageChange(_ calendar: FSCalendar) {
+      UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
+          self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+      }, completion: nil)
+      let currentPageComponents = Calendar.current.dateComponents([.year, .month], from: calendar.currentPage)
+      var todayComponents = Calendar.current.dateComponents([.year, .month], from: Date())
+      todayComponents.day = 1
+
+      if let currentPageDate = Calendar.current.date(from: currentPageComponents),
+         let todayDate = Calendar.current.date(from: todayComponents) {
+          if currentPageDate > todayDate {
+              todayButton.isHidden = false
+            todayButton.setImage(UIImage(systemName: "chevron.up")?.withTintColor(ThemeManager.color(for: .secondaryText), renderingMode: .alwaysOriginal), for: .normal)
+          } else if currentPageDate == todayDate {
+              todayButton.isHidden = true
+          } else {
+              todayButton.isHidden = false
+              todayButton.setImage(UIImage(systemName: "chevron.down")?.withTintColor(ThemeManager.color(for: .secondaryText), renderingMode: .alwaysOriginal), for: .normal)
+          }
+      }
+  }
+
     // MARK: - Setup Views
     private func setupViews() {
         scrollView.isScrollEnabled = false
@@ -222,19 +220,26 @@ class CalendarViewController: UIViewController {
         bottomContainer.tableView.separatorStyle = .none
         bottomContainer.tableView.backgroundColor = .clear
         bottomContainerHeightConstraint = bottomContainer.heightAnchor.constraint(equalToConstant:300 )
-        
-        todayButton.isHidden = true
-        todayButton.setTitle("Today", for: .normal)
-        todayButton.titleLabel?.font = FontManager.sfProDisplay(size: 18)
-        todayButton.tintColor = ThemeManager.color(for: .primaryText)
-        todayButton.backgroundColor = .clear
-        todayButton.addAction(UIAction(handler: { _ in
-            self.calendarView.setCurrentPage(Date(), animated: true)
-        }), for: .touchUpInside)
-        todayButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(todayButton)
-        
-        
+
+
+      todayButton.isHidden = true
+      todayButton.tintColor = ThemeManager.color(for: .primaryText)
+      todayButton.backgroundColor = ThemeManager.color(for: .secondaryBackground)
+      todayButton.layer.cornerRadius = 25 // Hacerlo circular
+      todayButton.clipsToBounds = true
+      todayButton.translatesAutoresizingMaskIntoConstraints = false
+      todayButton.layer.shadowColor = ThemeManager.color(for: .secondaryBackground).cgColor
+      todayButton.layer.shadowOpacity = 0.3
+      todayButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+      todayButton.layer.shadowRadius = 10
+      todayButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold), forImageIn: .normal)
+      todayButton.addAction(UIAction(handler: { _ in
+
+        self.calendarView.select(Date(), scrollToDate: true)
+      }), for: .touchUpInside)
+
+      view.addSubview(todayButton)
+
         
         contentView.addSubview(calendarView)
         contentView.addSubview(bottomContainer)
@@ -274,8 +279,10 @@ class CalendarViewController: UIViewController {
             floatingBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             floatingBar.widthAnchor.constraint(equalToConstant: floatingBarWidth),
             floatingBar.heightAnchor.constraint(equalToConstant: floatingBarHeight),
-            
-            todayButton.centerXAnchor.constraint(equalTo: view.leadingAnchor, constant: (view.frame.width/3)/2),
+
+            todayButton.widthAnchor.constraint(equalToConstant: 50),
+            todayButton.heightAnchor.constraint(equalToConstant: 50),
+            todayButton.centerXAnchor.constraint(equalTo: view.trailingAnchor , constant: -(view.frame.width/3)/2),
             todayButton.centerYAnchor.constraint(equalTo: floatingBar.centerYAnchor),
         ])
         
