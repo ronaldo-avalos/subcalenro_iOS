@@ -10,6 +10,7 @@ import FSCalendar
 import ToastViewSwift
 
 class CalendarViewController: UIViewController {
+    
     private var calendarView : FSCalendar!
     private var calendarDataSource: CalendarDataSource?
     private var calendarDelegate: CalendarDelegate?
@@ -356,7 +357,7 @@ extension CalendarViewController: OptionsFloatingBarViewDelegate {
     
     func newEventButtonTapped() {
         //        self.subscriptionVC.subId = nil
-        let vc = SubscriptionsViewController()
+        let vc = SubsCollectionViewController()
         let nc = UINavigationController(rootViewController: vc)
         self.present(nc, animated: true)
     }

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Kingfisher
 
-class SubscriptionsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
+class SubsCollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
 
   var subscriptions: [Company] = []
 
@@ -333,15 +333,13 @@ class SubscriptionViewCell: UICollectionViewCell {
   }
 
 
-
-
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 }
 
 
-extension SubscriptionsViewController: UICollectionViewDelegate {
+extension SubsCollectionViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     Utility.feedbackGenerator(style: .soft)
 
