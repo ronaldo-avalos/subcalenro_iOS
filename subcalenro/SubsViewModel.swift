@@ -10,8 +10,8 @@ import Foundation
 final class SubsViewModel : ObservableObject {
     static let shared = SubsViewModel()
     
-    
-    
+    @Published var companies : [Company] = []
+    @Published var subscriptions : [Subscription] = []
     
     
 }
